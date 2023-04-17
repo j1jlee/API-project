@@ -15,7 +15,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addIndex(options, ['username'], { unique: true});
-    await queryInterface.addIndex(options, ['email'], { unique: true}, options);
+    await queryInterface.addIndex(options, ['email'], { unique: true});
     // await queryInterface.addIndex('Users', ['username'], { unique: true});
     // await queryInterface.addIndex('Users', ['email'], { unique: true}, options);
   },
