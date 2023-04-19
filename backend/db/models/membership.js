@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Membership.hasMany(
         models.User,
-        { foreignKey: userId }
+        { foreignKey: 'userId' }
       );
       Membership.hasMany(
         models.Group,
-        { foreignKey: groupId }
+        { foreignKey: 'groupId' }
       );
     }
   }
@@ -28,7 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    userId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      //foreignKey: true
+    },
     groupId: DataTypes.INTEGER,
     status: {
       type: DataTypes.ENUM,

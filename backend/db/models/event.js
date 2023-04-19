@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         {foreignKey: 'groupId'}
       );
       Event.belongsTo(
-        models.EventImages,
+        models.EventImage,
         { foreignKey: 'eventId'}
       )
     }

@@ -76,7 +76,7 @@ module.exports = {
         startDate: '2023-04-21',
         endDate: '2023-04-21'
       },
-    ]);
+    ], {});
   },
 
   async down (queryInterface, Sequelize) {

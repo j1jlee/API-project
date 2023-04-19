@@ -13,17 +13,17 @@ module.exports = {
         {
           groupId: '1',
           url: 'pokemonGroupImg.png',
-          preview: true,
+          preview: 'true',
         },
         {
           groupId: '2',
           url: 'secretJediNoPreview.png',
-          preview: false,
+          preview: 'false',
         },
         {
           groupId: '3',
           url: 'thickSolidProgress.png',
-          preview: true,
+          preview: 'true',
         }
       ], {});
   },
