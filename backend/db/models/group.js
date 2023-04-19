@@ -11,26 +11,47 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Group.belongsTo(
+      Group.hasMany(
         models.Event,
         { foreignKey: 'groupId'}
       );
-      Group.belongsTo(
+      Group.hasMany(
         models.Venue,
         { foreignKey: 'groupId'}
       );
-      Group.belongsTo(
+      Group.hasMany(
         models.Membership,
         { foreignKey: 'groupId'}
       );
-      Group.belongsTo(
+      Group.hasMany(
         models.GroupImage,
         { foreignKey: 'groupId'}
       );
-      Group.hasMany(
+      Group.belongsTo(
         models.User,
-        { foreignKey: 'organizerId' }
+        { foreignKey: 'organizerId',
+        as: "Organizer" }
       );
+      // Group.belongsTo(
+      //   models.Event,
+      //   { foreignKey: 'groupId'}
+      // );
+      // Group.belongsTo(
+      //   models.Venue,
+      //   { foreignKey: 'groupId'}
+      // );
+      // Group.belongsTo(
+      //   models.Membership,
+      //   { foreignKey: 'groupId'}
+      // );
+      // Group.belongsTo(
+      //   models.GroupImage,
+      //   { foreignKey: 'groupId'}
+      // );
+      // Group.hasMany(
+      //   models.User,
+      //   { foreignKey: 'organizerId' }
+      // );
     }
   }
   Group.init({

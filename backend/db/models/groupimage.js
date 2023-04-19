@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      GroupImage.hasMany(
+      GroupImage.belongsTo(
         models.Group,
         { foreignKey: 'groupId'}
       );
+      // GroupImage.hasMany(
+      //   models.Group,
+      //   { foreignKey: 'groupId'}
+      // );
     }
   }
   GroupImage.init({
@@ -28,6 +32,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'GroupImage',
+    defaultScope: {
+      attributes: {
+        exclude: ['groupId', 'createdAt', 'updatedAt']
+        //Users, the hashedPassword, updatedAt, and, depending on your application, email and createdAt
+      }
+    }
   });
   return GroupImage;
 };

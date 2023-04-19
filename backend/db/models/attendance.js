@@ -11,15 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Attendance.hasMany(
+      Attendance.belongsTo(
         models.Event,
         {foreignKey: 'eventId'}
       );
 
-      Attendance.hasMany(
+      Attendance.belongsTo(
         models.User,
         {foreignKey: 'userId'}
       );
+      // Attendance.hasMany(
+      //   models.Event,
+      //   {foreignKey: 'eventId'}
+      // );
+
+      // Attendance.hasMany(
+      //   models.User,
+      //   {foreignKey: 'userId'}
+      // );
     }
   }
   Attendance.init({

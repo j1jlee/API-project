@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      EventImage.hasMany(
+      EventImage.belongsTo(
         models.Event,
         {foreignKey: 'eventId'}
       );
+      // EventImage.hasMany(
+      //   models.Event,
+      //   {foreignKey: 'eventId'}
+      // );
     }
   }
   EventImage.init({
