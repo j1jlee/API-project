@@ -18,8 +18,8 @@ module.exports = {
         type: 'In-person',
         capacity: '200',
         price: '25',
-        startDate: '2023-04-22',
-        endDate: '2023-04-22'
+        startDate: new Date(2024, 3, 22),
+        endDate: new Date(2024, 3, 22)
       },
       {
         venueId: '2',
@@ -29,8 +29,8 @@ module.exports = {
         type: 'In-person',
         capacity: '40',
         price: '0',
-        startDate: '2023-04-21',
-        endDate: '2023-04-21'
+        startDate: new Date(2024, 3, 21),
+        endDate: new Date(2024, 3, 21)
       },
       {
         venueId: '3',
@@ -40,8 +40,8 @@ module.exports = {
         type: 'Online',
         capacity: '45',
         price: '0',
-        startDate: '2023-04-21',
-        endDate: '2023-04-21'
+        startDate: new Date(2024, 3, 21),
+        endDate: new Date(2024, 3, 21)
       },
       {
         venueId: '4',
@@ -51,8 +51,8 @@ module.exports = {
         type: 'Online',
         capacity: '100',
         price: '200',
-        startDate: '2023-04-21',
-        endDate: '2023-04-21'
+        startDate: new Date(2024, 3, 21),
+        endDate: new Date(2024, 3, 21)
       },
       {
         venueId: '5',
@@ -62,8 +62,8 @@ module.exports = {
         type: 'In-person',
         capacity: '60',
         price: '10',
-        startDate: '2023-04-21',
-        endDate: '2023-04-21'
+        startDate: new Date(2024, 3, 21),
+        endDate: new Date(2024, 3, 21)
       },
       {
         venueId: '6',
@@ -73,8 +73,8 @@ module.exports = {
         type: 'In-person',
         capacity: '100',
         price: '10',
-        startDate: '2023-04-21',
-        endDate: '2023-04-21'
+        startDate: new Date(2024, 3, 21),
+        endDate: new Date(2024, 3, 21)
       },
     ], {});
   },

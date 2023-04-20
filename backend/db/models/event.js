@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       values: ['Online', 'In person']
     },
     capacity: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
+    price: DataTypes.DECIMAL(8, 2),
     startDate: {
       type: DataTypes.DATE,
       notNull: true
@@ -69,6 +69,16 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Event',
+
+    scopes: {
+      eventNoDates() {
+        return {
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
+        }
+      }
+    }
   });
   return Event;
 };

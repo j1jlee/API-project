@@ -4,12 +4,13 @@ const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
+const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendance } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js')
 
 const { validateVenue } = require('./venues.js');
+const { validateEvent } = require('./events.js');
 
 const router = express.Router();
 
@@ -45,7 +46,7 @@ const validateGroup = [
 
 
 
-
+//get current groups by user
 router.get('/current', requireAuth, async (req, res) => {
     //console.log('req', req);
     const { user } = req;
@@ -115,6 +116,66 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
     }
 })
 
+//create, toJSON()
+
+
+//get all group events by groupId
+router.get('/:groupId/events', async (req, res) => {
+    const groupId = req.params.groupId;
+
+
+    const eventsByGroupId = await Event.scope('eventNoDates').findAll(
+        {include: [
+            {model: Group.scope('groupIncluded')},
+            {model: Venue.scope('venueIncluded')},
+            // {model: EventImage,
+            // attributes: []}
+            // // attributes: ['url']}
+        ],
+        where: {
+            groupId
+        }
+     });
+    if (!eventsByGroupId) {
+        res.status(404);
+        return res.json({"message": "Group couldn't be found"});
+    }
+    // eventsByGroupId.previewImage = "testing";
+    //need numattending, previewimage
+    // const eventJSON = JSON.stringify(eventsByGroupId);
+    // console.log('\n\n\n\n\nEVENT JSONNNNNNNNN', eventJSON[1]);
+
+    for (let event of eventsByGroupId) {
+        //lazy load attendance, lazy load image
+            const eventAttendees = await Attendance.findAll({
+                where: {
+                    eventId: event.id
+                }
+            })
+            const eventAttendeesNum = eventAttendees.length;
+
+            const previewImage = await EventImage.findOne({
+                where: {
+                    eventId: event.id,
+                    preview: true
+                }
+            });
+
+            console.log('\n\n\n\nPREVIEWIMAGEEEEE', previewImage);
+            if (previewImage) {
+                event.dataValues.previewImage = previewImage.url;
+            }
+            if (eventAttendeesNum) {
+                event.dataValues.numAttending = eventAttendeesNum;
+            }
+            await event.save();
+        }
+
+        // console.log('eventsByGroupId', eventsByGroupId);
+        res.json(eventsByGroupId);
+});
+
+
 
 //get all groups by groupId
 router.get('/:groupId', async (req, res) => {
@@ -135,6 +196,7 @@ router.get('/:groupId', async (req, res) => {
         res.json(groupsById);
 });
 
+//edit group by groupId
 router.put('/:groupId', validateGroup, async (req, res) => {
     const groupId = req.params.groupId;
 
@@ -146,11 +208,7 @@ router.put('/:groupId', validateGroup, async (req, res) => {
     }
 
     const { name, about, type, private, city, state } = req.body;
-    // const { organizerId, name, about, type, private, city, state } = req.body;
 
-    // if (organizerId) {
-    //     currentGroup.organizerId = organizerId;
-    // };
     if (name) {
         currentGroup.name = name;
     };
@@ -175,8 +233,46 @@ router.put('/:groupId', validateGroup, async (req, res) => {
     res.json(currentGroup);
 })
 
+//create an event by groupid
+router.post('/:groupId/events', requireAuth, validateEvent, async (req, res) => {
+    const groupId = req.params.groupId;
+    const { user } = req;
+    const userId = user.id;
+    // const resCheck = cohostCheck(userId, groupId);
+    // res.json(resCheck);
+    const currentMembership = await Membership.findOne({
+        include: {
+            model: Group
+        },
+        where: {
+            userId,
+            groupId,
+        }
+    });
+    if (!currentMembership) {
+        res.status(400);
+        return res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+    }
+
+    if (currentMembership.status === "co-host" || currentMembership.Group.organizerId == userId) {
+        const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+        const newEvent = await Event.create({
+            groupId, venueId, name, type, capacity, price, description, startDate, endDate
+        });
+
+        res.status(200);
+        const resObj = { id: newEvent.id, groupId, name, type, capacity, price, description, startDate, endDate }
+        res.json(resObj);
+    } else {
+        res.status(400);
+        res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+    }
+})
 
 
+
+//post new groupimage to group
 router.post('/:groupId/images', requireAuth, async (req, res) => {
     const groupId = req.params.groupId;
 
@@ -200,7 +296,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
     res.json(resGIObj);
     // res.json({"id": newGroupImage.groupId, "url": newGroupImage.url, "preview": newGroupImage.preview});
     // res.json(newGroupImage);
-})
+});
 
 router.post('/', validateGroup, async (req, res) => {
     const { organizerId, name, about, type, private, city, state } = req.body;
