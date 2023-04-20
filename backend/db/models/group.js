@@ -84,6 +84,16 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+
+    scopes: {
+      groupIncluded() {
+        return {
+          attributes: {
+            exclude: ['organizerId', 'about', 'type', 'private', 'createdAt', 'updatedAt']
+          }
+        }
+      }
+    }
   });
   return Group;
 };

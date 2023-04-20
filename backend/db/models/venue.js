@@ -44,15 +44,15 @@ module.exports = (sequelize, DataTypes) => {
         exclude: ['createdAt', 'updatedAt']
       }
     },
-    // scopes: {
-    //   venueIncluded() {
-    //     return {
-    //       attributes: {
-    //         exclude: ['username']
-    //       }
-    //     }
-    //   }
-    // }
+    scopes: {
+      venueIncluded() {
+        return {
+          attributes: {
+            exclude: ['groupId', 'address', 'lat', 'lng', 'createdAt', 'updatedAt']
+          }
+        }
+      }
+    }
   });
   return Venue;
 };

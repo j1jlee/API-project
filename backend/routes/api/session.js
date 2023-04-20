@@ -51,10 +51,10 @@ router.get(
 //Log in
 router.post(
     '/',
-    async (req, res, next) => {
-        console.log('\nreq.body?', req.body);
-        next();
-    },
+    // async (req, res, next) => {
+    //     console.log('\nreq.body?', req.body);
+    //     next();
+    // },
     //
     validateLogin,
     //
