@@ -32,10 +32,19 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'GroupImage',
-    defaultScope: {
-      attributes: {
-        exclude: ['groupId', 'createdAt', 'updatedAt']
-        //Users, the hashedPassword, updatedAt, and, depending on your application, email and createdAt
+    // defaultScope: {
+    //   attributes: {
+    //     exclude: ['groupId', 'createdAt', 'updatedAt']
+    //     //Users, the hashedPassword, updatedAt, and, depending on your application, email and createdAt
+    //   }
+    // }
+    scopes: {
+      giIncluded() {
+        return {
+          attributes: {
+            exclude: ['groupId', 'createdAt', 'updatedAt']
+          }
+        }
       }
     }
   });

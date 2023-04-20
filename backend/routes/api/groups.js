@@ -11,26 +11,32 @@ const { handleValidationErrors } = require('../../utils/validation.js')
 
 const router = express.Router();
 
-//validateSignup middleware/// btw what does 'check' do
-// const validateSignup = [
-//   check('email')
-//     .exists({ checkFalsy: true })
-//     .isEmail()
-//     .withMessage('Please provide a valid email.'),
-//   check('username')
-//     .exists({ checkFalsy: true })
-//     .isLength({ min: 4 })
-//     .withMessage('Please provide a username with at least 4 characters.'),
-//   check('username')
-//     .not()
-//     .isEmail()
-//     .withMessage('Username cannot be an email.'),
-//   check('password')
-//     .exists({ checkFalsy: true})
-//     .isLength({ min: 6 })
-//     .withMessage('Password must be 6 characters or more.'),
-//   handleValidationErrors
-// ];
+const validateGroup = [
+    check('name')
+        .exists({ checkFalsy: true})
+        .isLength({ max: 60 })
+        .withMessage('Name must be 60 characters or less'),
+    check('about')
+        .exists({ checkFalsy: true})
+        .isLength({ min: 50 })
+        .withMessage('About must be 50 characters or more'),
+    check('type')
+        .exists({ checkFalsy: true})
+        .isIn(['Online', 'In person'])
+        .withMessage('Type must be \'Online\' or \'In person\''),
+    check('private')
+        .exists({ checkFalsy: true})
+        .isBoolean()
+        .withMessage('Private must be a boolean'),
+    check('city')
+        .exists({ checkFalsy: true})
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true})
+        .withMessage('State is required'),
+    handleValidationErrors
+];
+
 router.get('/current', requireAuth, async (req, res) => {
     //console.log('req', req);
     const { user } = req;
@@ -52,14 +58,55 @@ router.get('/:groupId', async (req, res) => {
     const groupId = req.params.groupId;
     const groupsById = await Group.findByPk(groupId,
         {include: [
-            {model: GroupImage},
-            {model: User,
-            as: "Organizer",
-            exclude: 'username'},
+            {model: GroupImage.scope('giIncluded')},
+            {model: User.scope('userIncluded'),
+            as: "Organizer"
+            //attributes, exclude?
+                            },
             {model: Venue}]});
-
-    res.json(groupsById);
+    if (!groupsById) {
+        res.status(404);
+        return res.json({"message": "Group couldn't be found"});
+    }
+        res.json(groupsById);
 });
+
+router.post('/:groupId/images', requireAuth, async (req, res) => {
+    const groupId = req.params.groupId;
+
+    const groupCheck = await Group.findByPk(groupId);
+    if (!groupCheck) {
+        res.status(404);
+        res.json({"message": "Group couldn't be found"});
+    }
+
+    const { url, preview } = req.body;
+
+    const newGroupImage = await GroupImage.create({
+        groupId, url, preview
+    });
+
+    res.status(200);
+    // console.log('newGroupImage', newGroupImage)
+    //newGroupImage.addScope('giIncluded');
+    res.json({"id": newGroupImage.groupId, "url": newGroupImage.url, "preview": newGroupImage.preview});
+    // res.json(newGroupImage);
+})
+
+router.post('/', validateGroup, async (req, res) => {
+    const { organizerId, name, about, type, private, city, state } = req.body;
+
+    console.log('organizerId', organizerId);
+
+    if (!organizerId) {
+        organizerId = 1;
+    }
+    const newGroup = await Group.create({
+        organizerId, name, about, type, private, city, state
+    });
+    res.status(201);
+    res.json(newGroup);
+})
 
 
 router.get('/', async (req, res) => { //get all groups
