@@ -72,8 +72,9 @@ module.exports = (sequelize, DataTypes) => {
       notNull: true
     },
     type: {
-      type: DataTypes.ENUM,
-      values: ['Online', 'In Person'],
+      type: DataTypes.ENUM('Online', 'In Person'),
+      // type: DataTypes.ENUM,
+      // values: ['Online', 'In Person'],
       notNull: true
     },
     private: {
