@@ -14,7 +14,7 @@ module.exports = {
         organizerId: '1',
         name: 'group1',
         about: 'This is the first group, for Pokemon trainers!',
-        type: 'In person',
+        type: 'In Person',
         private: 'false',
         city: "Pallet Town",
         state: "KO"
@@ -32,7 +32,7 @@ module.exports = {
         organizerId: '3',
         name: 'group3',
         about: 'Wanna get jacked? Absolutely shredded? Just yoked? Join today!',
-        type: 'In person',
+        type: 'In Person',
         private: 'false',
         city: "MuscleTown",
         state: "BF"
