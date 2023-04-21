@@ -9,9 +9,39 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(
+        models.Attendance,
+        { foreignKey: 'userId', onDelete: 'CASCADE' }
+      );
+      User.hasMany(
+        models.Group,
+        { foreignKey: 'organizerId', onDelete: 'CASCADE'}
+      );
+      User.hasMany(
+        models.Membership,
+        { foreignKey: 'userId', onDelete: 'CASCADE' }
+      );
+      // User.belongsTo(
+      //   models.Attendance,
+      //   { foreignKey: 'userId' }
+      // );
+      // User.belongsTo(
+      //   models.Group,
+      //   { foreignKey: 'organizerId' }
+      // );
+      // User.belongsTo(
+      //   models.Membership,
+      //   { foreignKey: 'userId' }
+      // );
     }
   }
   User.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     username: {
       type: DataTypes.STRING,
       notNull: true,
@@ -79,6 +109,15 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt']
         //Users, the hashedPassword, updatedAt, and, depending on your application, email and createdAt
+      }
+    },
+    scopes: {
+      userIncluded() {
+        return {
+          attributes: {
+            exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt','username']
+          }
+        }
       }
     }
   });

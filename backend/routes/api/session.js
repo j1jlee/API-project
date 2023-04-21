@@ -51,11 +51,17 @@ router.get(
 //Log in
 router.post(
     '/',
+    // async (req, res, next) => {
+    //     console.log('\nreq.body?', req.body);
+    //     next();
+    // },
     //
     validateLogin,
     //
     async (req, res, next) => {
         const { credential, password } = req.body;
+
+        //console.log('req.body?', req.body);
 
         const user = await User.unscoped().findOne({
             where: {

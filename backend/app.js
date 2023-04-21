@@ -16,9 +16,9 @@ const app = express(); //initialize express application
 
 
 
-app.use(morgan('dev'));
-app.use(cookieParser());
-app.use(express.json());
+app.use(morgan('dev')); //logs and prints info about request to terminal
+app.use(cookieParser()); //csrt tokens, jwts
+app.use(express.json()); //
 
 //security middleware
 if (!isProduction) {
@@ -43,7 +43,7 @@ app.use(
     })
 );
 
-app.use(routes);
+app.use(routes); //all incoming goes to routes/index.js
 
 
 //error handlers
@@ -81,5 +81,5 @@ app.use((err, _req, res, _next) => {
       stack: isProduction ? null : err.stack
     });
   });
-  
+
 module.exports = app;

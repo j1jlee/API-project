@@ -19,6 +19,7 @@ router.get("/api/csrf/restore", (req, res) => {
     });
   });
 
+  //above used for testing-- 'actual' requests go through apiRouter
 router.use('/api', apiRouter);
 
 
