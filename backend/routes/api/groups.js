@@ -455,6 +455,40 @@ router.get('/:groupId/events', async (req, res) => {
         // res.json(eventsByGroupId);
 });
 
+///delete a group
+router.delete('/:groupId', requireAuth, async (req, res) => {
+    const groupId = req.params.groupId;
+    const { user } = req;
+    const userId = user.id;
+    //console.log('\n\n\ngroupId', groupId);
+
+    const resGroup = await Group.findByPk(groupId);
+
+    if (!resGroup) {
+        res.status(404);
+        return res.json({"message": "Group couldn't be found"})
+    }
+
+    const organizerId = resGroup.organizerId;
+
+    if (userId === organizerId) {
+        await resGroup.destroy();
+        res.json({
+        "message": "Successfully deleted"
+        });
+    } else {
+        res.status(404);
+        return res.json({"message": 'Current User must be the organizer of the group'});
+    };
+
+
+})
+
+
+
+
+///
+
 
 
 //get details of group by groupId
