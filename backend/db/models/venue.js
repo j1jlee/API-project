@@ -51,6 +51,13 @@ module.exports = (sequelize, DataTypes) => {
             exclude: ['groupId', 'address', 'lat', 'lng', 'createdAt', 'updatedAt']
           }
         }
+      },
+      eventScope() {
+        return {
+          attributes: {
+            exclude: ['groupId', 'createdAt', 'updatedAt']
+          }
+        }
       }
     }
   });

@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Venue } = require('../../db/models');
-const { validateVenue} = require('./customValidators.js');
+const { validateVenue, validateUserOrgCohost } = require('./customValidators.js');
 //
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
@@ -24,6 +24,17 @@ router.put('/:venueId', validateVenue, async (req, res) => {
         res.status(404);
         res.json({"message": "Venue couldn't be found"});
     }
+
+    //console.log('currentVenue groupId', currentVenue.groupId);
+    const groupId = currentVenue.groupId;
+    const { user } = req;
+    const userId = user.id;
+
+    const validationRes = await validateUserOrgCohost(userId, groupId);
+    if (typeof validationRes === 'object') {
+        res.status(404);
+        return res.json(validationRes);
+    };
 
     const { address, city, state, lat, lng } = req.body;
 

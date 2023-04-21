@@ -9,7 +9,7 @@ const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendanc
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
 
-const { validateVenue, validateEvent, validateGroup } = require('./customValidators.js');
+const { validateVenue, validateEvent, validateGroup, validateUserOrgCohost } = require('./customValidators.js');
 
 const router = express.Router();
 
@@ -141,18 +141,44 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 //get venues by groupId
-router.get('/:groupId/venues', async (req, res) => {
+router.get('/:groupId/venues', requireAuth, async (req, res) => {
     const groupId = req.params.groupId;
-    const groupVenues = await Venue.findAll({
+    const { user } = req;
+    const userId = user.id;
+
+    const currentMembership = await Membership.findOne({
+        include: {
+            model: Group
+        },
         where: {
-            groupId
+            userId,
+            groupId,
         }
     });
-    if (!groupVenues.length) {
-        res.status(404);
-        return res.json({"message": "Group couldn't be found"});
+    if (!currentMembership) {
+        res.status(400);
+        return res.json({"message": "Must be co-host of group, or organizer to see venues"});
     }
-    res.json(groupVenues);
+
+    //console.log('lookie here', currentMembership.status, currentMembership.Group.organizerId);
+
+    if (currentMembership.status === "co-host" || currentMembership.Group.organizerId == userId) {
+        const groupVenues = await Venue.findAll({
+            where: {
+                groupId
+            }
+        });
+        if (!groupVenues.length) {
+            res.status(404);
+            return res.json({"message": "Group couldn't be found"});
+        }
+        res.json({"Venues": groupVenues});
+
+    } else {
+        res.status(400);
+        res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+    }
+
 })
 
 //create new venue by groupId
@@ -257,7 +283,7 @@ router.get('/:groupId/events', async (req, res) => {
 
 
 
-//get all groups by groupId
+//get details of group by groupId
 router.get('/:groupId', async (req, res) => {
     const groupId = req.params.groupId;
 
@@ -273,7 +299,22 @@ router.get('/:groupId', async (req, res) => {
         res.status(404);
         return res.json({"message": "Group couldn't be found"});
     }
-        res.json(groupsById);
+    //
+    const groupMembers = await Membership.findAll({
+        where: {
+            groupId
+        }
+    })
+
+    let groupMembersNum = 0;
+    if (groupMembers.length) {
+        groupMembersNum = groupMembers.length;
+    }
+    //
+    groupsById.dataValues.numMembers = groupMembersNum;
+
+
+    res.json(groupsById);
 });
 
 //edit group by groupId
@@ -320,34 +361,22 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res) => 
     const userId = user.id;
     // const resCheck = cohostCheck(userId, groupId);
     // res.json(resCheck);
-    const currentMembership = await Membership.findOne({
-        include: {
-            model: Group
-        },
-        where: {
-            userId,
-            groupId,
-        }
+    const validationRes = await validateUserOrgCohost(userId, groupId);
+    if (typeof validationRes === 'object') {
+        res.status(404);
+        return res.json(validationRes);
+    };
+
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    const newEvent = await Event.create({
+        groupId, venueId, name, type, capacity, price, description, startDate, endDate
     });
-    if (!currentMembership) {
-        res.status(400);
-        return res.json({"message": "Must be co-host of group, or organizer to post new venue"});
-    }
 
-    if (currentMembership.status === "co-host" || currentMembership.Group.organizerId == userId) {
-        const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    res.status(200);
+    const resObj = { id: newEvent.id, groupId, venueId, name, type, capacity, price, description, startDate, endDate }
+    res.json(resObj);
 
-        const newEvent = await Event.create({
-            groupId, venueId, name, type, capacity, price, description, startDate, endDate
-        });
-
-        res.status(200);
-        const resObj = { id: newEvent.id, groupId, name, type, capacity, price, description, startDate, endDate }
-        res.json(resObj);
-    } else {
-        res.status(400);
-        res.json({"message": "Must be co-host of group, or organizer to post new venue"});
-    }
 })
 
 

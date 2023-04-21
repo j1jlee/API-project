@@ -92,6 +92,13 @@ module.exports = (sequelize, DataTypes) => {
             exclude: ['organizerId', 'about', 'type', 'private', 'createdAt', 'updatedAt']
           }
         }
+      },
+      eventScope() {
+        return {
+          attributes: {
+            exclude: ['organizerId', 'about', 'type', 'createdAt', 'updatedAt']
+          }
+        }
       }
     }
   });
