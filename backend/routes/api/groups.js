@@ -146,6 +146,13 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
     const { user } = req;
     const userId = user.id;
 
+    const currentGroup = await Group.findByPk(groupId);
+    if (!currentGroup) {
+        res.status(400);
+        return res.json({"message": "Group couldn't be found"});
+    };
+    const organizerId = currentGroup.organizerId;
+
     const currentMembership = await Membership.findOne({
         include: {
             model: Group
@@ -155,31 +162,32 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
             groupId,
         }
     });
-    if (!currentMembership) {
-        res.status(400);
-        return res.json({"message": "Must be co-host of group, or organizer to see venues"});
+
+    let valid = false;
+
+    if (userId === organizerId) {
+        valid = true;
+    }
+    //console.log('currentMembership', currentMembership, 'crr.status', currentMembership.status);
+
+    if (currentMembership) {
+        if (currentMembership.status === "co-host") {
+            valid = true;
+        }
     }
 
-    //console.log('lookie here', currentMembership.status, currentMembership.Group.organizerId);
-
-    if (currentMembership.status === "co-host" || currentMembership.Group.organizerId == userId) {
+    if (valid) {
         const groupVenues = await Venue.findAll({
             where: {
                 groupId
             }
         });
-        if (!groupVenues.length) {
-            res.status(404);
-            return res.json({"message": "Group couldn't be found"});
-        }
-        res.json({"Venues": groupVenues});
-
+        return res.json({"Venues": groupVenues});
     } else {
         res.status(400);
-        res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+        res.json({"message": "Must be co-host of group, or organizer to see venues"});
     }
-
-})
+});
 
 //get members of a group by id
 router.get('/:groupId/members', async (req, res) => {
@@ -233,8 +241,15 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
     const groupId = req.params.groupId;
     const { user } = req;
     const userId = user.id;
-    // const resCheck = cohostCheck(userId, groupId);
-    // res.json(resCheck);
+
+    const currentGroup = await Group.findByPk(groupId);
+    if (!currentGroup) {
+        res.status(400);
+        return res.json({"message": "Group couldn't be found"});
+    }
+
+    const organizerId = currentGroup.organizerId;
+
     const currentMembership = await Membership.findOne({
         include: {
             model: Group
@@ -244,12 +259,25 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
             groupId,
         }
     });
-    if (!currentMembership) {
-        res.status(400);
-        return res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+    // if (!currentMembership) {
+    //     res.status(400);
+    //     return res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+    // }
+    //console.log('\n\n\nCurrentMembership', currentMembership, 'organizerId', organizerId);
+    //currentMembership.status === "co-host" ||
+    let valid = false;
+
+    if (currentMembership) {
+        if (currentMembership.status === "co-host") {
+            //console.log('\n\n\nCurrent user is a co-host\n\n\n');
+            valid = true;
+        }
+    }
+    if (organizerId == userId) {
+        valid = true;
     }
 
-    if (currentMembership.status === "co-host" || currentMembership.Group.organizerId == userId) {
+    if (valid) {
         const { address, city, state, lat, lng } = req.body;
 
         const newVenue = await Venue.create({
@@ -258,10 +286,10 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
 
         res.status(200);
         const resObj = { id: newVenue.id, groupId, address, city, state, lat, lng }
-        res.json(resObj);
+        return res.json(resObj);
     } else {
         res.status(400);
-        res.json({"message": "Must be co-host of group, or organizer to post new venue"});
+        return res.json({"message": "Must be co-host of group, or organizer to post new venue"});
     }
 })
 
@@ -454,6 +482,58 @@ router.get('/:groupId/events', async (req, res) => {
         res.json(resEvents);
         // res.json(eventsByGroupId);
 });
+//delete a membership
+router.delete('/:groupId/membership', requireAuth, async (req, res) => {
+    const groupId = req.params.groupId;
+    const { user } = req;
+    const userId = user.id;
+    const error = {};
+    // res.json("test");
+
+    const reqMemberId = req.body.memberId;
+    const reqMember = await User.findByPk(reqMemberId);
+
+    if (!reqMember) {
+        res.status(400);
+        error.message = "Validation Error";
+        error.errors = { memberId: "User couldn't be found"}
+        return res.json(error);
+    }
+
+    const reqGroup = await Group.findByPk(groupId);
+    if (!reqGroup) {
+        res.status(404);
+        error.message = "Group couldn't be found";
+        return res.json(error);
+    }
+    const organizerId = reqGroup.organizerId;
+
+    const currentMembership = await Membership.findOne({
+        where: {
+            userId: reqMemberId,
+            groupId
+        }
+    });
+
+    if (!currentMembership) {
+        res.status(404);
+        error.message = "Membership does not exist for this User";
+        return res.json(error);
+    }
+
+    if (userId === organizerId || userId === reqMemberId) {
+        await currentMembership.destroy();
+        res.json({
+        "message": "Successfully deleted membership from group"
+        });
+    } else {
+        res.status(404);
+        error.message = "Current User must be the host of the group, or the user whose membership is being deleted";
+        return res.json(error);
+    };
+});
+
+
 
 ///delete a group
 router.delete('/:groupId', requireAuth, async (req, res) => {
@@ -480,9 +560,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
         res.status(404);
         return res.json({"message": 'Current User must be the organizer of the group'});
     };
-
-
-})
+});
 
 
 
@@ -533,7 +611,7 @@ router.put('/:groupId', validateGroup, async (req, res) => {
 
     if (!currentGroup) {
         res.status(404);
-        res.json({"message": "Group couldn't be found"});
+        return res.json({"message": "Group couldn't be found"});
     }
 
     const { name, about, type, private, city, state } = req.body;
@@ -559,7 +637,7 @@ router.put('/:groupId', validateGroup, async (req, res) => {
 
     await currentGroup.save();
     res.status(200);
-    res.json(currentGroup);
+    return res.json(currentGroup);
 })
 
 //create an event by groupid
