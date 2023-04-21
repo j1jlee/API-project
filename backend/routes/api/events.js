@@ -8,7 +8,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Event, Venue, Group, EventImage, Attendance, User, Membership } = require('../../db/models');
 const { addPreviewAndAttendees } = require('./groups.js');
 //
-const { validateEvent, validateEventAttendee, validateUserOrgCohost } = require('./customValidators');
+const { validateEvent, validateEventAttendee, validateUserOrgCohost, validateQuery } = require('./customValidators');
 //
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
@@ -291,7 +291,7 @@ router.get('/:eventId', async (req, res) => {
         await resEvent.save();
     }
 
-    res.json({resEvent});
+    res.json(resEvent);
 });
 
 //delete an event by eventid
@@ -370,21 +370,62 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res) => {
 
 
 //1. get all events
-router.get('/', async (req, res) => {
+router.get('/', validateQuery, async (req, res) => {
+    //final, add query filter
+
+    let { page, size, name, type, startDate } = req.query;
+    page = parseInt(page);
+    size = parseInt(size);
+
+    if (Number.isNaN(page) || (page <= 0) || (page >= 11)) {
+      page = 1;
+    }
+    if (Number.isNaN(size) || (size <= 0) || (size >= 21)) {
+      size = 20;
+    }
+
+    const params = {
+        limit: size,
+        offset: size * (page - 1)
+    }
+
+    if (startDate) {
+        startDate = new Date(startDate);
+
+        console.log('\n\n\nstartDate', startDate);
+    }
+
+    const where = {};
+    if (name) {
+        where.name = name;
+    };
+    if (type) {
+        where.type = type;
+    };
+    if (startDate) {
+        where.startDate = startDate;
+    };
+    //query filter
+
     const resEvents = await Event.findAll(
-        {include: [
+        {
+        ...params,
+        include: [
         {model: Group.scope('groupIncluded')},
         // {model: User.scope('userIncluded'),
         // as: "Organizer"},
         {model: Venue.scope('venueIncluded')}],
         attributes: {
             exclude: ['createdAt', 'updatedAt']
-        }
+        },
+        // ...params,
+        where
     });
 
     const resEventsPreviewAttendees = await addPreviewAndAttendees(resEvents);
 
     res.json({"Events": resEventsPreviewAttendees});
+
 });
 
 //add image to event

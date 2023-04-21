@@ -1,4 +1,4 @@
-const { check } = require('express-validator');
+const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js')
 const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendance } = require('../../db/models');
 
@@ -193,4 +193,39 @@ const validateVenue = [
     handleValidationErrors
 ];
 
-module.exports = { validateEvent, validateGroup, validateVenue, validateUserOrgCohost, validateOrganizer, validateEventAttendee };
+const validateQuery = [
+    query("page")
+        .optional()
+        .isInt({ min: 1})
+        .withMessage("Page must be greater than or equal to 1"),
+    query("size")
+        .optional()
+        .isInt({ min: 1})
+        .withMessage("Size must be greater than or equal to 1"),
+    query("name")
+        .optional()
+        .isString()
+        .withMessage("Name must be a string"),
+    query("type")
+        .optional()
+        .isIn(['Online', 'In person'])
+        .withMessage('Type must be \'Online\' or \'In person\''),
+    query("startDate")
+        .optional()
+        .custom(async (sDate) => {
+        try {
+            const startDate = new Date(sDate);
+        } catch (err) {
+            throw new Error(err);
+        }})
+        .withMessage("Start date must be a valid datetime"),
+    handleValidationErrors
+
+    // "page": "Page must be greater than or equal to 1",
+    // "size": "Size must be greater than or equal to 1",
+    // "name": "Name must be a string",
+    // "type": "Type must be 'Online' or 'In Person'",
+    // "startDate": "Start date must be a valid datetime",
+]
+
+module.exports = { validateEvent, validateGroup, validateVenue, validateUserOrgCohost, validateOrganizer, validateEventAttendee, validateQuery };
