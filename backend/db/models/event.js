@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     type: {
       type: DataTypes.ENUM('Online', 'In Person'),
-      notNull: true,
+      notNull: true
       //values: ['Online', 'In Person']
     },
     capacity: DataTypes.INTEGER,
