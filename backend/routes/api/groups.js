@@ -194,21 +194,23 @@ router.get('/:groupId/members', async (req, res) => {
     }
 
     const userValidation = await validateUserOrgCohost(userId, groupId);
+
+    let resObj = [];
+
+    let query = {include: { model: User }};
+
     if (typeof userValidation === 'object') {
-        res.status(404);
-        return res.json({"message": "user is not organizer, or cohost"});
-    };
-
-    resObj = [];
-
-    const memberships = await Membership.findAll({
-        include: {
-            model: User
-        },
-        where: {
-            groupId
+        query.where = {
+            groupId,
+            status: {
+                [Op.not]: "pending"
+            }
         }
-    });
+    } else {
+        query.where = { groupId }
+    }
+
+    const memberships = await Membership.findAll(query);
 
     for (let membership of memberships) {
         //console.log('\n\n\nMEMBERSHIP', membership)
@@ -223,7 +225,7 @@ router.get('/:groupId/members', async (req, res) => {
     }
 
     res.json({ Members: resObj });
-})
+});
 
 
 //create new venue by groupId
@@ -415,7 +417,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 
     return res.json({id: currentMembership.id, groupId, memberId: reqMemberId, status: reqStatus})
 
-})
+});
 
 
 
