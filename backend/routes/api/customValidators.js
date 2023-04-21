@@ -113,10 +113,10 @@ const validateEvent = [
             const startDate = new Date(date);
             const startDateMilli = startDate.getTime();
 
-            console.log('\n\n\nstartDateMilli', startDateMilli);
+            //console.log('\n\n\nstartDateMilli', startDateMilli);
             const dateNow = Date.now();
 
-            console.log('dateNowMilli', dateNow);
+            //console.log('dateNowMilli', dateNow);
 
             if (dateNow > startDateMilli) {
                 throw new Error();

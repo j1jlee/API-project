@@ -441,7 +441,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 
     currentMembership.status = reqStatus;
     await currentMembership.save();
-    console.log("currentMembership", currentMembership);
+    //console.log("currentMembership", currentMembership);
 
     return res.json({id: currentMembership.id, groupId, memberId: reqMemberId, status: reqStatus})
 
@@ -477,7 +477,7 @@ router.get('/:groupId/events', async (req, res) => {
 
 
     const resEvents = await addPreviewAndAttendees(eventsByGroupId);
-    console.log('resEvents', resEvents);
+    //console.log('resEvents', resEvents);
 
         res.json(resEvents);
         // res.json(eventsByGroupId);
@@ -696,7 +696,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 router.post('/', validateGroup, async (req, res) => {
     const { organizerId, name, about, type, private, city, state } = req.body;
 
-    console.log('organizerId', organizerId);
+    //console.log('organizerId', organizerId);
 
     if (!organizerId) {
         organizerId = 1;
