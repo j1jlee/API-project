@@ -6,11 +6,10 @@ const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendance } = require('../../db/models');
 
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation.js')
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation.js')
 
-const { validateVenue } = require('./venues.js');
-const { validateEvent } = require('./events.js');
+const { validateVenue, validateEvent, validateGroup } = require('./customValidators.js');
 
 const router = express.Router();
 
@@ -18,50 +17,127 @@ const router = express.Router();
 
 
 
-const validateGroup = [
-    check('name')
-        // .exists({ checkFalsy: true})
-        .isLength({ max: 60 })
-        .withMessage('Name must be 60 characters or less'),
-    check('about')
-        // .exists({ checkFalsy: true})
-        .isLength({ min: 50 })
-        .withMessage('About must be 50 characters or more'),
-    check('type')
-        // .exists({ checkFalsy: true})
-        .isIn(['Online', 'In person'])
-        .withMessage('Type must be \'Online\' or \'In person\''),
-    check('private')
-        // .exists({ checkFalsy: true})
-        .isBoolean()
-        .withMessage('Private must be a boolean'),
-    check('city')
-        .exists({ checkFalsy: true})
-        .withMessage('City is required'),
-    check('state')
-        .exists({ checkFalsy: true})
-        .withMessage('State is required'),
-    handleValidationErrors
-];
+
+//
+async function addPreviewAndAttendees (searchRes) {
+    for (let event of searchRes) {
+        //lazy load attendance, lazy load image
+            const eventAttendees = await Attendance.findAll({
+                where: {
+                    eventId: event.id
+                }
+            })
+            const eventAttendeesNum = eventAttendees.length;
+
+            const previewImage = await EventImage.findOne({
+                where: {
+                    eventId: event.id,
+                    preview: true
+                }
+            });
+
+            //console.log('\n\n\n\nPREVIEWIMAGEEEEE', previewImage);
+            if (previewImage) {
+                event.dataValues.previewImage = previewImage.url;
+            }
+            if (eventAttendeesNum) {
+                event.dataValues.numAttending = eventAttendeesNum;
+            }
+            await event.save();
+        }
+    //console.log(searchRes);
+    return searchRes;
+}
+
+async function addPreviewAndMembers (searchRes) {
+    for (let group of searchRes) {
+        //lazy load attendance, lazy load image
+            const groupMembers = await Membership.findAll({
+                where: {
+                    groupId: group.id
+                }
+            })
+
+            let groupMembersNum = 0;
+            if (groupMembers.length) {
+                groupMembersNum = groupMembers.length;
+            }
+
+            const previewImage = await GroupImage.findOne({
+                where: {
+                    groupId: group.id,
+                    preview: true
+                }
+            });
+
+            //console.log('\n\n\n\nPREVIEWIMAGEEEEE', previewImage);
+            if (previewImage) {
+                group.dataValues.previewImage = previewImage.url;
+            } else {
+                group.dataValues.previewImage = "NA";
+            }
+            if (groupMembersNum >= 0) {
+                group.dataValues.numMembers = groupMembersNum;
+            }
+            await group.save();
+        }
+    //console.log(searchRes);
+    return searchRes;
+}
 
 
+///
 
 //get current groups by user
 router.get('/current', requireAuth, async (req, res) => {
-    //console.log('req', req);
     const { user } = req;
-    // console.log('user', user);
-    // // console.log('userid?', user.datavalues.id);
-    // console.log(user.id);
-    // next();
+    const resGroups = [];
+
+    //get groups where user is organizer
     const userId = user.id;
-    const currentUserGroups = await Group.findAll({
+    const userOrganizedGroups = await Group.findAll({
         where: {
             organizerId: userId
         }
     });
+    const userOrganizedGroupsRes = await addPreviewAndMembers(userOrganizedGroups);
 
-    res.json({"Groups": currentUserGroups});
+    resGroups.push(...userOrganizedGroups);
+    //get groups where user is member or co-host
+    const memberCohost = await Membership.findAll({
+        include: {
+            model: Group
+        },
+        where: {
+            userId,
+            status: {
+                [Op.in]: ['co-host', 'member']
+            }
+        }
+    });
+    for (let group of memberCohost) {
+        let found = false;
+
+        //console.log('\n\n\nGROUP', group.Group, 'typeof', typeof group.Group);
+
+        for (let userGroup of userOrganizedGroups) {
+            console.log('member group', group.dataValues.id, 'userGroup', userGroup.dataValues.id);
+
+            if (group.dataValues.id == userGroup.dataValues.id) {
+                console.log(`overlap found, skipping`)
+                found = true;
+            }
+        if (found === false) {
+            resGroups.push(group.Group);
+        }
+        }
+        //console.log('\n\n\ngroup!', group.Group);
+    }
+    //console.log(memberCohost);
+
+
+    // res.json({"Groups": userOrganizedGroupsRes});
+    res.json({"Groups": resGroups});
 });
 
 //get venues by groupId
@@ -145,34 +221,38 @@ router.get('/:groupId/events', async (req, res) => {
     // const eventJSON = JSON.stringify(eventsByGroupId);
     // console.log('\n\n\n\n\nEVENT JSONNNNNNNNN', eventJSON[1]);
 
-    for (let event of eventsByGroupId) {
-        //lazy load attendance, lazy load image
-            const eventAttendees = await Attendance.findAll({
-                where: {
-                    eventId: event.id
-                }
-            })
-            const eventAttendeesNum = eventAttendees.length;
 
-            const previewImage = await EventImage.findOne({
-                where: {
-                    eventId: event.id,
-                    preview: true
-                }
-            });
+    const resEvents = await addPreviewAndAttendees(eventsByGroupId);
+    console.log('resEvents', resEvents);
+    // for (let event of eventsByGroupId) {
+    //     //lazy load attendance, lazy load image
+    //         const eventAttendees = await Attendance.findAll({
+    //             where: {
+    //                 eventId: event.id
+    //             }
+    //         })
+    //         const eventAttendeesNum = eventAttendees.length;
 
-            console.log('\n\n\n\nPREVIEWIMAGEEEEE', previewImage);
-            if (previewImage) {
-                event.dataValues.previewImage = previewImage.url;
-            }
-            if (eventAttendeesNum) {
-                event.dataValues.numAttending = eventAttendeesNum;
-            }
-            await event.save();
-        }
+    //         const previewImage = await EventImage.findOne({
+    //             where: {
+    //                 eventId: event.id,
+    //                 preview: true
+    //             }
+    //         });
+
+    //         //console.log('\n\n\n\nPREVIEWIMAGEEEEE', previewImage);
+    //         if (previewImage) {
+    //             event.dataValues.previewImage = previewImage.url;
+    //         }
+    //         if (eventAttendeesNum) {
+    //             event.dataValues.numAttending = eventAttendeesNum;
+    //         }
+    //         await event.save();
+    //     }
 
         // console.log('eventsByGroupId', eventsByGroupId);
-        res.json(eventsByGroupId);
+        res.json(resEvents);
+        // res.json(eventsByGroupId);
 });
 
 
@@ -314,11 +394,14 @@ router.post('/', validateGroup, async (req, res) => {
     res.json(newGroup); //how to exclude createdAt, updatedAt?
 })
 
-
+//get all groups
 router.get('/', async (req, res) => { //get all groups
     const resGroups = await Group.findAll({});
 
-    res.json({"Groups": resGroups});
+    const resGroupsPreviewMembers = await addPreviewAndMembers(resGroups);
+
+
+    res.json({"Groups": resGroupsPreviewMembers});
     // res.send(resGroups);
 });
 // // Sign up
@@ -353,3 +436,4 @@ router.get('/', async (req, res) => { //get all groups
 
 
 module.exports = router;
+module.exports.addPreviewAndAttendees = addPreviewAndAttendees;

@@ -6,33 +6,13 @@ const { Op } = require('sequelize');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Venue } = require('../../db/models');
+const { validateVenue} = require('./customValidators.js');
 //
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation.js')
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation.js')
 
 const router = express.Router();
 
-
-const validateVenue = [
-    check('address')
-        .exists({ checkFalsy: true})
-        .withMessage('Street address is required'),
-    check('city')
-        .exists({ checkFalsy: true})
-        .withMessage('City is required'),
-    check('state')
-        .exists({ checkFalsy: true})
-        .withMessage('State is required'),
-    check('lat')
-        .exists({ checkFalsy: true})
-        .isDecimal()
-        .withMessage('Latitude is not valid'),
-    check('lng')
-        .exists({ checkFalsy: true})
-        .isDecimal()
-        .withMessage('Longitude is not valid'),
-    handleValidationErrors
-];
 
 //Edit a venue
 router.put('/:venueId', validateVenue, async (req, res) => {
