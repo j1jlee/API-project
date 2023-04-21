@@ -64,7 +64,8 @@ module.exports = (sequelize, DataTypes) => {
     organizerId: DataTypes.INTEGER,
     name: {
       type: DataTypes.STRING,
-      notNull: true
+      notNull: true,
+      foreignKey: true
     },
     about: {
       type: DataTypes.TEXT,
