@@ -49,6 +49,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Membership',
+    scopes: {
+      statusOnly() {
+        return {
+          attributes: {
+            exclude: ['id', 'userId', 'groupId', 'createdAt', 'updatedAt']
+          }
+        }
+      }
+    }
   });
   return Membership;
 };

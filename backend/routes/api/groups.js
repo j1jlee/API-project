@@ -9,7 +9,7 @@ const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendanc
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
 
-const { validateVenue, validateEvent, validateGroup, validateUserOrgCohost } = require('./customValidators.js');
+const { validateVenue, validateEvent, validateGroup, validateUserOrgCohost, validateOrganizer } = require('./customValidators.js');
 
 const router = express.Router();
 
@@ -181,6 +181,51 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 
 })
 
+//get members of a group by id
+router.get('/:groupId/members', async (req, res) => {
+    const { user } = req;
+    const userId = user.id;
+    const groupId = req.params.groupId;
+
+    const currentGroup = await Group.findByPk(groupId);
+    if (!currentGroup) {
+        res.status(404);
+        return res.json({"message": "Group couldn't be found"});
+    }
+
+    const userValidation = await validateUserOrgCohost(userId, groupId);
+    if (typeof userValidation === 'object') {
+        res.status(404);
+        return res.json({"message": "user is not organizer, or cohost"});
+    };
+
+    resObj = [];
+
+    const memberships = await Membership.findAll({
+        include: {
+            model: User
+        },
+        where: {
+            groupId
+        }
+    });
+
+    for (let membership of memberships) {
+        //console.log('\n\n\nMEMBERSHIP', membership)
+        let addon = {
+            id: membership.dataValues.id,
+            firstName: membership.User.firstName,
+            lastName: membership.User.lastName,
+            Membership: { status: membership.dataValues.status }
+        };
+        //console.log('DOES THIS WORK', addon);
+        resObj.push(addon);
+    }
+
+    res.json({ Members: resObj });
+})
+
+
 //create new venue by groupId
 router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => {
     const groupId = req.params.groupId;
@@ -218,7 +263,160 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res) => 
     }
 })
 
-//create, toJSON()
+//request a membership based on groupid
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+
+    const { user } = req;
+    const userId = user.id;
+    const groupId = req.params.groupId;
+
+    const currentGroup = Group.findByPk(groupId);
+
+    if (!currentGroup) {
+        res.status(404);
+        return res.json({
+            "message": "Group couldn't be found"
+          })
+    }
+    //['pending', 'member', 'co-host'],
+
+    const currentMembership = await Membership.findOne({
+        where: {
+            userId,
+            groupId
+        }
+    });
+
+    //console.log('currentMember status', currentMembership);
+    if (!currentMembership) {
+        const newMember = await Membership.create({
+            userId, groupId, status: "pending"
+        });
+
+        const resMember = { memberId: newMember.id, status: newMember.status };
+        return res.json(resMember);
+    }
+
+    if (currentMembership.status === 'pending') {
+        res.status(400);
+        return res.json({
+            "message": "Membership has already been requested"
+          })
+    }
+    else if (["member", "co-host"].includes(currentMembership.status)) {
+        res.status(400);
+        return res.json({
+            "message": "User is already a member of the group"
+          })
+    };
+    const newMember = await Membership.create({
+        userId, groupId, status: "pending"
+    });
+
+    const resMember = { memberId: newMember.id, status: newMember.status };
+    return res.json(resMember);
+    // if (!currentMembership) {
+    //     res.status(404);
+    //     return res.json({
+    //         "message": "Group couldn't be found"
+    //       });
+    // }
+
+});
+
+router.get('/:groupId/membership/pending', async (req, res) => {
+    const groupId = req.params.groupId;
+
+    const pendingMemberships = await Membership.findAll({
+        where: {
+            groupId,
+            status: "pending"
+        }
+    });
+
+    res.json(pendingMemberships);
+});
+
+
+//change membership status
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+    const error = {};
+
+    const { user } = req;
+    const userId = user.id;
+
+    const groupId = req.params.groupId;
+
+    const reqMemberId = req.body.memberId;
+    const reqStatus = req.body.status;
+
+    const reqMember = await User.findByPk(reqMemberId);
+    if (!reqMember) {
+        res.status(400);
+        error.message = "Validation Error";
+        error.errors = { memberId: "User couldn't be found"}
+        return res.json(error);
+    }
+
+    const reqGroup = await Group.findByPk(groupId);
+    if (!reqGroup) {
+        res.status(404);
+        error.message = "Group couldn't be found";
+        return res.json(error);
+    }
+
+    const currentMembership = await Membership.findOne({
+        include: {
+            model: Group
+        },
+        where: {
+            userId: reqMemberId,
+            groupId
+        }
+    });
+    if (!currentMembership) {
+        res.status(404);
+        error.message = "Membership between the user and the group does not exist";
+        return res.json(error);
+    };
+
+    const currentStatus = currentMembership.status;
+    //reqStatus
+    if (reqStatus === "pending") {
+        res.status(400);
+        error.message = "Validation Error";
+        error.errors = {status: "Cannot change a membership status to pending"}
+        return res.json(error);
+    }
+
+    if (currentStatus === "pending" && reqStatus === "member") {
+        const validationRes = await validateUserOrgCohost(userId, groupId);
+        if (typeof validationRes === 'object') {
+            res.status(400);
+            error.message = "Validation Error";
+            error.errors = { user: "Current User must already be the organizer or have a membership to the group with the status of \"co-host\""}
+            return res.json(error);
+        };
+    }
+    if (currentStatus === "member" && reqStatus === "co-host") {
+        if (currentMembership.Group.organizerId !== userId) {
+            res.status(400);
+            error.message = "Validation Error";
+            error.errors = { user: "Current User must already be the organizer"};
+            return res.json(error);
+        }
+    }
+
+    //
+
+    currentMembership.status = reqStatus;
+    await currentMembership.save();
+    console.log("currentMembership", currentMembership);
+
+    return res.json({id: currentMembership.id, groupId, memberId: reqMemberId, status: reqStatus})
+
+})
+
 
 
 //get all group events by groupId
@@ -250,33 +448,7 @@ router.get('/:groupId/events', async (req, res) => {
 
     const resEvents = await addPreviewAndAttendees(eventsByGroupId);
     console.log('resEvents', resEvents);
-    // for (let event of eventsByGroupId) {
-    //     //lazy load attendance, lazy load image
-    //         const eventAttendees = await Attendance.findAll({
-    //             where: {
-    //                 eventId: event.id
-    //             }
-    //         })
-    //         const eventAttendeesNum = eventAttendees.length;
 
-    //         const previewImage = await EventImage.findOne({
-    //             where: {
-    //                 eventId: event.id,
-    //                 preview: true
-    //             }
-    //         });
-
-    //         //console.log('\n\n\n\nPREVIEWIMAGEEEEE', previewImage);
-    //         if (previewImage) {
-    //             event.dataValues.previewImage = previewImage.url;
-    //         }
-    //         if (eventAttendeesNum) {
-    //             event.dataValues.numAttending = eventAttendeesNum;
-    //         }
-    //         await event.save();
-    //     }
-
-        // console.log('eventsByGroupId', eventsByGroupId);
         res.json(resEvents);
         // res.json(eventsByGroupId);
 });

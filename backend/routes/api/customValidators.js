@@ -20,6 +20,33 @@ validateEventAttendee = async (userId, eventId) => {
     }
 }
 
+const validateOrganizer = async (userId, groupId) => {
+    // const { user } = req;
+    // const userId = user.id;
+    // const groupId = req.params.groupId;
+
+    const currentMembership = await Membership.findOne({
+        include: {
+            model: Group
+        },
+        where: {
+            userId,
+            groupId,
+        }
+    });
+    if (!currentMembership) {
+        return {"message": "Must be organizer"};
+    }
+
+    if (currentMembership.Group.organizerId == userId) {
+        return;
+    } else {
+        return {"message": "Must be organizer"};
+    }
+
+}
+
+
 const validateUserOrgCohost = async (userId, groupId) => {
     // const { user } = req;
     // const userId = user.id;
@@ -37,7 +64,7 @@ const validateUserOrgCohost = async (userId, groupId) => {
     if (!currentMembership) {
         //res.status(400);
         // return res.json({"message": "Must be co-host of group, or organizer to post new venue"});
-        return {"message": "Must be co-host of group, or organizer to post new venue"};
+        return {"message": "Must be co-host of group, or organizer"};
     }
 
     if (currentMembership.status === "co-host" || currentMembership.Group.organizerId == userId) {
@@ -45,7 +72,7 @@ const validateUserOrgCohost = async (userId, groupId) => {
     } else {
         // res.status(400);
         // res.json({"message": "Must be co-host of group, or organizer to post new venue"});
-        return {"message": "Must be co-host of group, or organizer to post new venue"};
+        return {"message": "Must be co-host of group, or organizer"};
     }
 
 }
@@ -166,4 +193,4 @@ const validateVenue = [
     handleValidationErrors
 ];
 
-module.exports = { validateEvent, validateGroup, validateVenue, validateUserOrgCohost, validateEventAttendee };
+module.exports = { validateEvent, validateGroup, validateVenue, validateUserOrgCohost, validateOrganizer, validateEventAttendee };
