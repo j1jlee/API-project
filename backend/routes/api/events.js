@@ -392,7 +392,7 @@ router.get('/', validateQuery, async (req, res) => {
     if (startDate) {
         startDate = new Date(startDate);
 
-        console.log('\n\n\nstartDate', startDate);
+        //console.log('\n\n\nstartDate', startDate);
     }
 
     const where = {};
