@@ -694,16 +694,21 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 });
 
 router.post('/', validateGroup, async (req, res) => {
-    const { organizerId, name, about, type, private, city, state } = req.body;
+    const { name, about, type, private, city, state } = req.body;
 
+    // console.log(req.user);
+
+    const organizerId = req.user.id;
+
+    //organizerId not pulled from req.body, it's pulled from user info (req.user)
     //console.log('organizerId', organizerId);
 
-    if (!organizerId) {
-        organizerId = 1;
-    }
+
     const newGroup = await Group.create({
         organizerId, name, about, type, private, city, state
     });
+    //const newGroupObj = { id:newGroup.id, organizerId, name, about, type, private, city, state}
+
     //const resObj = { name, about, type, private, city, state };
     res.status(201);
     res.json(newGroup); //how to exclude createdAt, updatedAt?
