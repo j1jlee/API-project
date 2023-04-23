@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
 const { requireAuth } = require('../../utils/auth');
-//setTokenCookie, 
+//setTokenCookie,
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Event, Venue, Group, EventImage, Attendance, User, Membership } = require('../../db/models');
 const { addPreviewAndAttendees } = require('./groups.js');
@@ -420,7 +420,7 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res) => {
         //
     }
     res.status(400);
-    return res.json({"message": "User must be group organizer, co-host member, or event attendee to add image to event"});
+    return res.json({"message": "User must be group organizer, co-host member, or event attendee to edit an event"});
 
 
 });
