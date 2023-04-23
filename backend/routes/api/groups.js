@@ -10,6 +10,7 @@ const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendanc
 // const { handleValidationErrors } = require('../../utils/validation.js')
 
 const { validateVenue, validateEvent, validateGroup, validateUserOrgCohost, validateOrganizer } = require('./customValidators.js');
+const { isOrganizer, isCohost } = require('./customAuthenticators');
 
 const router = express.Router();
 

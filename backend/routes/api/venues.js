@@ -7,6 +7,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Venue } = require('../../db/models');
 const { validateVenue, validateUserOrgCohost } = require('./customValidators.js');
+const { isOrganizer, isCohost, reqResTest } = require('./customAuthenticators');
 //
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
@@ -16,8 +17,10 @@ const router = express.Router();
 
 //Edit a venue
 router.put('/:venueId', validateVenue, async (req, res) => {
-    const venueId = req.params.venueId;
 
+    //return await reqResTest(req, res, 'what');
+
+    const venueId = req.params.venueId;
     const currentVenue = await Venue.findByPk(venueId);
 
     if (!currentVenue) {
@@ -27,16 +30,23 @@ router.put('/:venueId', validateVenue, async (req, res) => {
 
     //console.log('currentVenue groupId', currentVenue.groupId);
     const groupId = currentVenue.groupId;
-    const { user } = req;
-    const userId = user.id;
+    // const { user } = req;
+    // const userId = user.id;
 
-    const validationRes = await validateUserOrgCohost(userId, groupId);
-    if (typeof validationRes === 'object') {
+    // const validationRes = await validateUserOrgCohost(userId, groupId);
+    // if (typeof validationRes === 'object') {
+    //     res.status(404);
+    //     return res.json(validationRes);
+    // };
+    const isUserOrganizer = await isOrganizer(req, groupId);
+    if (typeof isUserOrganizer === 'object') {
         res.status(404);
-        return res.json(validationRes);
-    };
+        return res.json(isUserOrganizer);
+    }
 
-    const { address, city, state, lat, lng } = req.body;
+    if ((isUserOrganizer === true) ||
+    (await isCohost(req, groupId) === true)) {
+        const { address, city, state, lat, lng } = req.body;
 
         currentVenue.address = address;
         currentVenue.city = city;
@@ -49,23 +59,10 @@ router.put('/:venueId', validateVenue, async (req, res) => {
 
         const resObj = { id: currentVenue.id, groupId: currentVenue.groupId, address, city, state, lat, lng };
         res.json(resObj);
+    }
+    res.status(400);
+    return res.json({"message": "User must be organizer or co-host"});
 
-
-        // if (address) {
-        //     currentVenue.address = address;
-        // };
-        // if (city) {
-        //     currentVenue.city = city;
-        // };
-        // if (state) {
-        //     currentVenue.state = state;
-        // };
-        // if (lat) {
-        //     currentVenue.lat = lat;
-        // };
-        // if (lng) {
-        //     currentVenue.lng = lng;
-        // };
 })
 
 module.exports = router;
