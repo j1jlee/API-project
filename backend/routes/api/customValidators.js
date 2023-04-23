@@ -1,6 +1,7 @@
 const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js')
-const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendance } = require('../../db/models');
+const { Group, Venue, Membership, Attendance } = require('../../db/models');
+//GroupImage, User, Event, EventImage, 
 
 validateEventAttendee = async (userId, eventId) => {
     const currentAttendance = await Attendance.findOne({

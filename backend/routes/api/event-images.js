@@ -1,16 +1,15 @@
 // backend/routes/api/users.js
 const express = require('express')
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
+//const bcrypt = require('bcryptjs');
+//const { Op } = require('sequelize');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
+//setTokenCookie
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Event, EventImage, Membership, Group } = require('../../db/models');
-const { addPreviewAndAttendees } = require('./groups.js');
+//const { addPreviewAndAttendees } = require('./groups.js');
 //
-const { validateEvent, validateEventAttendee, validateUserOrgCohost } = require('./customValidators');
-const membership = require('../../db/models/membership');
-const group = require('../../db/models/group');
+//const { validateEvent, validateEventAttendee, validateUserOrgCohost } = require('./customValidators');
 
 const router = express.Router();
 

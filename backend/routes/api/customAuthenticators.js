@@ -58,4 +58,19 @@ const isCohost = async (req, groupId) => {
     return false;
 }
 
-module.exports = { isOrganizer, isCohost, reqResTest };
+const isAttendee = async (req, eventId) => {
+    const userId = req.user.id;
+
+    const currentAttendance = await Attendance.findOne({
+        where: {
+            userId,
+            eventId
+        }
+    });
+    if (currentAttendance) {
+        return true;
+    }
+    return false;
+}
+
+module.exports = { isOrganizer, isCohost, reqResTest, isAttendee };

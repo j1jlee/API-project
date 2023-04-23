@@ -1,13 +1,15 @@
 // backend/routes/api/users.js
 const express = require('express')
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
+//const bcrypt = require('bcryptjs');
+//const { Op } = require('sequelize');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+//const { setTokenCookie, requireAuth } = require('../../utils/auth');
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Venue } = require('../../db/models');
-const { validateVenue, validateUserOrgCohost } = require('./customValidators.js');
-const { isOrganizer, isCohost, reqResTest } = require('./customAuthenticators');
+const { validateVenue } = require('./customValidators.js');
+//, validateUserOrgCohost
+const { isOrganizer, isCohost } = require('./customAuthenticators');
+//, reqResTest
 //
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
@@ -44,8 +46,10 @@ router.put('/:venueId', validateVenue, async (req, res) => {
         return res.json(isUserOrganizer);
     }
 
+    const isUserCohost = await isCohost(req, groupId);
+
     if ((isUserOrganizer === true) ||
-    (await isCohost(req, groupId) === true)) {
+    (isUserCohost === true)) {
         const { address, city, state, lat, lng } = req.body;
 
         currentVenue.address = address;

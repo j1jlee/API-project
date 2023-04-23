@@ -3,12 +3,15 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
+//setTokenCookie, 
 //const { Group, GroupImage, User, Venue, Membership } = require('../../db/models');
 const { Event, Venue, Group, EventImage, Attendance, User, Membership } = require('../../db/models');
 const { addPreviewAndAttendees } = require('./groups.js');
 //
-const { validateEvent, validateEventAttendee, validateUserOrgCohost, validateQuery } = require('./customValidators');
+const { validateEvent, validateQuery } = require('./customValidators');
+//validateEventAttendee, validateUserOrgCohost,
+const { isOrganizer, isCohost, isAttendee } = require('./customAuthenticators');
 //
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation.js')
@@ -28,25 +31,43 @@ router.get('/:eventId/attendees', async (req, res) => {
         res.status(404);
         return res.json({"message": "Event couldn't be found"});
     }
-
     const groupId = currentEvent.dataValues.groupId;
-    const userValidation = await validateUserOrgCohost(userId, groupId);
+
+
+    // const userValidation = await validateUserOrgCohost(userId, groupId);
+
+    // let resObj = [];
+
+    // let query = {include: { model: User }};
+
+    // if (typeof userValidation === 'object') {
+    //     query.where = {
+    //         eventId,
+    //         status: {
+    //             [Op.not]: "pending"
+    //         }
+    //     }
+    // } else {
+    //     query.where = { eventId }
+    // }
+///////////
+    const isUserOrganizer = await isOrganizer(req, groupId);
+    const isUserCohost = await isCohost(req, groupId);
 
     let resObj = [];
-
     let query = {include: { model: User }};
 
-    if (typeof userValidation === 'object') {
+    if ((isUserOrganizer === true) || (isUserCohost === true)) {
+        query.where = { groupId }
+    } else {
         query.where = {
             eventId,
             status: {
                 [Op.not]: "pending"
             }
         }
-    } else {
-        query.where = { eventId }
     }
-
+    ///////
     const attendees = await Attendance.findAll(query);
 
     for (let attendee of attendees) {
@@ -171,6 +192,9 @@ router.put('/:eventId/Attendance', requireAuth, async (req, res) => {
         error.message = "Event couldn't be found";
         return res.json(error);
     }
+    //
+    const groupId = reqEvent.groupId;
+    console.log('\n\n\ngroupId', groupId);
 
     const currentAttendance = await Attendance.findOne({
         include: {
@@ -196,12 +220,21 @@ router.put('/:eventId/Attendance', requireAuth, async (req, res) => {
         return res.json(error);
     }
 
-    const validationRes = await validateUserOrgCohost(userId, eventId);
-    if (typeof validationRes === 'object') {
-            res.status(400);
-            error.message = "Validation Error";
-            error.errors = { user: "Current User must already be the organizer or have a membership to the group with the status of \"co-host\""}
-            return res.json(error);
+    // const validationRes = await validateUserOrgCohost(userId, eventId);
+    // if (typeof validationRes === 'object') {
+    //         res.status(400);
+    //         error.message = "Validation Error";
+    //         error.errors = { user: "Current User must already be the organizer or have a membership to the group with the status of \"co-host\""}
+    //         return res.json(error);
+    // };
+    const isUserOrganizer = await isOrganizer(req, groupId);
+    const isUserCohost = await isCohost(req, groupId);
+
+    if (isUserOrganizer === false && isUserCohost === false) {
+        res.status(400);
+        error.message = "Validation Error";
+        error.errors = { user: "Current User must already be the organizer or have a membership to the group with the status of 'co-host'"}
+        return res.json(error);
     };
 
 
@@ -311,10 +344,19 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
     const groupId = resEvent.groupId;
     // console.log(groupId);
 
-    const userValidate = await validateUserOrgCohost(userId, groupId);
-    if (typeof userValidate === 'object') {
-        res.status(404);
-        return res.json({"message": 'Current User must be the organizer of the group or a member of the group with a status of "co-host"'});
+    // const userValidate = await validateUserOrgCohost(userId, groupId);
+    // if (typeof userValidate === 'object') {
+    //     res.status(404);
+    //     return res.json({"message": 'Current User must be the organizer of the group or a member of the group with a status of "co-host"'});
+    // };
+    const isUserOrganizer = await isOrganizer(req, groupId);
+    const isUserCohost = await isCohost(req, groupId);
+
+    if (isUserOrganizer === false && isUserCohost === false) {
+        res.status(400);
+        error.message = "Validation Error";
+        error.errors = { user: "Current User must already be the organizer or have a membership to the group with the status of 'co-host'"}
+        return res.json(error);
     };
 
     await resEvent.destroy();
@@ -339,33 +381,48 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res) => {
     const groupId = currentEvent.groupId;
 
     //validate that user is organizer, or cohost
-    const validationRes = await validateUserOrgCohost(userId, groupId);
-    if (typeof validationRes === 'object') {
+    // const validationRes = await validateUserOrgCohost(userId, groupId);
+    // if (typeof validationRes === 'object') {
+    //     res.status(404);
+    //     return res.json(validationRes);
+    // };
+    const isUserOrganizer = await isOrganizer(req, groupId);
+    if (typeof isUserOrganizer === 'object') {
         res.status(404);
-        return res.json(validationRes);
-    };
-
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-
-    const currentVenue = await Venue.findByPk(venueId);
-    if (!currentVenue) {
-        res.status(404);
-        return res.json({"message": "Venue couldn't be found"});
+        return res.json(isUserOrganizer);
     }
+    const isUserCohost = await isCohost(req, groupId);
 
-    currentEvent.venueId = venueId;
-    currentEvent.name = name;
-    currentEvent.type = type;
-    currentEvent.capacity = capacity;
-    currentEvent.price = price;
-    currentEvent.description = description;
-    currentEvent.startDate = startDate;
-    currentEvent.endDate = endDate;
+    if ((isUserOrganizer === true) ||
+        (isUserCohost === true)) {
+        //
+        const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
-    await currentEvent.save();
+        const currentVenue = await Venue.findByPk(venueId);
+        if (!currentVenue) {
+            res.status(404);
+            return res.json({"message": "Venue couldn't be found"});
+        }
 
-    const resObj = { id: eventId, groupId, venueId, name, type, capacity, price, description, startDate, endDate };
-    return res.json(resObj);
+        currentEvent.venueId = venueId;
+        currentEvent.name = name;
+        currentEvent.type = type;
+        currentEvent.capacity = capacity;
+        currentEvent.price = price;
+        currentEvent.description = description;
+        currentEvent.startDate = startDate;
+        currentEvent.endDate = endDate;
+
+        await currentEvent.save();
+
+        const resObj = { id: eventId, groupId, venueId, name, type, capacity, price, description, startDate, endDate };
+        return res.json(resObj);
+        //
+    }
+    res.status(400);
+    return res.json({"message": "User must be group organizer, co-host member, or event attendee to add image to event"});
+
+
 });
 
 
@@ -431,9 +488,8 @@ router.get('/', validateQuery, async (req, res) => {
 //add image to event
 router.post('/:eventId/images', requireAuth, async (req, res) => {
     const eventId = req.params.eventId;
-
-    const { user } = req;
-    const userId = user.id;
+    // const { user } = req;
+    // const userId = user.id;
 
     const eventCheck = await Event.findByPk(eventId);
     if (!eventCheck) {
@@ -441,24 +497,39 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
         return res.json({"message": "Event couldn't be found"});
     }
 
-    const validationRes = await validateEventAttendee(userId, eventId);
-    if (typeof validationRes === 'object') {
+    const groupId = eventCheck.groupId;
+    //console.log('groupId', groupId);
+
+    // const validationRes = await validateEventAttendee(userId, eventId);
+    // if (typeof validationRes === 'object') {
+    //     res.status(404);
+    //     return res.json(validationRes);
+    // };
+    const isUserOrganizer = await isOrganizer(req, groupId);
+    if (typeof isUserOrganizer === 'object') {
         res.status(404);
-        return res.json(validationRes);
-    };
+        return res.json(isUserOrganizer);
+    }
+    const isUserCohost = await isCohost(req, groupId);
+    const isUserAttendee = await isAttendee(req, eventId);
 
+    if ((isUserOrganizer === true) ||
+        (isUserCohost === true) ||
+        (isUserAttendee === true)) {
+        //
+        const { url, preview } = req.body;
 
-    const { url, preview } = req.body;
+        const newEventImage = await EventImage.create({
+            eventId, url, preview
+        });
 
-    const newEventImage = await EventImage.create({
-        eventId, url, preview
-    });
-
-    res.status(200);
-    const id = newEventImage.id;
-    const resEIObj = { id, url, preview };
-    return res.json(resEIObj);
-
+        res.status(200);
+        const id = newEventImage.id;
+        const resEIObj = { id, url, preview };
+        return res.json(resEIObj);
+    }
+    res.status(400);
+    return res.json({"message": "User must be group organizer, co-host member, or event attendee to add image to event"});
 });
 
 
