@@ -73,7 +73,8 @@ router.get('/:eventId/attendees', async (req, res) => {
     for (let attendee of attendees) {
         //console.log('\n\n\nMEMBERSHIP', membership)
         let addon = {
-            id: attendee.dataValues.id,
+            // id: attendee.dataValues.id,
+            id: userId,
             firstName: attendee.User.firstName,
             lastName: attendee.User.lastName,
             Attendance: { status: attendee.dataValues.status }
