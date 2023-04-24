@@ -58,7 +58,7 @@ router.get('/:eventId/attendees', async (req, res) => {
     let query = {include: { model: User }};
 
     if ((isUserOrganizer === true) || (isUserCohost === true)) {
-        query.where = { groupId }
+        query.where = { eventId }
     } else {
         query.where = {
             eventId,
