@@ -60,6 +60,15 @@ export const signup = (user) => async (dispatch) => {
   return response;
 };
 
+//phase 3, logout
+export const logout = () => async (dispatch) => {
+  const response = await csrfFetch('/api/session', {
+    method: 'DELETE',
+  });
+  dispatch(removeUser());
+  return response;
+};
+//window.store.dispatch(window.sessionActions.logout());
 
 
 const initialState = { user: null };

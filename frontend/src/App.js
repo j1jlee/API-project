@@ -5,6 +5,7 @@ import SignupFormPage from "./components/SignupFormPage";
 //
 import { useDispatch } from "react-redux";
 import * as sessionActions from "./store/session";
+import Navigation from "./components/Navigation";
 
 //window.store.dispatch(window.sessionActions.restoreUser());
 
@@ -16,7 +17,9 @@ function App() {
   }, [dispatch]);
 
   return (
-    isLoaded && (
+    <>
+     <Navigation isLoaded={isLoaded} />
+    {isLoaded && (
     <Switch>
       <Route path="/login">
         <LoginFormPage />
@@ -25,7 +28,8 @@ function App() {
           <SignupFormPage />
         </Route>
     </Switch>
-    )
+    )}
+    </>
   );
 }
 
