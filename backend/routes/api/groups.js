@@ -696,7 +696,7 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res) => 
 
         res.status(200);
         const resObj = { id: newEvent.id, groupId, venueId, name, type, capacity, price, description, startDate, endDate }
-        res.json(resObj);
+        return res.json(resObj);
     }
     res.status(400);
     return res.json({"message": "User must be organizer or co-host to create event"});
