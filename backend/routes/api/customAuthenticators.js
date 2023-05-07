@@ -6,8 +6,8 @@ const { Group, GroupImage, User, Venue, Membership, Event, EventImage, Attendanc
 //isAttendee (eventId)
 //
 const reqResTest = async (req, res, groupId) => {
-    console.log('does test work?', test);
-    console.log('can i pull id from req.user.id?', req.user.id);
+    // console.log('does test work?', test);
+    // console.log('can i pull id from req.user.id?', req.user.id);
     return res.json('test');
 }
 

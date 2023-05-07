@@ -125,10 +125,10 @@ router.get('/current', requireAuth, async (req, res) => {
         //console.log('\n\n\nGROUP', group.Group, 'typeof', typeof group.Group);
 
         for (let userGroup of userOrganizedGroups) {
-            console.log('member group', group.dataValues.id, 'userGroup', userGroup.dataValues.id);
+            //console.log('member group', group.dataValues.id, 'userGroup', userGroup.dataValues.id);
 
             if (group.dataValues.id == userGroup.dataValues.id) {
-                console.log(`overlap found, skipping`)
+                //console.log(`overlap found, skipping`)
                 found = true;
             }
         if (found === false) {
