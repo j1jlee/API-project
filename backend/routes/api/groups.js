@@ -125,10 +125,10 @@ router.get('/current', requireAuth, async (req, res) => {
         //console.log('\n\n\nGROUP', group.Group, 'typeof', typeof group.Group);
 
         for (let userGroup of userOrganizedGroups) {
-            console.log('member group', group.dataValues.id, 'userGroup', userGroup.dataValues.id);
+            //console.log('member group', group.dataValues.id, 'userGroup', userGroup.dataValues.id);
 
             if (group.dataValues.id == userGroup.dataValues.id) {
-                console.log(`overlap found, skipping`)
+                //console.log(`overlap found, skipping`)
                 found = true;
             }
         if (found === false) {
@@ -696,7 +696,7 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res) => 
 
         res.status(200);
         const resObj = { id: newEvent.id, groupId, venueId, name, type, capacity, price, description, startDate, endDate }
-        res.json(resObj);
+        return res.json(resObj);
     }
     res.status(400);
     return res.json({"message": "User must be organizer or co-host to create event"});

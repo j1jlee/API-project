@@ -195,7 +195,7 @@ router.put('/:eventId/Attendance', requireAuth, async (req, res) => {
     }
     //
     const groupId = reqEvent.groupId;
-    console.log('\n\n\ngroupId', groupId);
+    //console.log('\n\n\ngroupId', groupId);
 
     const currentAttendance = await Attendance.findOne({
         include: {
