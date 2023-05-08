@@ -30,19 +30,19 @@ const LandingPage = () => {
 
         <div className="landing-page-bottom">
             <div className="lp-bottom-left">
-                <NavLink to="where/where">See all groups</NavLink>
+                <NavLink to="/groups">See all groups</NavLink>
                 <div>
                     Do what you love, meet others who love it, find your community. The rest is history!
                 </div>
             </div>
             <div className="lp-bottom-middle">
-                <NavLink to="where/where">Find an event</NavLink>
+                <NavLink to="/events">Find an event</NavLink>
                 <div>
                 Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.
                 </div>
             </div>
             <div className="lp-bottom-right">
-                <NavLink to="where/where" className="start-a-group">Start a new group</NavLink>
+                <NavLink to="where/where" className="/groups/new">Start a new group</NavLink>
                 <div>
                 You don’t have to be an expert to gather people together and explore shared interests.
                 </div>

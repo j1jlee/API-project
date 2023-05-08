@@ -22,7 +22,7 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li className="nav-grid-left">
+      <li className="nav-grid-right-logged-in">
         <ProfileButton user={sessionUser}/>
 
         {/* <button onClick={logout}>Log Out</button> */}

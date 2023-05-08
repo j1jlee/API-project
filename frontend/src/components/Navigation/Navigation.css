@@ -29,3 +29,10 @@ li {
     display: flex;
     justify-content: center;
 }
+.nav-grid-right-logged-in {
+    background-color: rgb(32, 115, 142);
+    grid-area: right;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+}
