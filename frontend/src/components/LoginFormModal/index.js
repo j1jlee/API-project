@@ -35,7 +35,7 @@ export const LoginFormModal = () => {
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Username or Email
+          Username or Email:
           <input
             type="text"
             value={credential}
@@ -44,7 +44,7 @@ export const LoginFormModal = () => {
           />
         </label>
         <label>
-          Password
+          Password: 
           <input
             type="password"
             value={password}

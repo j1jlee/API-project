@@ -1,3 +1,31 @@
+.nav-wrapper {
+    border-bottom: 5px solid black;
+}
+
 .hidden {
     visibility: hidden;
+}
+
+li {
+    list-style-type: none
+}
+
+.nav-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "left . right";
+}
+
+.nav-grid-left {
+    background-color: red;
+    grid-area: left;
+}
+
+.nav-grid-right {
+    background-color: lightblue;
+    grid-area: right;
+    display: flex;
+    justify-content: center;
 }
