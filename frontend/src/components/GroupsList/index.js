@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllGroups } from "../../store/groups";
 import EventsGroupsHeader from "../EventsGroupsHeader/EventsGroupsHeader";
+import "./GroupsList.css";
 
 const GroupsList = () => {
 
@@ -23,19 +24,20 @@ const GroupsList = () => {
             const groups = allGroups.Groups;
 
             return (groups.map((group) => {
-                const { name, location, about } = group;
+                const { name, location, about, previewImage } = group;
                 let privateOrPublic;
                 group.private ? privateOrPublic = "Private" : privateOrPublic = "   Public";
 
                 return (
-                    <li key={group.id}>
-                        {/* <div>{previewImage}</div> */}
-                        {/* TODO: previewImage comes from GROUPIMAGE */}
+                    <li key={group.id} className="group-node">
+                        <div className="group-node-image">{previewImage}</div>
                         {/* TODO: get number of events */}
+                        <div className="group-node-text">
                         <div>{name}</div>
                         <div>{location}</div>
                         <div>{about}</div>
                         <div>{privateOrPublic}</div>
+                        </div>
                     </li>
                 )
             }))
@@ -49,7 +51,7 @@ const GroupsList = () => {
         <>
         <EventsGroupsHeader eventsOrGroups="Groups"/>
         <div className="event-group-header"></div>
-        <ul className="group-list">
+        <ul className="group-wrapper">
 
             {/* {allGroups.Groups.map(({name, location, about, previewImage}) => (
                 <li>
