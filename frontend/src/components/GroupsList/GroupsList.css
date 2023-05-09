@@ -2,13 +2,14 @@
 
 
 .group-node {
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
       "group-image group-text group-text";
     width: 25em;
+    border-top: solid lightgray;
 
 }
 
