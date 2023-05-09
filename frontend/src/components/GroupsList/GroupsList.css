@@ -1,0 +1,37 @@
+
+
+
+.group-node {
+    /* background-color: blueviolet; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "group-image group-text group-text";
+    width: 25em;
+    border-top: solid lightgray;
+
+}
+
+.group-node-image {
+    grid-area: group-image;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.group-node-text {
+    grid-area: group-text;
+    display: flex;
+    flex-direction: column;
+    /* width: 25em; */
+    align-items: center;
+    padding: 1em;
+
+}
+
+.group-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

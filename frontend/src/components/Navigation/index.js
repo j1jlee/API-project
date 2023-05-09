@@ -22,14 +22,15 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
+      <li className="nav-grid-right-logged-in">
+        <ProfileButton user={sessionUser}/>
+
         {/* <button onClick={logout}>Log Out</button> */}
       </li>
     );
   } else {
     sessionLinks = (
-      <li>
+      <li className="nav-grid-right">
         {/* <NavLink to="/login">Log In</NavLink> */}
         <OpenModalButton
           buttonText="Log In"
@@ -46,12 +47,14 @@ function Navigation({ isLoaded }){
   }
 
   return (
-    <ul>
+    <div className="nav-wrapper">
+    <ul className="nav-grid-container">
       <li>
-        <NavLink exact to="/">Home</NavLink>
-      </li>
+        <NavLink exact to="/" className="nav-grid-left">HomeMEETUP-LOGO</NavLink>
+      </li >
       {isLoaded && sessionLinks}
     </ul>
+    </ div>
   );
 }
 
