@@ -13,40 +13,58 @@ const EventsList = () => {
         dispatch(fetchAllEvents());
     }, [])
 
-    //////////
+
     const allEvents = useSelector(state => state.events.events)
 
 
-
-
-    const eventNodes = () => {
+const eventNodes = () => {
     if (allEvents) {
+
+        // console.log("all events exists, what is it", allEvents);
+
         const events = allEvents.Events;
+
+        // console.log("does this work?", events)
 
         return (events.map((event) => {
 
-            /* startDate, endDate, name, description eventImages from each detailFetch to GET */
-            const { name, location, about, previewImage } = event;
-            let privateOrPublic;
-            event.private ? privateOrPublic = "Private" : privateOrPublic = "Public";
+            let previewEventImage = event.EventImages.find((image) => {
+            //console.log("image current", image)
+             return image.preview = true;
+            })
+
+            let previewEventImageUrl;
+
+            if (typeof previewEventImage === 'undefined') {
+                previewEventImageUrl = "N/A";
+            } else {
+                previewEventImageUrl = previewEventImage.url;
+            }
+
+
+            console.log('current event:', event, "previewEventImage", previewEventImageUrl);
+
+            const { startDate, endDate, name, description } = event;
+
 
             return (
                 <li key={event.id} className="event-node">
-                    <div className="event-node-image">{previewImage}</div>
-                    {/* TODO: get number of events */}
+                    <div className="event-node-image">{previewEventImageUrl}</div>
                     <div className="event-node-text">
+                    <div>{startDate}</div>
+                    <div>{endDate}</div>
                     <div>{name}</div>
-                    <div>{location}</div>
-                    <div>{about}</div>
-                    <div>{privateOrPublic}</div>
+                    <div>{description}</div>
                     </div>
                 </li>
             )
         }))
     }
-
     return (<p> testing </p>)
     }
+    ////////////////
+
+    //console.log("eventNodes", eventNodes());
 
 
     return (

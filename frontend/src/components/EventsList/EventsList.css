@@ -1,0 +1,34 @@
+.event-node {
+    /* background-color: blueviolet; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "event-image event-text event-text";
+    width: 25em;
+    border-top: solid lightgray;
+
+}
+
+.event-node-image {
+    grid-area: event-image;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-node-text {
+    grid-area: event-text;
+    display: flex;
+    flex-direction: column;
+    /* width: 25em; */
+    align-items: center;
+    padding: 1em;
+
+}
+
+.event-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
