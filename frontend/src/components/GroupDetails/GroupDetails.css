@@ -1,0 +1,50 @@
+
+.group-details-wrapper {
+    /* width: 50em; */
+    padding: 0 5em;
+}
+
+.group-details-top {
+    /* background-color: blueviolet; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "group-link-img group-description";
+    /* width: 50em; */
+    /* border-top: solid lightgray; */
+
+}
+
+.gd-top-link-img {
+    grid-area: group-link-img;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gd-top-group-description {
+    grid-area: group-description;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.group-details-middle, .group-details-bottom {
+    background-color: lightgray;
+}
+
+/* <>
+            <div className="group-details-top">
+                <div className="gd-top-group-link">
+                {"< "}
+                <NavLink to="/groups">Groups</NavLink>
+                </div>
+
+                <div className="gd-top-image">
+                    {groupImageUrl}
+                </div>
+
+                <div className="gd-top-group-description"> */

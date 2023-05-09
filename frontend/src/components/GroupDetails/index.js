@@ -3,7 +3,7 @@ import { useParams, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchGroupByGroupId } from "../../store/groups";
-
+import './GroupDetails.css'
 
 const GroupDetails = () => {
 
@@ -46,15 +46,17 @@ const GroupDetails = () => {
 
         return (
             <>
-            <div className="group-details-top">
-                <div className="gd-top-group-link">
-                {"< "}
-                <NavLink to="/groups">Groups</NavLink>
-                </div>
+            <div className="group-details-wrapper">
+            <div>{"< "}
+              <NavLink to="/groups">Groups</NavLink>
+            </div>
 
-                <div className="gd-top-image">
-                    {groupImageUrl}
-                </div>
+            <div className="group-details-top">
+                <div className="gd-top-link-img">
+                    <div>
+                        {groupImageUrl}
+                    </div>
+                    </div>
 
                 <div className="gd-top-group-description">
                     <div>{name}</div>
@@ -73,6 +75,7 @@ const GroupDetails = () => {
             </div>
             <div className="group-details-bottom">
                 <div>PLACEHOLDER FOR EVENTS FETCH</div>
+            </div>
             </div>
         </>
         );

@@ -4,8 +4,12 @@
 import { csrfFetch } from "./csrf";
 
 //actions
-const GET_EVENTS = "Events/getEvents"
-
+const GET_EVENTS = "events/getEvents"
+const CREATE_EVENT_BY_GROUP_ID = "groups/groupId/createEvent"
+const ADD_IMAGE_TO_EVENT = "events/eventId/addImage"
+const GET_EVENTS_BY_GROUP_ID = "groups/groupId/getAllEvents"
+const GET_EVENT_BY_EVENT_ID = "events/getEvent"
+const EDIT_EVENT = "events/editEvent"
 
 
 //action collectors
@@ -15,6 +19,49 @@ const getAllEvents = (events) => {
         events
     }
 };
+
+const createEvent = (event) => {
+    return {
+        type: CREATE_EVENT_BY_GROUP_ID,
+        event
+    }
+}
+
+const addImage = (event) => {
+    return {
+        type: ADD_IMAGE_TO_EVENT,
+        event
+    }
+}
+
+const getEventsByGroupId = (events) => {
+    return {
+        type: GET_EVENTS_BY_GROUP_ID,
+        events
+    }
+}
+
+const getEventByEventId = (event) => {
+    return {
+        type: GET_EVENT_BY_EVENT_ID,
+        event
+    }
+}
+
+const editEvent = (event) => {
+    return {
+        type: EDIT_EVENT,
+        event
+    }
+}
+
+/* const ADD_IMAGE_TO_EVENT = "events/eventId/addImage"
+const GET_EVENTS_BY_GROUP_ID = "groups/groupId/getAllEvents"
+const GET_EVENT_BY_EVENT_ID = "events/getEvent"
+const EDIT_EVENT = "events/editEvent" */
+/*  */
+
+
 //thunk reducers
 export const fetchAllEvents = () => async (dispatch) => {
     const response = await csrfFetch("/api/events");
