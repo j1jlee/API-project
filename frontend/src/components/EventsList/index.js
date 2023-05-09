@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import EventsGroupsHeader from "../EventsGroupsHeader/EventsGroupsHeader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllGroups } from "../../store/groups";
+import { fetchAllEvents } from "../../store/events";
 import "./EventsList.css";
 
 const EventsList = () => {
@@ -16,10 +16,7 @@ const EventsList = () => {
     //////////
     const allEvents = useSelector(state => state.events.events)
 
-    // if (allEvents) {
-    //     console.log("allevents:", allEvents.Events);
-    //     console.log("typeof allgroups", typeof allEvents)
-    //     }
+
 
 
     const eventNodes = () => {
@@ -27,6 +24,8 @@ const EventsList = () => {
         const events = allEvents.Events;
 
         return (events.map((event) => {
+
+            /* startDate, endDate, name, description eventImages from each detailFetch to GET */
             const { name, location, about, previewImage } = event;
             let privateOrPublic;
             event.private ? privateOrPublic = "Private" : privateOrPublic = "Public";
