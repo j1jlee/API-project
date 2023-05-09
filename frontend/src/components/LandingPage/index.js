@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 const LandingPage = () => {
     return (
        <>
+       <div className="landing-page-wrapper">
         <div className="landing-page-top">
             <div className="lp-top-left">
                 <h1>
@@ -50,6 +51,7 @@ const LandingPage = () => {
 
         </div>
 
+        </div>
        </>
     );
 }
