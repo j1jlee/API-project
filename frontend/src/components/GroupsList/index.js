@@ -26,11 +26,11 @@ const GroupsList = () => {
             return (groups.map((group) => {
                 const { name, location, about, previewImage } = group;
                 let privateOrPublic;
-                group.private ? privateOrPublic = "Private" : privateOrPublic = "   Public";
+                group.private ? privateOrPublic = "Private" : privateOrPublic = "Public";
 
                 return (
-                    <a className="group-node-a" href={`/groups/${group.id}`}>
-                    <li key={group.id} className="group-node">
+                    <a key={group.id} className="group-node-a" href={`/groups/${group.id}`}>
+                    <li className="group-node">
                         <div className="group-node-image">{previewImage}</div>
                         {/* TODO: get number of events */}
                         <div className="group-node-text">

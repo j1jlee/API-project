@@ -10,6 +10,7 @@ import Navigation from "./components/Navigation";
 import GroupsList from "./components/GroupsList";
 import EventsList from "./components/EventsList";
 import CreateGroup from "./components/CreateGroup";
+import GroupDetails from "./components/GroupDetails";
 
 
 //window.store.dispatch(window.sessionActions.restoreUser());
@@ -32,7 +33,7 @@ function App() {
 
 
       <Route path="/groups/:groupId">
-        Does this work GROUPID
+        <GroupDetails />
       </Route>
 
 

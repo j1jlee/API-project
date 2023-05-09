@@ -111,6 +111,16 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
     }
 }
 
+export const fetchGroupByGroupId = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`);
+
+    if (response.ok) {
+        const resGroup = await response.json();
+        dispatch(getGroupById(resGroup));
+        return resGroup;
+    }
+}
+
 
 
 /*
@@ -132,11 +142,10 @@ const groupsReducer = (state = initialState, action) => {
         } else {
             newState.groups = action.group;
         }
-
-        console.log("does this work? newState:", newState);
-
+        //console.log("does this work? newState:", newState);
         return newState;
-
+    case GET_GROUP_BY_ID:
+        return {...state, group: action.group};
         // return {...state, Object.assign(groups, action.group)}
         /* groups: [...state.groups, action.group] */
     default:
