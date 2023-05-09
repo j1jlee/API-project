@@ -29,6 +29,7 @@ const GroupsList = () => {
                 group.private ? privateOrPublic = "Private" : privateOrPublic = "   Public";
 
                 return (
+                    <a className="group-node-a" href={`/groups/${group.id}`}>
                     <li key={group.id} className="group-node">
                         <div className="group-node-image">{previewImage}</div>
                         {/* TODO: get number of events */}
@@ -39,6 +40,7 @@ const GroupsList = () => {
                         <div>{privateOrPublic}</div>
                         </div>
                     </li>
+                    </a>
                 )
             }))
         }

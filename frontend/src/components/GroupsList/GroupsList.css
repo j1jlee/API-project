@@ -1,5 +1,8 @@
 
-
+a.group-node-a {
+    color: inherit;
+    text-decoration: none; /* no underline, link */
+}
 
 .group-node {
     /* background-color: blueviolet; */
