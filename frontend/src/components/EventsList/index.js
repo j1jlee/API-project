@@ -18,50 +18,98 @@ const EventsList = () => {
 
 
 const eventNodes = () => {
-    if (allEvents) {
+    try {
+///////////////////////
+if (allEvents) {
+    console.log("all events exists, what is it", allEvents);
 
-        // console.log("all events exists, what is it", allEvents);
+    const events = allEvents.Events;
 
-        const events = allEvents.Events;
+    // console.log("does this work?", events)
 
-        // console.log("does this work?", events)
+    return (events.map((event) => {
 
-        return (events.map((event) => {
+        let previewEventImage = event.EventImages.find((image) => {
+        //console.log("image current", image)
+         return image.preview = true;
+        })
 
-            let previewEventImage = event.EventImages.find((image) => {
-            //console.log("image current", image)
-             return image.preview = true;
-            })
+        let previewEventImageUrl;
 
-            let previewEventImageUrl;
-
-            if (typeof previewEventImage === 'undefined') {
-                previewEventImageUrl = "N/A";
-            } else {
-                previewEventImageUrl = previewEventImage.url;
-            }
-
-
-            console.log('current event:', event, "previewEventImage", previewEventImageUrl);
-
-            const { startDate, endDate, name, description } = event;
+        if (typeof previewEventImage === 'undefined') {
+            previewEventImageUrl = "N/A";
+        } else {
+            previewEventImageUrl = previewEventImage.url;
+        }
 
 
-            return (
-                <li key={event.id} className="event-node">
-                    <div className="event-node-image">{previewEventImageUrl}</div>
-                    <div className="event-node-text">
-                    <div>{startDate}</div>
-                    <div>{endDate}</div>
-                    <div>{name}</div>
-                    <div>{description}</div>
-                    </div>
-                </li>
-            )
-        }))
+        console.log('current event:', event, "previewEventImage", previewEventImageUrl);
+
+        const { startDate, endDate, name, description } = event;
+
+
+        return (
+            <li key={event.id} className="event-node">
+                <div className="event-node-image">{previewEventImageUrl}</div>
+                <div className="event-node-text">
+                <div>{startDate}</div>
+                <div>{endDate}</div>
+                <div>{name}</div>
+                <div>{description}</div>
+                </div>
+            </li>
+        )
+    }))
+}
+/////////////////////////////////
+    } catch {
+        return (<p> testing </p>)
     }
-    return (<p> testing </p>)
-    }
+}
+
+    // if (allEvents) {
+    //     console.log("all events exists, what is it", allEvents);
+
+    //     const events = allEvents.Events;
+
+    //     // console.log("does this work?", events)
+
+    //     return (events.map((event) => {
+
+    //         let previewEventImage = event.EventImages.find((image) => {
+    //         //console.log("image current", image)
+    //          return image.preview = true;
+    //         })
+
+    //         let previewEventImageUrl;
+
+    //         if (typeof previewEventImage === 'undefined') {
+    //             previewEventImageUrl = "N/A";
+    //         } else {
+    //             previewEventImageUrl = previewEventImage.url;
+    //         }
+
+
+    //         console.log('current event:', event, "previewEventImage", previewEventImageUrl);
+
+    //         const { startDate, endDate, name, description } = event;
+
+
+    //         return (
+    //             <li key={event.id} className="event-node">
+    //                 <div className="event-node-image">{previewEventImageUrl}</div>
+    //                 <div className="event-node-text">
+    //                 <div>{startDate}</div>
+    //                 <div>{endDate}</div>
+    //                 <div>{name}</div>
+    //                 <div>{description}</div>
+    //                 </div>
+    //             </li>
+    //         )
+    //     }))
+    // }
+    // return (<p> testing </p>)
+    // }
     ////////////////
 
     //console.log("eventNodes", eventNodes());

@@ -144,6 +144,7 @@ const groupsReducer = (state = initialState, action) => {
         }
         //console.log("does this work? newState:", newState);
         return newState;
+        
     case GET_GROUP_BY_ID:
         return {...state, group: action.group};
         // return {...state, Object.assign(groups, action.group)}
