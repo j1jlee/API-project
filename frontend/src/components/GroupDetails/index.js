@@ -3,6 +3,7 @@ import { useParams, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchGroupByGroupId } from "../../store/groups";
+import { fetchEventsByGroupId } from "../../store/events";
 import './GroupDetails.css'
 
 const GroupDetails = () => {
@@ -12,9 +13,17 @@ const GroupDetails = () => {
 
     useEffect(() => {
         dispatch(fetchGroupByGroupId(groupId));
+
+        dispatch(fetchEventsByGroupId(groupId));
     }, []);
 
-    const thisGroup = useSelector((state) => state.groups.group)
+    const thisGroup = useSelector((state) => state.groups.group);
+    const thisGroupEvents = useSelector((state) => state.events);
+
+    console.log("thisgroupevents", thisGroupEvents);
+
+
+
 
     const renderGroupDetails = () => {
         if (thisGroup) {

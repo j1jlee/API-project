@@ -76,14 +76,32 @@ export const fetchAllEvents = () => async (dispatch) => {
 }
 
 export const fetchEventsByGroupId = (groupId) => async (dispatch) => {
-    const response = await csrfFetch(`/api/groups/${groupId}/events`);
 
-    if (response.ok) {
+    //console.log("anything here?")
+
+    try {
+        const response = await csrfFetch(`/api/groups/${groupId}/events`);
         const resEvents = await response.json();
         dispatch(getEventsByGroupId(resEvents));
-    } else {
-        
+        return resEvents;
+    } catch (e) {
+        dispatch(getEventsByGroupId({error: e}))
+        return {"message": "Group could not be found"};
     }
+
+    // console.log("\n\n\npre processing response", response);
+
+    // if (response.ok) {
+    //     const resEvents = await response.json();
+    //     dispatch(getEventsByGroupId(resEvents));
+    //     return resEvents;
+    // } else {
+    //     //returns {"message": "Group couldn't be found"}
+    //     console.log("\n\n\nMESSAGE HERE", response)
+    //     const errorMessage = await response.json();
+    //     //dispatch(getEventsByGroupId(errorMessage));
+    //     return errorMessage;
+    // }
 
 }
 /*
@@ -96,7 +114,9 @@ const initialState = { events: null };
 const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_EVENTS:
-      return {...state, events: action.events}
+      return {...state, events: action.events};
+    case GET_EVENTS_BY_GROUP_ID:
+        return {...state, events: action.events};
     default:
       return state;
   }
