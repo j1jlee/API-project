@@ -20,7 +20,7 @@ const EventsList = () => {
 const eventNodes = () => {
     if (allEvents) {
 
-        // console.log("all events exists, what is it", allEvents);
+        console.log("all events exists, what is it", allEvents);
 
         const events = allEvents.Events;
 
