@@ -9,6 +9,8 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupsList from "./components/GroupsList";
 import EventsList from "./components/EventsList";
+import CreateGroup from "./components/CreateGroup";
+import GroupDetails from "./components/GroupDetails";
 
 
 //window.store.dispatch(window.sessionActions.restoreUser());
@@ -25,7 +27,17 @@ function App() {
      <Navigation isLoaded={isLoaded} />
     {isLoaded && (
     <Switch>
-      <Route path="/groups">
+      <Route exact path="/groups/new">
+        <CreateGroup />
+      </Route>
+
+
+      <Route path="/groups/:groupId">
+        <GroupDetails />
+      </Route>
+
+
+      <Route exact path="/groups">
         <GroupsList />
       </Route>
       <Route path="/events">
@@ -41,6 +53,9 @@ function App() {
       {/* <Route path="/signup">
           <SignupFormPage />
         </Route> */}
+        <Route>
+          404 Not Found
+        </Route>
     </Switch>
     )}
     </>

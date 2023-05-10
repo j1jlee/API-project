@@ -472,7 +472,11 @@ router.get('/', validateQuery, async (req, res) => {
         {model: Group.scope('groupIncluded')},
         // {model: User.scope('userIncluded'),
         // as: "Organizer"},
-        {model: Venue.scope('venueIncluded')}],
+        {model: Venue.scope('venueIncluded')},
+    /* adding in 5/9/2023 */
+        {model: EventImage.scope('eventScope')}
+
+    ],
         attributes: {
             exclude: ['createdAt', 'updatedAt']
         },

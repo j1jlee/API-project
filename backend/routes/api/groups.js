@@ -493,7 +493,10 @@ router.get('/:groupId/events', async (req, res) => {
             groupId
         }
      });
-    if (!eventsByGroupId) {
+
+     //05-10/23 console.log("\n\n\nSUP, EVENTSBYGROUPID", eventsByGroupId);
+
+    if (!eventsByGroupId.length) {
         res.status(404);
         return res.json({"message": "Group couldn't be found"});
     }

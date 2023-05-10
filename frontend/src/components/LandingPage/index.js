@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 const LandingPage = () => {
     return (
        <>
+       <div className="landing-page-wrapper">
         <div className="landing-page-top">
             <div className="lp-top-left">
                 <h1>
@@ -42,7 +43,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="lp-bottom-right">
-                <NavLink to="where/where" className="/groups/new">Start a new group</NavLink>
+                <NavLink to="/groups/new" className="/groups/new">Start a new group</NavLink>
                 <div>
                 You don’t have to be an expert to gather people together and explore shared interests.
                 </div>
@@ -50,6 +51,7 @@ const LandingPage = () => {
 
         </div>
 
+        </div>
        </>
     );
 }
