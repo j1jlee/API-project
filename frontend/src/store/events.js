@@ -67,11 +67,23 @@ export const fetchAllEvents = () => async (dispatch) => {
     const response = await csrfFetch("/api/events");
     // const response = await fetch("/api/events");
 
-    console.log("all events fetch worked?")
-    console.log(typeof response)
+    // console.log("all events fetch worked?")
+    // console.log(typeof response)
     const allEvents = await response.json();
-    console.log("allEvents res", allEvents)
+    // console.log("allEvents res", allEvents)
     dispatch(getAllEvents(allEvents));
+
+}
+
+export const fetchEventsByGroupId = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`);
+
+    if (response.ok) {
+        const resEvents = await response.json();
+        dispatch(getEventsByGroupId(resEvents));
+    } else {
+        
+    }
 
 }
 /*
