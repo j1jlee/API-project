@@ -5,6 +5,7 @@ import { fetchEventByEventId } from "../../store/events";
 import { fetchGroupByGroupId } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import "./EventDetails.css";
 
 const EventDetails = () => {
 
@@ -18,7 +19,9 @@ const EventDetails = () => {
     const thisEvent = useSelector((state) => state.events.events);
 
     useEffect(() => {
-        dispatch(fetchGroupByGroupId(thisEvent.groupId))
+        try {
+            dispatch(fetchGroupByGroupId(thisEvent.groupId))
+        } catch {}
     }, [thisEvent]);
 
     const thisGroup = useSelector((state) => state.groups.group)
@@ -42,8 +45,12 @@ const EventDetails = () => {
          */
     const eventDetailsRender = () => {
         try {
-            const { name, description, startDate, endDate, price, type, groupId } = thisEvent;
+            const { name, description, startDate, endDate, type, groupId } = thisEvent;
 
+            let { price } = thisEvent;
+            if (price == 0) {
+                price = "Free";
+            }
             //dispatch, get organizer firstname lastname from groupbyid
             //const thisGroup = await dispatch(fetchGroupByGroupId(groupId));
             //console.log("thisGroup:", thisGroup);
@@ -71,7 +78,7 @@ const EventDetails = () => {
                 try {
                     groupImageUrl = previewGroupImage.url;
                 } catch {
-                    
+
                 }
             }
             //////////
@@ -98,25 +105,27 @@ const EventDetails = () => {
                     </div>
 
                     <div className="event-details-top">
-                        <div className="gd-top-link-img">
+                        <div className="ed-top-link-img">
                             <div>
                                 {eventImageUrl}
                             </div>
                             </div>
 
-                        <div className="gd-top-right-group">
+                        <div className="ed-top-right">
+                            <div className="ed-top-right-group">
                             <div>{groupImageUrl}</div>
                             <div>{groupName}</div>
                             <div>{publicOrPrivate}</div>
                             <div>Organized by {firstName} {lastName}</div>
-                        </div>
+                            </div>
 
-                        <div className="gd-top-right-event-details">
+                        <div className="ed-top-right-event-details">
                             <div>{startDate}</div>
                             <div>{endDate}</div>
                             <div>{price}</div>
                             <div>{type}</div>
                             {/* in person or online */}
+                        </div>
                         </div>
                     </div>
                    {/* ///////////////////////////            */}

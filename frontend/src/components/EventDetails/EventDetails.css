@@ -1,0 +1,43 @@
+
+
+
+.event-details-wrapper {
+    /* background-color: lightgray; */
+}
+
+.event-header {
+ /* background-color: transparent; */
+}
+
+.event-details-top {
+    background-color: lightgray;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "event-image group-event-details";
+}
+
+.ed-top-link-img {
+    grid-area: event-image;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.ed-top-right {
+    grid-area: group-event-details;
+}
+
+.ed-top-right-event-group {
+
+}
+.ed-top-right-event-details {
+
+}
+
+.event-details-main {
+    background-color: lightgray;
+}
