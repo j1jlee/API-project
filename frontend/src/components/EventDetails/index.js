@@ -1,12 +1,139 @@
 
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchEventByEventId } from "../../store/events";
+import { fetchGroupByGroupId } from "../../store/groups";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 const EventDetails = () => {
 
+    const dispatch = useDispatch();
     const { eventId } = useParams();
 
+    useEffect(() => {
+        dispatch(fetchEventByEventId(eventId));
+    }, [])
+
+    const thisEvent = useSelector((state) => state.events.events);
+
+    console.log("thisEvent", thisEvent);
+
+
+        //header,
+            /*
+            link back to events
+            EVENT NAME
+            hosted by firstname, lastname from group */
+
+        /*
+        eventpicture        minigroup
+                            group image, group name, public or private
+
+                            startdate
+                            endDate
+                            free/ or price (price)
+                            in-person or private (type)
+
+        Details
+        (description)
+         */
+    const eventDetailsRender = async () => {
+        try {
+            const { name, description, startDate, endDate, price, type, groupId } = thisEvent;
+
+            //dispatch, get organizer firstname lastname from groupbyid
+            const thisGroup = await dispatch(fetchGroupByGroupId(groupId));
+            //console.log("thisGroup:", thisGroup);
+            const { firstName, lastName } = thisGroup.Organizer;
+            const groupName = thisGroup.name;
+            /////
+            let eventImageUrl = "N/A";
+
+            if (thisEvent.EventImages.length) {
+                const previewImage = thisEvent.EventImages.find((image) => image.preview === true)
+                eventImageUrl = previewImage.url;
+            }
+
+            ///////////
+            let groupImageUrl = "N/A";
+
+            if (thisGroup.GroupImages.length) {
+                const previewGroupImage = thisGroup.GroupImages.find((image) => image.preview === true)
+                groupImageUrl = previewGroupImage.url;
+            }
+            //////////
+            let publicOrPrivate = "N/A";
+
+            if (typeof thisGroup.private === 'boolean') {
+                if (thisGroup.private === true) {
+                    publicOrPrivate = "Private";
+                } else {
+                    publicOrPrivate = "Public";
+                }
+            }
+            /////////
+            return (
+            <>
+                    <div className="event-details-wrapper">
+
+                    <div className="event header">
+                    <div>{"< "}
+                      <NavLink to="/events">Events</NavLink>
+                    </div>
+                    <h1>{name}</h1>
+                    <p>Hosted by {firstName} {lastName}</p>
+                    </div>
+
+                    <div className="event-details-top">
+                        <div className="gd-top-link-img">
+                            <div>
+                                {eventImageUrl}
+                            </div>
+                            </div>
+
+                        <div className="gd-top-right-group">
+                            <div>{groupImageUrl}</div>
+                            <div>{groupName}</div>
+                            <div>{publicOrPrivate}</div>
+                            <div>Organized by {firstName} {lastName}</div>
+                        </div>
+
+                        <div className="gd-top-right-event-details">
+                            <div>{startDate}</div>
+                            <div>{endDate}</div>
+                            <div>{price}</div>
+                            <div>{type}</div>
+                            {/* in person or online */}
+                        </div>
+                    </div>
+                   {/* ///////////////////////////            */}
+                    <div className="event-details-main">
+                        <h2>Details</h2>
+                        <div>{description}</div>
+                    </div>
+
+                    </div>
+                </>
+            )
+//////////////////////////////////
+
+        } catch (e) {
+            console.log("error", e)
+            return (
+                <p>Loading</p>
+            )
+        }
+    }
+
+    //const res = eventDetailsRender();
+
+    //console.log("res", res, "typeof res", typeof res)
+
     return (
-        <h1> EVENT DETAILS PLACEHOLDER for EVENT :{eventId}</h1>
+       <div>
+        {eventDetailsRender()}
+       </div>
     )
 };
 

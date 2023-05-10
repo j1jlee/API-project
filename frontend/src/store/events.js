@@ -88,21 +88,18 @@ export const fetchEventsByGroupId = (groupId) => async (dispatch) => {
         dispatch(getEventsByGroupId({error: e}))
         return {"message": "Group could not be found"};
     }
+}
 
-    // console.log("\n\n\npre processing response", response);
-
-    // if (response.ok) {
-    //     const resEvents = await response.json();
-    //     dispatch(getEventsByGroupId(resEvents));
-    //     return resEvents;
-    // } else {
-    //     //returns {"message": "Group couldn't be found"}
-    //     console.log("\n\n\nMESSAGE HERE", response)
-    //     const errorMessage = await response.json();
-    //     //dispatch(getEventsByGroupId(errorMessage));
-    //     return errorMessage;
-    // }
-
+export const fetchEventByEventId = (eventId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch(`/api/events/${eventId}`);
+        const resEvents = await response.json();
+        dispatch(getEventByEventId(resEvents));
+        return resEvents;
+    } catch (e) {
+        dispatch(getEventByEventId({error: e}));
+        return {"message": "Event could not be found"}
+    }
 }
 /*
 root reducer, SEND to index
@@ -117,6 +114,8 @@ const eventsReducer = (state = initialState, action) => {
       return {...state, events: action.events};
     case GET_EVENTS_BY_GROUP_ID:
         return {...state, events: action.events};
+    case GET_EVENT_BY_EVENT_ID:
+        return {...state, events: action.event}
     default:
       return state;
   }
