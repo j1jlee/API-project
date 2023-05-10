@@ -17,9 +17,11 @@ const EventDetails = () => {
 
     const thisEvent = useSelector((state) => state.events.events);
 
-    console.log("thisEvent", thisEvent);
+    useEffect(() => {
+        dispatch(fetchGroupByGroupId(thisEvent.groupId))
+    }, [thisEvent]);
 
-
+    const thisGroup = useSelector((state) => state.groups.group)
         //header,
             /*
             link back to events
@@ -38,21 +40,26 @@ const EventDetails = () => {
         Details
         (description)
          */
-    const eventDetailsRender = async () => {
+    const eventDetailsRender = () => {
         try {
             const { name, description, startDate, endDate, price, type, groupId } = thisEvent;
 
             //dispatch, get organizer firstname lastname from groupbyid
-            const thisGroup = await dispatch(fetchGroupByGroupId(groupId));
+            //const thisGroup = await dispatch(fetchGroupByGroupId(groupId));
             //console.log("thisGroup:", thisGroup);
             const { firstName, lastName } = thisGroup.Organizer;
             const groupName = thisGroup.name;
             /////
             let eventImageUrl = "N/A";
 
-            if (thisEvent.EventImages.length) {
+            if (thisEvent.EventImages.length > 0) {
                 const previewImage = thisEvent.EventImages.find((image) => image.preview === true)
-                eventImageUrl = previewImage.url;
+
+                try {
+                    eventImageUrl = previewImage.url
+                } catch {
+
+                }
             }
 
             ///////////
@@ -60,7 +67,12 @@ const EventDetails = () => {
 
             if (thisGroup.GroupImages.length) {
                 const previewGroupImage = thisGroup.GroupImages.find((image) => image.preview === true)
-                groupImageUrl = previewGroupImage.url;
+
+                try {
+                    groupImageUrl = previewGroupImage.url;
+                } catch {
+                    
+                }
             }
             //////////
             let publicOrPrivate = "N/A";
