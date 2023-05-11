@@ -25,6 +25,7 @@ const GroupDetails = () => {
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);
    // let numberOfEvents;
+    const currentUser = useSelector((state) => state.session.user);
 
    let outerEventNum = 0;
     try {
@@ -33,6 +34,14 @@ const GroupDetails = () => {
         }
     } catch {}
 
+    // let currentUserId = 0;
+    // try {
+    //     if (currentUser) {
+    //         currentUserId = currentUser.id;
+    //     }
+    // } catch {}
+
+    //console.log("currentuserid", currentUserId);
 
     console.log("thisgroupevents", thisGroupEvents);
 
@@ -41,6 +50,18 @@ const GroupDetails = () => {
         alert("Feature coming soon")
     }
 
+    const joinGroupEnable = () => {
+        try {
+            const currentUserId = currentUser.id;
+            if (currentUserId === thisGroup.organizerId) {
+                return "join-button-hidden"
+            } else {
+                return "join-button-enabled"
+            }
+        } catch {
+            return "join-button-disabled"
+        }
+    }
 
     const renderGroupDetails = () => {
         try {
@@ -155,18 +176,20 @@ const GroupDetails = () => {
 
 
                 return (
-                    <NavLink className='event-node-a' to={`/events/${event.id}`}>
-                    <li key={event.id} className="event-node">
-                        <div className="event-node-image">{previewEventImageUrl}</div>
-                        <div className="event-node-text">
+                    <NavLink className='gd-event-node-a' to={`/events/${event.id}`}>
+                    <div>
+                        <li key={event.id} className="gd-event-node">
+                        <div className="gd-event-node-image">{previewEventImageUrl}</div>
+                        <div className="gd-event-node-text">
                         <div>{startDate}</div>
                         <div>{endDate}</div>
                         <div>{name}</div>
                         </div>
                         <div>
-                        <div>{description}</div>
                         </div>
                     </li>
+                        <div className="gd-event-node-description">{description}</div>
+                    </div>
                     </NavLink>
                 )
             }))

@@ -33,10 +33,12 @@ const LandingPage = () => {
         <div className="landing-page-top">
             <div className="lp-top-left">
                 <h1>
-                The people platform— Where interests become friendships
+                The people platform—<br></br>
+                Where interests become friendships
                 </h1>
                 <p>
                 Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Meetup. Events are happening every day—log in to join the fun.
+                <br></br><br></br>
                 </p>
             </div>
             <div className="lp-top-right">
@@ -45,7 +47,7 @@ const LandingPage = () => {
         </div>
 
         <div className="landing-page-middle">
-            <h2>
+            <h2 className="lp-middle-works">
                 How Meetup works
             </h2>
             <p>

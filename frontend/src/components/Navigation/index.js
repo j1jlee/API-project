@@ -22,6 +22,7 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
+
       <li className="nav-grid-right-logged-in">
         <ProfileButton user={sessionUser}/>
 
