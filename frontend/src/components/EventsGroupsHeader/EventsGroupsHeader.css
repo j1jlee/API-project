@@ -1,4 +1,16 @@
+
+.events-groups-header-wrapper {
+    padding: 0 12em;
+}
+
 .disabled {
     pointer-events: none;
+    font-size: x-large;
+    color: teal;
+}
+
+.not-disabled {
     color: lightgray;
+    font-size: x-large;
+    text-decoration: none;
 }

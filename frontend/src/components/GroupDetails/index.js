@@ -21,6 +21,8 @@ const GroupDetails = () => {
 
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);
+    let numberOfEvents;
+
 
     console.log("thisgroupevents", thisGroupEvents);
 
@@ -78,15 +80,15 @@ const GroupDetails = () => {
                         <div className="gd-top-group-description">
                             <div>{name}</div>
                             <div>{city}, {state}</div>
-                            <div>## events</div>
-                            <div>{publicOrPrivate}</div>
-                            <div>Organized by {firstName} {lastName}</div>
+                            <div>{numberOfEvents || 0} events · {publicOrPrivate}</div>
+                            <div>Organized by: {firstName} {lastName}</div>
                         </div>
                     </div>
                    {/* ///////////////////////////            */}
                     <div className="group-details-middle">
                         <div>Organizer</div>
                         <div>{firstName} {lastName}</div>
+                        <br></br>
                         <div>What we're about</div>
                         <div>{about}</div>
                     </div>
@@ -110,8 +112,8 @@ const GroupDetails = () => {
             if (thisGroupEvents) {
                 const currentEvents = thisGroupEvents.events;
 
-                console.log("currentEvents", currentEvents)
-
+                //console.log("currentEvents", currentEvents)
+                numberOfEvents = currentEvents.length;
 
             return (currentEvents.map((event) => {
 
@@ -122,7 +124,9 @@ const GroupDetails = () => {
                 // } else {
                 //     previewEventImageUrl = previewEventImage.url;
                 try {
-                    previewEventImageUrl = event.previewImage;
+                    if (event.previewImage) {
+                        previewEventImageUrl = event.previewImage;
+                    }
                 } catch {
                     previewEventImageUrl = "still N/A"
                 }
@@ -152,13 +156,15 @@ const GroupDetails = () => {
         }
     }
 
-    renderEventDetails();
+    //renderEventDetails();
 
 
     return (
         <>
+        <div className="group-details-and-events-wrapper">
             {renderGroupDetails()}
             {renderEventDetails()}
+        </div>
         </>
 
 

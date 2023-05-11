@@ -1,8 +1,11 @@
 
-.group-details-wrapper {
-    /* width: 50em; */
+.group-details-and-events-wrapper {
     padding: 0 5em;
 }
+/* .group-details-wrapper {
+    /* width: 50em; */
+    /* padding: 0 5em; */
+/*} */
 
 .group-details-top {
     /* background-color: blueviolet; */

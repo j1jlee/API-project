@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllGroups } from "../../store/groups";
 import EventsGroupsHeader from "../EventsGroupsHeader/EventsGroupsHeader";
 import { NavLink } from "react-router-dom";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import "./GroupsList.css";
 
 const GroupsList = () => {
@@ -34,7 +34,7 @@ const GroupsList = () => {
                 const groups = allGroups.Groups;
 
                 return (groups.map((group) => {
-                    const { name, location, about, previewImage } = group;
+                    const { name, location, about, city, state, previewImage } = group;
                     let privateOrPublic;
                     group.private ? privateOrPublic = "Private" : privateOrPublic = "Public";
 

@@ -30,6 +30,12 @@ export const LoginFormModal = () => {
     );
   };
 
+  const loginDemoUser = (e) => {
+    e.preventDefault();
+    return dispatch(sessionActions.login({ credential:"Demo-lition", password:"password"}))
+    .then(closeModal)
+  }
+
   return (
     <>
       <h1>Log In</h1>
@@ -44,7 +50,7 @@ export const LoginFormModal = () => {
           />
         </label>
         <label>
-          Password: 
+          Password:
           <input
             type="password"
             value={password}
@@ -55,6 +61,8 @@ export const LoginFormModal = () => {
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit">Log In</button>
       </form>
+
+      <button onClick={loginDemoUser}>Log in as Demo User</button>
     </>
   );
 }
