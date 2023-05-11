@@ -5,15 +5,17 @@ import { useEffect } from "react";
 import { fetchGroupByGroupId } from "../../store/groups";
 import { fetchEventsByGroupId } from "../../store/events";
 import './GroupDetails.css'
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
+
 
 const GroupDetails = () => {
 
-    let hackyNonsense = 0;
+    //let hackyNonsense = 0;
 
     const dispatch = useDispatch();
     const { groupId } = useParams();
     const { url } = useRouteMatch();
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(fetchGroupByGroupId(groupId));
@@ -50,18 +52,44 @@ const GroupDetails = () => {
         alert("Feature coming soon")
     }
 
-    const joinGroupEnable = () => {
+    const forwardToGroupId = () => {
+        try {
+            history.push(`/groups/${thisGroup.id}/edit`);
+        } catch {}
+    }
+
+    const isOrganizer = () => {
         try {
             const currentUserId = currentUser.id;
             if (currentUserId === thisGroup.organizerId) {
-                return "join-button-hidden"
+                return (
+                    <>
+                    <div className="buttons-gray">
+                    <button>Create Event</button>
+                    <button onClick={forwardToGroupId}>Update</button>
+                    <button>Delete</button>
+                    </div>
+                    </>
+                //"buttons-create-update-delete" //is organizer
+                )
             } else {
-                return "join-button-enabled"
+                return (<>
+                        <div className="buttons-red">
+                     <button onClick={handleClick}>Join this group</button>
+                        </div>
+                </>)
+                //"buttons-join" //logged in but not organizer
             }
         } catch {
-            return "join-button-disabled"
+            return (<></>) //not logged in
         }
     }
+    /* 	if organizer, see
+		create event, update, delete
+	if not logged in, see
+		join this group
+	if logged in but NOT organizer, see
+		join this group */
 
     const renderGroupDetails = () => {
         try {
@@ -120,9 +148,8 @@ const GroupDetails = () => {
                             <div>{numEvents} events · {publicOrPrivate}</div>
                             <div>Organized by: {firstName} {lastName}</div>
 
-                            <div>
-                            <button onClick={handleClick}>Join this group</button>
-
+                            <div className="gd-join-or-edit-buttons">
+                           {isOrganizer()}
                             </div>
                         </div>
                     </div>

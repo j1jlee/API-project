@@ -1,22 +1,40 @@
 
-import './CreateGroup.css';
-import { useDispatch } from 'react-redux';
+import './EditGroup.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { fetchCreateGroup } from '../../store/groups';
-import { useHistory } from 'react-router-dom';
+import { fetchAllGroups, fetchEditGroup, fetchGroupByGroupId } from '../../store/groups';
+import { useHistory, useParams } from 'react-router-dom';
 
-
-const NewGroup = () => {
+const EditGroup = () => {
 
     const dispatch = useDispatch();
+    const { groupId } = useParams();
 
-    const [ name, setName ] = useState('');
-    const [ about, setAbout ] = useState('');
-    const [ type, setType ] = useState('In person');
-    const [ groupPrivate, setGroupPrivate ] = useState(true);
-    const [ city, setCity ] = useState('');
-    const [ state, setState ] = useState('');
-    const [ imageUrl, setImageUrl ] = useState('');
+    useEffect(() => {
+        dispatch(fetchGroupByGroupId(groupId));
+    }, [])
+
+    const currentGroup = useSelector((state) => state.groups.group);
+
+    let name, about, type, groupPrivate, city, state; //, imageUrl
+
+    try {
+        name = currentGroup.name;
+        about = currentGroup.about;
+        type = currentGroup.type;
+        groupPrivate = currentGroup.private;
+        city = currentGroup.city;
+        state = currentGroup.state;
+        // imageUrl = currentGroup.imageUrl; need to pull from groupImages, not here
+    } catch {}
+
+    const [ editName, setEditName ] = useState(name);
+    const [ editAbout, setEditAbout ] = useState(about);
+    const [ editType, setEditType ] = useState(type);
+    const [ editGroupPrivate, setEditGroupPrivate ] = useState(groupPrivate);
+    const [ editCity, setEditCity ] = useState(city);
+    const [ editState, setEditState ] = useState(state);
+    const [ editImageUrl, setEditImageUrl ] = useState('');
 
     const [ errors, setErrors ] = useState({});
 
@@ -31,13 +49,13 @@ const NewGroup = () => {
     const createNewGroupButton = async (e) => {
         e.preventDefault();
 
-        const newGroup = {
-            name,
-            about,
-            type,
-            "private": groupPrivate,
-            city,
-            state
+        const updateGroup = {
+            "name": editName,
+            "about": editAbout,
+            "type": editType,
+            "private": editGroupPrivate,
+            "city": editCity,
+            "state": editState
         }
 
 
@@ -53,12 +71,17 @@ const NewGroup = () => {
         // }
         setErrors({});
 
-        return dispatch(fetchCreateGroup(newGroup))
+        return dispatch(fetchEditGroup(updateGroup, groupId))// should create new reducer
         // .then(resetEntries)
         .then((res) => history.push(`/groups/${res.id}`))
         .catch(async (res) => {
+
+            console.log("res?", res)
+
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
+
+
         }
         )
     }
@@ -72,14 +95,14 @@ const NewGroup = () => {
     //   }
     // );
 
-    const resetEntries = () => {
-        setName('');
-        setAbout('');
-        setType('In person');
-        setGroupPrivate(true);
-        setCity('');
-        setState('');
-    }
+    // const resetEntries = () => {
+    //     setName('');
+    //     setAbout('');
+    //     setType('In person');
+    //     setGroupPrivate(true);
+    //     setCity('');
+    //     setState('');
+    // }
         // dispatch(fetchCreateGroup(
         //     {
         //         "name": "newestGroupCREATEBUTTON",
@@ -95,7 +118,7 @@ const NewGroup = () => {
         return (
             <>
             {/* <h1>NEW GROUP FORM</h1> */}
-            <h1>START A NEW GROUP</h1>
+            <h1>UPDATE YOUR GROUPS INFORMATION</h1>
             {/* <button onClick={createNewGroupButton}>CLick me to create a new group!</button> */}
 
             <p>BECOME AN ORGANIZER</p>
@@ -116,8 +139,8 @@ in your area, and more can join you online.
             City:
             <input className="create-group-city-input"
                 type='text'
-                onChange={(e) => setCity(e.target.value)}
-                value={city}
+                onChange={(e) => setEditCity(e.target.value)}
+                value={editCity}
                 placeholder="City"
                 name="City"
             />
@@ -126,8 +149,8 @@ in your area, and more can join you online.
             State:
             <input className="create-group-state-input"
                 type='text'
-                onChange={(e) => setState(e.target.value)}
-                value={state}
+                onChange={(e) => setEditState(e.target.value)}
+                value={editState}
                 placeholder="STATE"
                 name="state"
             />
@@ -142,8 +165,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                 Name:
                 <input
                     type='text'
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
+                    onChange={(e) => setEditName(e.target.value)}
+                    value={editName}
                     placeholder="What is your group name?"
                     name="name"
                 />
@@ -165,8 +188,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                 About:
                 <input className="create-group-about-input"
                     type='textarea'
-                    onChange={(e) => setAbout(e.target.value)}
-                    value={about}
+                    onChange={(e) => setEditAbout(e.target.value)}
+                    value={editAbout}
                     placeholder="Please write at least 30 characters"
                     name="about"
                 />
@@ -179,7 +202,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
 
                 Type:
                 <select name="type"
-                onChange={(e) => setType(e.target.value)}>
+                value={editType}
+                onChange={(e) => setEditType(e.target.value)}>
                     <option value="In person">In Person</option>
                     <option value="Online">Online</option>
                 </select>
@@ -189,7 +213,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
 
                 Private:
                 <select name="type"
-                onChange={(e) => setGroupPrivate(e.target.value)}>
+                value={editGroupPrivate}
+                onChange={(e) => setEditGroupPrivate(e.target.value)}>
                     <option value={true}>Private</option>
                     <option value={false}>Public</option>
                 </select>
@@ -198,8 +223,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                 <p>TODO: IMAGEURL IMPLEMENTATION"""""" Please add an image url for your group below:</p>
                 <input className="create-group-image-url"
                     type='text'
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    value={imageUrl}
+                    onChange={(e) => setEditImageUrl(e.target.value)}
+                    value={editImageUrl}
                     placeholder="Image Url"
                     name="imageUrl"
                 />
@@ -207,11 +232,11 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
 
 <br></br>
 <br></br>
-                <button type="submit">Create Group</button>
+                <button type="submit">Update Group</button>
             </form>
         </>
     )
 }
 
 
-export default NewGroup;
+export default EditGroup;

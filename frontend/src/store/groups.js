@@ -110,6 +110,7 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
         dispatch(createGroup(newGroup));
         return newGroup;
 
+
     // try {
     //     console.log("before fetch attempt");
 
@@ -145,6 +146,20 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
     //     //dispatch(createGroup(newError));
     //     return newError;
     // }
+}
+
+export const fetchEditGroup = (group, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        "method": "PUT",
+        "headers": {"Content-Type": "application/json"},
+        "body": JSON.stringify(group)
+    });
+
+    //console.log("does it reach here?")
+
+    const resGroup = await response.json();
+    dispatch(editGroup(resGroup));
+    return resGroup;
 }
 
 export const fetchGroupByGroupId = (groupId) => async (dispatch) => {
@@ -185,6 +200,15 @@ const groupsReducer = (state = initialState, action) => {
         return {...state, group: action.group};
         // return {...state, Object.assign(groups, action.group)}
         /* groups: [...state.groups, action.group] */
+    case EDIT_GROUP:
+        let editState = {...state};
+
+        if (editState.groups) {
+            Object.assign(editState.groups, action.group)
+        } else {
+            editState.groups = action.group;
+        }
+        return editState;
     default:
       return state;
   }
