@@ -1,6 +1,8 @@
 
 import "./LandingPage.css";
 import { NavLink } from 'react-router-dom';
+import OpenModalButton from "../OpenModalButton";
+import SignupFormModal from '../SignupFormModal';
 
 const LandingPage = () => {
     return (
@@ -17,6 +19,7 @@ const LandingPage = () => {
             </div>
             <div className="lp-top-right">
             PLACEHOLDER PICTURE HERE
+            <img src="https://drive.google.com/uc?id=16lfAUfitQqzeU6j2GcoQ6XuRnR7GvBW2=w1217-h880-iv1"></img>
             </div>
         </div>
 
@@ -51,6 +54,11 @@ const LandingPage = () => {
 
         </div>
 
+        <div className="landing-page-section-4"></div>
+        <OpenModalButton
+          buttonText="Join Meetup"
+          modalComponent={<SignupFormModal />}
+        />
         </div>
        </>
     );

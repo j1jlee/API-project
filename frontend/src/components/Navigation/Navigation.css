@@ -1,3 +1,13 @@
+/* html {
+
+        border: 0px;
+        padding:0;
+        margin:0;
+} */
+
+.party-down-logo {
+    width: 100%;
+}
 .nav-wrapper {
     border-bottom: 5px solid black;
 }
@@ -16,11 +26,15 @@ li {
     grid-template-rows: auto;
     grid-template-areas:
       "left . right";
+    margin: 0;
 }
 
 .nav-grid-left {
-    background-color: red;
+    /* background-color: red; */
     grid-area: left;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .nav-grid-right {
@@ -30,7 +44,7 @@ li {
     justify-content: center;
 }
 .nav-grid-right-logged-in {
-    background-color: rgb(32, 115, 142);
+    background-color: lightskyblue;
     grid-area: right;
     display: flex;
     justify-content: center;

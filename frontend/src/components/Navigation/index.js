@@ -49,8 +49,9 @@ function Navigation({ isLoaded }){
   return (
     <div className="nav-wrapper">
     <ul className="nav-grid-container">
-      <li>
-        <NavLink exact to="/" className="nav-grid-left">HomeMEETUP-LOGO</NavLink>
+      <li className="nav-grid-left">
+        <NavLink exact to="/" >
+        <img className="party-down-logo" src="https://lh3.google.com/u/0/d/1wHFt_FZZv5q-T-bb1nxhCguRsC-O2psH=w1217-h937-iv1" alt="party down logo"></img></NavLink>
       </li >
       {isLoaded && sessionLinks}
     </ul>

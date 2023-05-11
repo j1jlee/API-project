@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useRouteMatch } from "react-router-dom"
 import EventsGroupsHeader from "../EventsGroupsHeader/EventsGroupsHeader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const EventsList = () => {
 
 
     const allEvents = useSelector(state => state.events.events)
-
+    const { url } = useRouteMatch();
 
 const eventNodes = () => {
     try {
@@ -49,6 +49,7 @@ if (allEvents) {
 
 
         return (
+            <NavLink className='event-node-a' to={`${url}/${event.id}`}>
             <li key={event.id} className="event-node">
                 <div className="event-node-image">{previewEventImageUrl}</div>
                 <div className="event-node-text">
@@ -58,6 +59,7 @@ if (allEvents) {
                 <div>{description}</div>
                 </div>
             </li>
+            </NavLink>
         )
     }))
 }
