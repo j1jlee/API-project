@@ -1,7 +1,7 @@
 
 import { useParams, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchGroupByGroupId } from "../../store/groups";
 import { fetchEventsByGroupId } from "../../store/events";
 import './GroupDetails.css'
@@ -9,8 +9,7 @@ import { useRouteMatch } from "react-router-dom";
 
 const GroupDetails = () => {
 
-    const [ numberEvents, setNumberEvents ] = useState();
-
+    let hackyNonsense = 0;
 
     const dispatch = useDispatch();
     const { groupId } = useParams();
@@ -26,6 +25,13 @@ const GroupDetails = () => {
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);
    // let numberOfEvents;
+
+   let outerEventNum = 0;
+    try {
+        if (thisGroupEvents) {
+            outerEventNum = thisGroupEvents.events.length;
+        }
+    } catch {}
 
 
     console.log("thisgroupevents", thisGroupEvents);
@@ -110,7 +116,6 @@ const GroupDetails = () => {
                     </div>
                 </>
                 );
-
                 }
 
         } catch {
@@ -118,7 +123,6 @@ const GroupDetails = () => {
             return (
                 "loading:"
             )
-
         }
     }
 
@@ -130,7 +134,8 @@ const GroupDetails = () => {
                 //console.log("currentEvents", currentEvents)
                 //numberOfEvents = currentEvents.length;
 
-            return (currentEvents.map((event) => {
+            return (
+                currentEvents.map((event) => {
 
                 let previewEventImageUrl = "N/A";
 
@@ -157,6 +162,8 @@ const GroupDetails = () => {
                         <div>{startDate}</div>
                         <div>{endDate}</div>
                         <div>{name}</div>
+                        </div>
+                        <div>
                         <div>{description}</div>
                         </div>
                     </li>
@@ -178,6 +185,7 @@ const GroupDetails = () => {
         <>
         <div className="group-details-and-events-wrapper">
             {renderGroupDetails()}
+            <div className="group-details-event-num">Events {`(${outerEventNum})`}</div>
             {renderEventDetails()}
         </div>
         </>

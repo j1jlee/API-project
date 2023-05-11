@@ -7,6 +7,11 @@
     /* padding: 0 5em; */
 /*} */
 
+.group-details-event-num {
+    font-size: larger;
+    padding: 1em 0;
+}
+
 .group-details-top {
     /* background-color: blueviolet; */
     display: grid;
