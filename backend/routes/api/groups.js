@@ -90,6 +90,34 @@ async function addPreviewAndMembers (searchRes) {
 }
 
 
+///////////////////////////
+//05/11/23 NEW ADD
+async function addNumEvents (searchRes) {
+    for (let group of searchRes) {
+        //lazy load attendance, lazy load image
+            const groupEvents = await Event.findAll({
+                where: {
+                    groupId: group.id
+                }
+            })
+            console.log("groupEvents?", groupEvents);
+
+            let groupEventsNum = 0;
+            if (groupEvents.length) {
+                groupEventsNum = groupEvents.length;
+            }
+
+            console.log("groupEventsNum?", groupEventsNum);
+
+            if (groupEventsNum >= 0) {
+                group.dataValues.numEvents = groupEventsNum;
+            }
+            await group.save();
+        }
+    //console.log(searchRes);
+    return searchRes;
+}
+
 ///
 
 //get current groups by user
@@ -761,8 +789,11 @@ router.get('/', async (req, res) => { //get all groups
 
     const resGroupsPreviewMembers = await addPreviewAndMembers(resGroups);
 
+    //NEW ADD 05-11-23, WHY NEED GROUPS
+    const resGroupsAlsoNumEvents = await addNumEvents(resGroupsPreviewMembers);
 
-    res.json({"Groups": resGroupsPreviewMembers});
+    res.json({"Groups": resGroupsAlsoNumEvents});
+    // res.json({"Groups": resGroupsPreviewMembers});
     // res.send(resGroups);
 });
 // // Sign up

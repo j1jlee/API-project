@@ -3,7 +3,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
+import { useHistory } from 'react-router-dom';
+
 function ProfileButton({ user }) {
+
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -30,6 +35,9 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    //
+    history.push('/');
+
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -40,6 +48,7 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
+        <li>Hello, {user.firstName}</li>
         <li>{user.username}</li>
         <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
