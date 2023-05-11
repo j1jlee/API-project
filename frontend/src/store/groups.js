@@ -95,20 +95,41 @@ export const fetchAllGroups = () => async (dispatch) => {
 }
 
 export const fetchCreateGroup = (group) => async (dispatch) => {
-    const response = await csrfFetch("/api/groups", {
-        "method": "POST",
-        "headers": {"Content-Type": "application/json"},
-        "body": JSON.stringify(group)
-    });
+    try {
+        console.log("before fetch attempt");
 
-    if (response.ok) {
+        const response = await csrfFetch("/api/groups", {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"},
+            "body": JSON.stringify(group)
+        });
+
+        console.log("after fetch attempt");
+
         const newGroup = await response.json();
         dispatch(createGroup(newGroup));
         return newGroup;
-    } else {
-        const newError = await response.json();
-        return newError;
+    } catch (e) {
+        console.log("error caught", e);
+        return e;
     }
+
+
+    // const response = await csrfFetch("/api/groups", {
+    //     "method": "POST",
+    //     "headers": {"Content-Type": "application/json"},
+    //     "body": JSON.stringify(group)
+    // });
+
+    // if (response.ok) {
+    //     const newGroup = await response.json();
+    //     dispatch(createGroup(newGroup));
+    //     return newGroup;
+    // } else {
+    //     const newError = await response.json();
+    //     //dispatch(createGroup(newError));
+    //     return newError;
+    // }
 }
 
 export const fetchGroupByGroupId = (groupId) => async (dispatch) => {
@@ -144,7 +165,7 @@ const groupsReducer = (state = initialState, action) => {
         }
         //console.log("does this work? newState:", newState);
         return newState;
-        
+
     case GET_GROUP_BY_ID:
         return {...state, group: action.group};
         // return {...state, Object.assign(groups, action.group)}

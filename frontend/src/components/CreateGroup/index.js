@@ -11,13 +11,15 @@ const NewGroup = () => {
 
     const [ name, setName ] = useState('');
     const [ about, setAbout ] = useState('');
-    const [ type, setType ] = useState('');
+    const [ type, setType ] = useState('In-person');
     const [ groupPrivate, setGroupPrivate ] = useState(true);
     const [ city, setCity ] = useState('');
     const [ state, setState ] = useState('');
 
+    const [ errors, setErrors ] = useState({});
 
-    const createNewGroupButton = (e) => {
+
+    const createNewGroupButton = async (e) => {
         e.preventDefault();
 
         const newGroup = {
@@ -28,14 +30,25 @@ const NewGroup = () => {
             city,
             state
         }
-        dispatch(fetchCreateGroup(newGroup));
-        resetEntries();
+
+        console.log(newGroup);
+        console.log("errors?", errors)
+
+        try {
+            await dispatch(fetchCreateGroup(newGroup));
+            resetEntries();
+        } catch {
+            const res = await dispatch(fetchCreateGroup(newGroup));
+            console.log("res?", res);
+            const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+        }
     }
 
     const resetEntries = () => {
         setName('');
         setAbout('');
-        setType('');
+        setType('In-person');
         setGroupPrivate(true);
         setCity('');
         setState('');
@@ -55,9 +68,9 @@ const NewGroup = () => {
     return (
         <>
             <h1>NEW GROUP FORM</h1>
-            <button onClick={createNewGroupButton}>CLick me to create a new group!</button>
+            {/* <button onClick={createNewGroupButton}>CLick me to create a new group!</button> */}
 
-            <form onSubmit="createNewGroupButton">
+            <form onSubmit={createNewGroupButton}>
                 Name:
                 <input
                     type='text'
@@ -66,6 +79,46 @@ const NewGroup = () => {
                     placeholder="Name"
                     name="name"
                 />
+                About:
+                <input
+                    type='textarea'
+                    onChange={(e) => setAbout(e.target.value)}
+                    value={about}
+                    placeholder="About"
+                    name="about"
+                />
+                Type:
+                <select name="type"
+                onChange={(e) => setType(e.target.value)}>
+                    <option value="In-person">In-person</option>
+                    <option value="Online">Online</option>
+                </select>
+                Private:
+                <select name="type"
+                onChange={(e) => setGroupPrivate(e.target.value)}>
+                    <option value={true}>Private</option>
+                    <option value={false}>Public</option>
+                </select>
+
+                City:
+                <input
+                    type='text'
+                    onChange={(e) => setCity(e.target.value)}
+                    value={city}
+                    placeholder="City"
+                    name="city"
+                />
+
+                State:
+                <input
+                    type='text'
+                    onChange={(e) => setState(e.target.value)}
+                    value={state}
+                    placeholder="State"
+                    name="state"
+                />
+                {/* about, type, private, city, state */}
+                <button type="submit">Create New Group</button>
             </form>
 
             BECOME AN ORGANIZER
