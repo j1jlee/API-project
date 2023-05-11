@@ -34,7 +34,7 @@ const GroupsList = () => {
                 const groups = allGroups.Groups;
 
                 return (groups.map((group) => {
-                    const { name, location, about, city, state, previewImage } = group;
+                    const { name, about, city, state, previewImage, numEvents } = group;
                     let privateOrPublic;
                     group.private ? privateOrPublic = "Private" : privateOrPublic = "Public";
 
@@ -47,9 +47,9 @@ const GroupsList = () => {
                             {/* TODO: get number of events */}
                             <div className="group-node-text">
                             <div>{name}</div>
-                            <div>{location}</div>
+                            <div>{city}, {state}</div>
                             <div>{about}</div>
-                            <div>{privateOrPublic}</div>
+                            <div>{numEvents} events · {privateOrPublic}</div>
                             </div>
                         </li>
                         </NavLink>

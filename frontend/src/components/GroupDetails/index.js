@@ -9,6 +9,8 @@ import { useRouteMatch } from "react-router-dom";
 
 const GroupDetails = () => {
 
+    let hackyNonsense = 0;
+
     const dispatch = useDispatch();
     const { groupId } = useParams();
     const { url } = useRouteMatch();
@@ -17,16 +19,27 @@ const GroupDetails = () => {
         dispatch(fetchGroupByGroupId(groupId));
 
         dispatch(fetchEventsByGroupId(groupId));
+
     }, []);
 
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);
-    let numberOfEvents;
+   // let numberOfEvents;
+
+   let outerEventNum = 0;
+    try {
+        if (thisGroupEvents) {
+            outerEventNum = thisGroupEvents.events.length;
+        }
+    } catch {}
 
 
     console.log("thisgroupevents", thisGroupEvents);
 
-
+    const handleClick = (e) => {
+        e.preventDefault();
+        alert("Feature coming soon")
+    }
 
 
     const renderGroupDetails = () => {
@@ -49,7 +62,10 @@ const GroupDetails = () => {
                 //     groupImageUrl = "N/A";
                 // }
 
-                const { name, city, state, about } = thisGroup;
+                const { name, city, state, about, numEvents } = thisGroup;
+
+                //setNumberEvents(numEvents);
+
                 const { firstName, lastName } = thisGroup.Organizer;
 
 
@@ -80,8 +96,13 @@ const GroupDetails = () => {
                         <div className="gd-top-group-description">
                             <div>{name}</div>
                             <div>{city}, {state}</div>
-                            <div>{numberOfEvents || 0} events · {publicOrPrivate}</div>
+                            <div>{numEvents} events · {publicOrPrivate}</div>
                             <div>Organized by: {firstName} {lastName}</div>
+
+                            <div>
+                            <button onClick={handleClick}>Join this group</button>
+
+                            </div>
                         </div>
                     </div>
                    {/* ///////////////////////////            */}
@@ -95,7 +116,6 @@ const GroupDetails = () => {
                     </div>
                 </>
                 );
-
                 }
 
         } catch {
@@ -103,7 +123,6 @@ const GroupDetails = () => {
             return (
                 "loading:"
             )
-
         }
     }
 
@@ -113,9 +132,10 @@ const GroupDetails = () => {
                 const currentEvents = thisGroupEvents.events;
 
                 //console.log("currentEvents", currentEvents)
-                numberOfEvents = currentEvents.length;
+                //numberOfEvents = currentEvents.length;
 
-            return (currentEvents.map((event) => {
+            return (
+                currentEvents.map((event) => {
 
                 let previewEventImageUrl = "N/A";
 
@@ -142,6 +162,8 @@ const GroupDetails = () => {
                         <div>{startDate}</div>
                         <div>{endDate}</div>
                         <div>{name}</div>
+                        </div>
+                        <div>
                         <div>{description}</div>
                         </div>
                     </li>
@@ -163,6 +185,7 @@ const GroupDetails = () => {
         <>
         <div className="group-details-and-events-wrapper">
             {renderGroupDetails()}
+            <div className="group-details-event-num">Events {`(${outerEventNum})`}</div>
             {renderEventDetails()}
         </div>
         </>

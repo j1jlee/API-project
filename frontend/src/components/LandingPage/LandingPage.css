@@ -2,6 +2,19 @@
     box-sizing: content-box;
 }
 
+.landing-disabled {
+    color: lightgray;
+    text-decoration: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.landing-not-disabled {
+
+}
+
+
+
 .landing-page-wrapper {
     /* width: 65em; */
     padding: 0 5em;
@@ -49,4 +62,8 @@
     justify-items: center;
     align-items: center;
     padding: 1em;
+}
+
+.lp-picture {
+    width: 100%
 }

@@ -51,7 +51,7 @@ function Navigation({ isLoaded }){
     <ul className="nav-grid-container">
       <li className="nav-grid-left">
         <NavLink exact to="/" >
-        <img className="party-down-logo" src="https://lh3.google.com/u/0/d/1wHFt_FZZv5q-T-bb1nxhCguRsC-O2psH=w1217-h937-iv1" alt="party down logo"></img></NavLink>
+        <img className="party-down-logo" src="https://github.com/j1jlee/API-project/blob/main/images/partyDown-resized.png?raw=true" alt="party down logo"></img></NavLink>
       </li >
       {isLoaded && sessionLinks}
     </ul>

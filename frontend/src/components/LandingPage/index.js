@@ -3,8 +3,30 @@ import "./LandingPage.css";
 import { NavLink } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import SignupFormModal from '../SignupFormModal';
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 
 const LandingPage = () => {
+
+    const currentUser = useSelector((state) => state.session.user);
+    console.log(currentUser);
+
+    const createDisabledOrNo = () => {
+            try {
+                if (currentUser) {
+                    return "landing-not-disabled";
+                } else {
+                    return "landing-disabled";
+                }
+            } catch {
+                return "landing-disabled";
+            }
+
+    }
+
+
+
     return (
        <>
        <div className="landing-page-wrapper">
@@ -18,8 +40,7 @@ const LandingPage = () => {
                 </p>
             </div>
             <div className="lp-top-right">
-            PLACEHOLDER PICTURE HERE
-            <img src="https://drive.google.com/uc?id=16lfAUfitQqzeU6j2GcoQ6XuRnR7GvBW2=w1217-h880-iv1"></img>
+            <img className="lp-picture" src="https://github.com/j1jlee/API-project/blob/main/images/landing-smaller.png?raw=true"></img>
             </div>
         </div>
 
@@ -46,7 +67,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="lp-bottom-right">
-                <NavLink to="/groups/new" className="/groups/new">Start a new group</NavLink>
+                <NavLink to="/groups/new" className={createDisabledOrNo()}>Start a new group</NavLink>
                 <div>
                 You don’t have to be an expert to gather people together and explore shared interests.
                 </div>
