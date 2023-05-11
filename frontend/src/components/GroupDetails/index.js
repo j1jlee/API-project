@@ -208,7 +208,7 @@ const GroupDetails = () => {
         <>
         <div className="group-details-and-events-wrapper">
             {renderGroupDetails()}
-            <div className="group-details-event-num">Events {`(${outerEventNum})`}</div>
+            <div className="group-details-event-num">Events {`(${outerEventNum || 0})`}</div>
             {renderEventDetails()}
         </div>
         </>

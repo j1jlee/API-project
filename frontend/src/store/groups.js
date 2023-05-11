@@ -95,8 +95,8 @@ export const fetchAllGroups = () => async (dispatch) => {
 }
 
 export const fetchCreateGroup = (group) => async (dispatch) => {
-    try {
-        console.log("before fetch attempt");
+
+        //console.log("before fetch attempt");
 
         const response = await csrfFetch("/api/groups", {
             "method": "POST",
@@ -104,15 +104,30 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
             "body": JSON.stringify(group)
         });
 
-        console.log("after fetch attempt");
+        //console.log("does it reach here?")
 
         const newGroup = await response.json();
         dispatch(createGroup(newGroup));
         return newGroup;
-    } catch (e) {
-        console.log("error caught", e);
-        return e;
-    }
+
+    // try {
+    //     console.log("before fetch attempt");
+
+    //     const response = await csrfFetch("/api/groups", {
+    //         "method": "POST",
+    //         "headers": {"Content-Type": "application/json"},
+    //         "body": JSON.stringify(group)
+    //     });
+
+    //     console.log("after fetch attempt");
+
+    //     const newGroup = await response.json();
+    //     dispatch(createGroup(newGroup));
+    //     return newGroup;
+    // } catch (e) {
+    //     console.log("error caught", e);
+    //     return e;
+    // }
 
 
     // const response = await csrfFetch("/api/groups", {
