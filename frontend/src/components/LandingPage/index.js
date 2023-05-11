@@ -18,8 +18,7 @@ const LandingPage = () => {
                 </p>
             </div>
             <div className="lp-top-right">
-            PLACEHOLDER PICTURE HERE
-            <img src="https://drive.google.com/uc?id=16lfAUfitQqzeU6j2GcoQ6XuRnR7GvBW2=w1217-h880-iv1"></img>
+            <img className="lp-picture" src="https://github.com/j1jlee/API-project/blob/main/images/landing-smaller.png?raw=true"></img>
             </div>
         </div>
 
