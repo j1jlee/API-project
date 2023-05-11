@@ -3,8 +3,30 @@ import "./LandingPage.css";
 import { NavLink } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import SignupFormModal from '../SignupFormModal';
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 
 const LandingPage = () => {
+
+    const currentUser = useSelector((state) => state.session.user);
+    console.log(currentUser);
+
+    const createDisabledOrNo = () => {
+            try {
+                if (currentUser) {
+                    return "landing-not-disabled";
+                } else {
+                    return "landing-disabled";
+                }
+            } catch {
+                return "landing-disabled";
+            }
+
+    }
+
+
+
     return (
        <>
        <div className="landing-page-wrapper">
@@ -45,7 +67,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="lp-bottom-right">
-                <NavLink to="/groups/new" className="/groups/new">Start a new group</NavLink>
+                <NavLink to="/groups/new" className={createDisabledOrNo()}>Start a new group</NavLink>
                 <div>
                 You don’t have to be an expert to gather people together and explore shared interests.
                 </div>

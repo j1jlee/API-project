@@ -657,6 +657,19 @@ router.get('/:groupId', async (req, res) => {
     //
     groupsById.dataValues.numMembers = groupMembersNum;
 
+    //also adding 5-11-23, not dry, but add numEvents
+    const groupEvents = await Event.findAll({
+        where: {
+            groupId
+        }
+    });
+
+    let groupEventsNum = 0;
+    if (groupEvents.length > 0) {
+        groupEventsNum = groupEvents.length;
+    }
+    groupsById.dataValues.numEvents = groupEventsNum;
+    /////
 
     res.json(groupsById);
 });

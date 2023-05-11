@@ -1,13 +1,16 @@
 
 import { useParams, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchGroupByGroupId } from "../../store/groups";
 import { fetchEventsByGroupId } from "../../store/events";
 import './GroupDetails.css'
 import { useRouteMatch } from "react-router-dom";
 
 const GroupDetails = () => {
+
+    const [ numberEvents, setNumberEvents ] = useState();
+
 
     const dispatch = useDispatch();
     const { groupId } = useParams();
@@ -17,16 +20,20 @@ const GroupDetails = () => {
         dispatch(fetchGroupByGroupId(groupId));
 
         dispatch(fetchEventsByGroupId(groupId));
+
     }, []);
 
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);
-    let numberOfEvents;
+   // let numberOfEvents;
 
 
     console.log("thisgroupevents", thisGroupEvents);
 
-
+    const handleClick = (e) => {
+        e.preventDefault();
+        alert("Feature coming soon")
+    }
 
 
     const renderGroupDetails = () => {
@@ -49,7 +56,10 @@ const GroupDetails = () => {
                 //     groupImageUrl = "N/A";
                 // }
 
-                const { name, city, state, about } = thisGroup;
+                const { name, city, state, about, numEvents } = thisGroup;
+
+                //setNumberEvents(numEvents);
+
                 const { firstName, lastName } = thisGroup.Organizer;
 
 
@@ -80,8 +90,13 @@ const GroupDetails = () => {
                         <div className="gd-top-group-description">
                             <div>{name}</div>
                             <div>{city}, {state}</div>
-                            <div>{numberOfEvents || 0} events · {publicOrPrivate}</div>
+                            <div>{numEvents} events · {publicOrPrivate}</div>
                             <div>Organized by: {firstName} {lastName}</div>
+
+                            <div>
+                            <button onClick={handleClick}>Join this group</button>
+
+                            </div>
                         </div>
                     </div>
                    {/* ///////////////////////////            */}
@@ -113,7 +128,7 @@ const GroupDetails = () => {
                 const currentEvents = thisGroupEvents.events;
 
                 //console.log("currentEvents", currentEvents)
-                numberOfEvents = currentEvents.length;
+                //numberOfEvents = currentEvents.length;
 
             return (currentEvents.map((event) => {
 

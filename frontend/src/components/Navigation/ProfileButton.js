@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
 import { useHistory } from 'react-router-dom';
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 
 function ProfileButton({ user }) {
 
@@ -49,8 +50,11 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li>Hello, {user.firstName}</li>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
+        <li>
+          <NavLink to="/groups">View groups</NavLink>
+        </li>
+        {/* <li>{user.username}</li>
+        <li>{user.firstName} {user.lastName}</li> */}
         <li>{user.email}</li>
         <li>
           <button onClick={logout}>Log Out</button>
