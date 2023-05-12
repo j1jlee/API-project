@@ -15,16 +15,29 @@ const LandingPage = () => {
     const createDisabledOrNo = () => {
             try {
                 if (currentUser) {
+                    //console.log("currentuser")
                     return "landing-not-disabled";
                 } else {
                     return "landing-disabled";
                 }
             } catch {
-                return "landing-disabled";
+                return "landing-not-disabled";
             }
 
     }
 
+    const joinMeetupDisabled = () => {
+        try {
+            if (currentUser) {
+                console.log("join meetup9 currentuser")
+                return "join-meetup-disabled";
+            } else {
+                return "join-meetup-enabled"
+            }
+        } catch {
+            return "join-meetup-enabled";
+        }
+    }
 
 
     return (
@@ -77,11 +90,12 @@ const LandingPage = () => {
 
         </div>
 
-        <div className="landing-page-section-4"></div>
+        <div className={joinMeetupDisabled()}>
         <OpenModalButton
           buttonText="Join Meetup"
           modalComponent={<SignupFormModal />}
         />
+        </div>
         </div>
        </>
     );

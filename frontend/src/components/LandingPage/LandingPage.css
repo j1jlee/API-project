@@ -2,6 +2,17 @@
     box-sizing: content-box;
 }
 
+.join-meetup-disabled {
+    /* display: none; */
+    visibility: hidden;
+}
+
+.join-meetup-enabled {
+
+}
+
+
+
 .landing-disabled {
     color: lightgray;
     text-decoration: none;

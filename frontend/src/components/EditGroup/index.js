@@ -10,11 +10,35 @@ const EditGroup = () => {
     const dispatch = useDispatch();
     const { groupId } = useParams();
 
+    const currentUser = useSelector((state) => state.session.user);
+    const currentGroup = useSelector((state) => state.groups.group);
+    const history = useHistory();
+
+
+
     useEffect(() => {
         dispatch(fetchGroupByGroupId(groupId));
+
+        if (!currentUser) {
+            //console.log("not logged in????")
+            history.push("/")
+        }
     }, [])
 
-    const currentGroup = useSelector((state) => state.groups.group);
+
+
+
+    console.log("currentuserId", currentUser, "organizerId", currentGroup)
+
+    try { //will only execute once currentUser exists, AND currentGroup exists
+    //if (currentUser.id === currentGroup.organizerId) console.log("matching")
+    if (currentUser.id !== currentGroup.organizerId) {
+        //console.log("currentuserId", currentUser.id, "organizerId", currentGroup.organizer.id);
+        history.push("/");
+    }
+
+    } catch {}
+
 
     let name, about, type, groupPrivate, city, state; //, imageUrl
 
@@ -38,7 +62,6 @@ const EditGroup = () => {
 
     const [ errors, setErrors ] = useState({});
 
-    const history = useHistory();
 
     //console.log("errors?", errors)
 
