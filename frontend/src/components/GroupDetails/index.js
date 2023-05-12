@@ -7,6 +7,8 @@ import { fetchEventsByGroupId } from "../../store/events";
 import './GroupDetails.css'
 import { useRouteMatch, useHistory } from "react-router-dom";
 
+import OpenModalButton from "../OpenModalButton";
+import DeleteGroupModal from "../DeleteGroupModal";
 
 const GroupDetails = () => {
 
@@ -67,7 +69,11 @@ const GroupDetails = () => {
                     <div className="buttons-gray">
                     <button>Create Event</button>
                     <button onClick={forwardToGroupId}>Update</button>
-                    <button>Delete</button>
+                    <OpenModalButton
+          buttonText="Delete"
+          modalComponent={<DeleteGroupModal groupId={thisGroup.id}/>}
+        />
+                    {/* <button>Delete</button> */}
                     </div>
                     </>
                 //"buttons-create-update-delete" //is organizer

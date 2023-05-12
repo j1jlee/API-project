@@ -12,6 +12,7 @@ const GET_GROUP_BY_USER = "groups/groupByUser";
 const GET_GROUP_BY_ID = "groups/groupByGroupId";
 const CREATE_VENUE_FOR_GROUP = "groups/createVenueForGroup";
 const GET_VENUES_FOR_GROUP = "groups/getVenuesForGroup";
+const DELETE_GROUP_BY_ID = "groups/deleteGroup";
 /*
 TODO: create group / edit group?
     add image to group
@@ -44,12 +45,12 @@ const editGroup = (group) => {
     }
 }
 
-const getGroupByUser = (group) => {
-    return {
-        type: GET_GROUP_BY_USER,
-        group
-    }
-}
+// const getGroupByUser = (group) => {
+//     return {
+//         type: GET_GROUP_BY_USER,
+//         group
+//     }
+// }
 
 const getGroupById = (group) => {
     return {
@@ -58,19 +59,28 @@ const getGroupById = (group) => {
     }
 }
 
-const createVenueForGroup = (venue) => {
+const deleteGroup = (groupId) => {
     return {
-        type: CREATE_VENUE_FOR_GROUP,
-        venue
+        type: DELETE_GROUP_BY_ID,
+        groupId
     }
 }
 
-const getVenuesForGroup = (venues) => {
-    return {
-        type: GET_VENUES_FOR_GROUP,
-        venues
-    }
-}
+// const createVenueForGroup = (venue) => {
+//     return {
+//         type: CREATE_VENUE_FOR_GROUP,
+//         venue
+//     }
+// }
+
+// const getVenuesForGroup = (venues) => {
+//     return {
+//         type: GET_VENUES_FOR_GROUP,
+//         venues
+//     }
+// }
+
+
 
 /*
 
@@ -148,6 +158,17 @@ export const fetchCreateGroup = (group) => async (dispatch) => {
     // }
 }
 
+export const fetchDeleteGroup = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        "method": "DELETE"
+    });
+
+    const resGroup = await response.json();
+    //dispatch(deleteGroup(groupId));
+    return resGroup;
+}
+
+
 export const fetchEditGroup = (group, groupId) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${groupId}`, {
         "method": "PUT",
@@ -185,6 +206,10 @@ const groupsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_GROUPS:
       return {...state, groups: action.groups};
+    case GET_GROUP_BY_ID:
+        return {...state, group: action.group};
+        // return {...state, Object.assign(groups, action.group)}
+        /* groups: [...state.groups, action.group] */
     case CREATE_GROUP:
         let newState = {...state};
 
@@ -195,11 +220,20 @@ const groupsReducer = (state = initialState, action) => {
         }
         //console.log("does this work? newState:", newState);
         return newState;
+    // case DELETE_GROUP_BY_ID:
+    //     let deleteState = {...state};
+    //     /* action.groupId */
+    //     if (deleteState.groups) {
 
-    case GET_GROUP_BY_ID:
-        return {...state, group: action.group};
-        // return {...state, Object.assign(groups, action.group)}
-        /* groups: [...state.groups, action.group] */
+    //         console.log("deletestategroups, post fetch", deleteState.groups)
+
+    //         for (let group of deleteState.groups) {
+    //             if (group.id === action.groupId) {
+    //                 console.log("wow, id match!", group.id, action.groupId)
+    //             }
+    //         }
+    //     }
+
     case EDIT_GROUP:
         let editState = {...state};
 
