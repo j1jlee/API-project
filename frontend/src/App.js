@@ -13,7 +13,7 @@ import CreateGroup from "./components/CreateGroup";
 import GroupDetails from "./components/GroupDetails";
 import EventDetails from "./components/EventDetails";
 import EditGroup from "./components/EditGroup";
-
+import CreateEvent from "./components/CreateEvent";
 
 //window.store.dispatch(window.sessionActions.restoreUser());
 
@@ -33,6 +33,10 @@ function App() {
         <CreateGroup />
       </Route>
 
+
+      <Route exact path="/groups/:groupId/events/new">
+        <CreateEvent />
+      </Route>
 
       <Route exact path="/groups/:groupId/edit">
         <EditGroup />

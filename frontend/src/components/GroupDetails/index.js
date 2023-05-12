@@ -60,6 +60,12 @@ const GroupDetails = () => {
         } catch {}
     }
 
+    const forwardToCreateEvent = () => {
+        try {
+            history.push(`/groups/${thisGroup.id}/events/new`)
+        } catch {}
+    }
+
     const isOrganizer = () => {
         try {
             const currentUserId = currentUser.id;
@@ -67,7 +73,7 @@ const GroupDetails = () => {
                 return (
                     <>
                     <div className="buttons-gray">
-                    <button>Create Event</button>
+                    <button onClick={forwardToCreateEvent}>Create Event</button>
                     <button onClick={forwardToGroupId}>Update</button>
                     <OpenModalButton
           buttonText="Delete"
