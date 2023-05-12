@@ -101,6 +101,20 @@ export const fetchEventByEventId = (eventId) => async (dispatch) => {
         return {"message": "Event could not be found"}
     }
 }
+
+export const fetchCreateEvent = (event, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`, {
+        "method": "POST",
+        "headers": {"Content-Type": "application/json"},
+        "body": JSON.stringify(event)
+    });
+
+    //console.log("does it reach here?")
+
+    const newEvent = await response.json();
+    dispatch(createEvent(newEvent));
+    return newEvent;
+}
 /*
 root reducer, SEND to index
 */
@@ -110,6 +124,15 @@ const initialState = { events: null };
 
 const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CREATE_EVENT_BY_GROUP_ID:
+        let newState = {...state};
+
+        if (newState.events) {
+            Object.assign(newState.events, action.event)
+        } else {
+            newState.events = action.event;
+        }
+        return newState;
     case GET_EVENTS:
       return {...state, events: action.events};
     case GET_EVENTS_BY_GROUP_ID:

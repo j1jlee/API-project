@@ -45,6 +45,9 @@ function ProfileButton({ user }) {
 
   return (
     <>
+
+      <NavLink to="/groups/new">Start a new Group</NavLink>
+
       <button onClick={openMenu}>
         <i className="fas fa-user-circle" />
       </button>

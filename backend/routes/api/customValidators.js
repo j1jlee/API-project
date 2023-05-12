@@ -1,7 +1,7 @@
 const { check, query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js')
 const { Group, Venue, Membership, Attendance } = require('../../db/models');
-//GroupImage, User, Event, EventImage, 
+//GroupImage, User, Event, EventImage,
 
 validateEventAttendee = async (userId, eventId) => {
     const currentAttendance = await Attendance.findOne({
@@ -149,9 +149,13 @@ const validateEvent = [
 
 const validateGroup = [
     check('name')
-        // .exists({ checkFalsy: true})
+        //.exists({ checkFalsy: true})
         .isLength({ max: 60 })
         .withMessage('Name must be 60 characters or less'),
+    check('name')
+        //.exists({ checkFalsy: true})
+        .isLength({ min: 1 })
+        .withMessage('Name must exist'),
     check('about')
         // .exists({ checkFalsy: true})
         .isLength({ min: 50 })

@@ -2,6 +2,17 @@
     box-sizing: content-box;
 }
 
+.join-meetup-disabled {
+    /* display: none; */
+    visibility: hidden;
+}
+
+.join-meetup-enabled {
+
+}
+
+
+
 .landing-disabled {
     color: lightgray;
     text-decoration: none;
@@ -30,22 +41,13 @@
     grid-template-areas:
       "left right";
 }
-.lp-top-left {
-    grid-area: left;
-}
-.lp-top-right {
-    grid-area: right;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .landing-page-middle {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 30em;
 
 }
 .landing-page-bottom {
@@ -55,6 +57,31 @@
     grid-template-areas:
       "lp-bottom-node lp-bottom-node lp-bottom-node"
 }
+
+
+.lp-middle-works {
+    margin: 0 auto;
+}
+
+.lp-top-left {
+    grid-area: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.lp-top-left p {
+    margin-top: 0;
+}
+
+
+.lp-top-right {
+    grid-area: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .lp-bottom-left, .lp-bottom-middle, .lp-bottom-right {
     display: flex;

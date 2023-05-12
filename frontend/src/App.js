@@ -12,7 +12,8 @@ import EventsList from "./components/EventsList";
 import CreateGroup from "./components/CreateGroup";
 import GroupDetails from "./components/GroupDetails";
 import EventDetails from "./components/EventDetails";
-
+import EditGroup from "./components/EditGroup";
+import CreateEvent from "./components/CreateEvent";
 
 //window.store.dispatch(window.sessionActions.restoreUser());
 
@@ -33,6 +34,14 @@ function App() {
       </Route>
 
 
+      <Route exact path="/groups/:groupId/events/new">
+        <CreateEvent />
+      </Route>
+
+      <Route exact path="/groups/:groupId/edit">
+        <EditGroup />
+
+      </Route>
       <Route path="/groups/:groupId">
         <GroupDetails />
       </Route>

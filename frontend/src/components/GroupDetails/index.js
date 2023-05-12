@@ -5,15 +5,19 @@ import { useEffect } from "react";
 import { fetchGroupByGroupId } from "../../store/groups";
 import { fetchEventsByGroupId } from "../../store/events";
 import './GroupDetails.css'
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
+
+import OpenModalButton from "../OpenModalButton";
+import DeleteGroupModal from "../DeleteGroupModal";
 
 const GroupDetails = () => {
 
-    let hackyNonsense = 0;
+    //let hackyNonsense = 0;
 
     const dispatch = useDispatch();
     const { groupId } = useParams();
     const { url } = useRouteMatch();
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(fetchGroupByGroupId(groupId));
@@ -25,6 +29,7 @@ const GroupDetails = () => {
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);
    // let numberOfEvents;
+    const currentUser = useSelector((state) => state.session.user);
 
    let outerEventNum = 0;
     try {
@@ -33,6 +38,14 @@ const GroupDetails = () => {
         }
     } catch {}
 
+    // let currentUserId = 0;
+    // try {
+    //     if (currentUser) {
+    //         currentUserId = currentUser.id;
+    //     }
+    // } catch {}
+
+    //console.log("currentuserid", currentUserId);
 
     console.log("thisgroupevents", thisGroupEvents);
 
@@ -41,6 +54,54 @@ const GroupDetails = () => {
         alert("Feature coming soon")
     }
 
+    const forwardToGroupId = () => {
+        try {
+            history.push(`/groups/${thisGroup.id}/edit`);
+        } catch {}
+    }
+
+    const forwardToCreateEvent = () => {
+        try {
+            history.push(`/groups/${thisGroup.id}/events/new`)
+        } catch {}
+    }
+
+    const isOrganizer = () => {
+        try {
+            const currentUserId = currentUser.id;
+            if (currentUserId === thisGroup.organizerId) {
+                return (
+                    <>
+                    <div className="buttons-gray">
+                    <button onClick={forwardToCreateEvent}>Create Event</button>
+                    <button onClick={forwardToGroupId}>Update</button>
+                    <OpenModalButton
+          buttonText="Delete"
+          modalComponent={<DeleteGroupModal groupId={thisGroup.id}/>}
+        />
+                    {/* <button>Delete</button> */}
+                    </div>
+                    </>
+                //"buttons-create-update-delete" //is organizer
+                )
+            } else {
+                return (<>
+                        <div className="buttons-red">
+                     <button onClick={handleClick}>Join this group</button>
+                        </div>
+                </>)
+                //"buttons-join" //logged in but not organizer
+            }
+        } catch {
+            return (<></>) //not logged in
+        }
+    }
+    /* 	if organizer, see
+		create event, update, delete
+	if not logged in, see
+		join this group
+	if logged in but NOT organizer, see
+		join this group */
 
     const renderGroupDetails = () => {
         try {
@@ -99,9 +160,8 @@ const GroupDetails = () => {
                             <div>{numEvents} events · {publicOrPrivate}</div>
                             <div>Organized by: {firstName} {lastName}</div>
 
-                            <div>
-                            <button onClick={handleClick}>Join this group</button>
-
+                            <div className="gd-join-or-edit-buttons">
+                           {isOrganizer()}
                             </div>
                         </div>
                     </div>
@@ -155,18 +215,20 @@ const GroupDetails = () => {
 
 
                 return (
-                    <NavLink className='event-node-a' to={`/events/${event.id}`}>
-                    <li key={event.id} className="event-node">
-                        <div className="event-node-image">{previewEventImageUrl}</div>
-                        <div className="event-node-text">
+                    <NavLink className='gd-event-node-a' to={`/events/${event.id}`}>
+                    <div>
+                        <li key={event.id} className="gd-event-node">
+                        <div className="gd-event-node-image">{previewEventImageUrl}</div>
+                        <div className="gd-event-node-text">
                         <div>{startDate}</div>
                         <div>{endDate}</div>
                         <div>{name}</div>
                         </div>
                         <div>
-                        <div>{description}</div>
                         </div>
                     </li>
+                        <div className="gd-event-node-description">{description}</div>
+                    </div>
                     </NavLink>
                 )
             }))
@@ -185,7 +247,7 @@ const GroupDetails = () => {
         <>
         <div className="group-details-and-events-wrapper">
             {renderGroupDetails()}
-            <div className="group-details-event-num">Events {`(${outerEventNum})`}</div>
+            <div className="group-details-event-num">Events {`(${outerEventNum || 0})`}</div>
             {renderEventDetails()}
         </div>
         </>

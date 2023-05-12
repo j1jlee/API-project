@@ -1,4 +1,60 @@
 
+/*  */
+
+.buttons-gray button {
+    background-color: darkgray;
+    color: beige;
+}
+
+.buttons-red button {
+    background-color: crimson;
+    color: beige;
+}
+
+.gd-event-node-a {
+    color: inherit;
+    text-decoration: none; /* no underline, link */
+}
+
+
+.gd-event-node {
+    /* background-color: blueviolet; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "event-image event-text event-text";
+    width: 25em;
+    border-top: solid lightgray;
+
+}
+
+.gd-event-node-image {
+    grid-area: event-image;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.gd-event-node-text {
+    grid-area: event-text;
+    display: flex;
+    flex-direction: column;
+    /* width: 25em; */
+    align-items: center;
+    padding: 1em;
+    /*  */
+    text-align: center;
+
+}
+
+.gd-event-node-description {
+    grid-area: event-description;
+}
+/*  */
+
+
 .group-details-and-events-wrapper {
     padding: 0 5em;
 }
