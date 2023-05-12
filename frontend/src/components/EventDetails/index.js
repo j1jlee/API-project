@@ -6,6 +6,8 @@ import { fetchGroupByGroupId } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "./EventDetails.css";
+import OpenModalButton from "../OpenModalButton";
+import DeleteEventModal from "../DeleteEventModal";
 
 const EventDetails = () => {
 
@@ -125,6 +127,21 @@ const EventDetails = () => {
                             <div>{price}</div>
                             <div>{type}</div>
                             {/* in person or online */}
+
+                        {/*  */}
+                        <div className="buttons-gray">
+                    <OpenModalButton
+                        buttonText="Delete"
+                        modalComponent={<DeleteEventModal eventId={eventId} groupId={thisGroup.id}/>}
+        />
+                    {/* <button>Delete</button> */}
+                    </div>
+
+
+
+
+
+                        {/*  */}
                         </div>
                         </div>
                     </div>

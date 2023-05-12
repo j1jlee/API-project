@@ -115,6 +115,18 @@ export const fetchCreateEvent = (event, groupId) => async (dispatch) => {
     dispatch(createEvent(newEvent));
     return newEvent;
 }
+
+export const fetchDeleteEvent = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}`, {
+        "method": "DELETE"
+    });
+
+    const resGroup = await response.json();
+    //dispatch(deleteGroup(eventId));
+    return resGroup;
+}
+
+
 /*
 root reducer, SEND to index
 */

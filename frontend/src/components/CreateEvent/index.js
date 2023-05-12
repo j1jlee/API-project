@@ -157,7 +157,7 @@ What is the name of your event?
                 placeholder="MM/DD/YYYY HH:mm AM"
                 name="endDate"
             />
-            {errors.endtDate && <p className="errors-p">{errors.endDate}</p>}
+            {errors.endDate && <p className="errors-p">{errors.endDate}</p>}
 
 {/*  */}
             <p>TODO: IMAGEURL IMPLEMENTATION"""""" Please add an image url for your group below:</p>
@@ -181,7 +181,6 @@ What is the name of your event?
                 />
                 {errors.description && <p className="errors-p">{errors.description}</p>}
 
-                <h2>Final steps...</h2>
 
 
 
