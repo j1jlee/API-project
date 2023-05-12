@@ -9,6 +9,8 @@ import "./EventDetails.css";
 import OpenModalButton from "../OpenModalButton";
 import DeleteEventModal from "../DeleteEventModal";
 
+//import { refreshEvent } from "../../store/events";
+
 const EventDetails = () => {
 
     const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const EventDetails = () => {
 
     useEffect(() => {
         dispatch(fetchEventByEventId(eventId));
+
+        //dispatch(refreshEvent());
     }, [])
 
     const thisEvent = useSelector((state) => state.events.events);

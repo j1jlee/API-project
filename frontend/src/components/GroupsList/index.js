@@ -6,13 +6,20 @@ import { NavLink } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
 import "./GroupsList.css";
 
+import { refreshGroup } from "../../store/groups";
+
 const GroupsList = () => {
 
     const dispatch = useDispatch();
 
     useEffect(()=> {
          dispatch(fetchAllGroups());
+
+         dispatch(refreshGroup());
         }, [])
+
+
+
 
     const allGroups = useSelector(state => state.groups.groups)
     // const history = useHistory();

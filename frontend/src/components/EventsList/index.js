@@ -5,12 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllEvents } from "../../store/events";
 import "./EventsList.css";
 
+import { refreshEvent } from "../../store/events";
+import { refreshGroup } from "../../store/groups"
+
 const EventsList = () => {
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchAllEvents());
+
+        dispatch(refreshEvent());
+        dispatch(refreshGroup());
     }, [])
 
 

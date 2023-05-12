@@ -10,6 +10,8 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroupModal";
 
+//import { refreshGroup } from "../../store/groups";
+
 const GroupDetails = () => {
 
     //let hackyNonsense = 0;
@@ -24,7 +26,10 @@ const GroupDetails = () => {
 
         dispatch(fetchEventsByGroupId(groupId));
 
+
     }, []);
+
+
 
     const thisGroup = useSelector((state) => state.groups.group);
     const thisGroupEvents = useSelector((state) => state.events);

@@ -13,6 +13,8 @@ const GET_GROUP_BY_ID = "groups/groupByGroupId";
 const CREATE_VENUE_FOR_GROUP = "groups/createVenueForGroup";
 const GET_VENUES_FOR_GROUP = "groups/getVenuesForGroup";
 const DELETE_GROUP_BY_ID = "groups/deleteGroup";
+
+const REFRESH_GROUP = "groups/refresh";
 /*
 TODO: create group / edit group?
     add image to group
@@ -45,6 +47,11 @@ const editGroup = (group) => {
     }
 }
 
+export const refreshGroup = () => {
+    return {
+        type: REFRESH_GROUP
+    }
+}
 // const getGroupByUser = (group) => {
 //     return {
 //         type: GET_GROUP_BY_USER,
@@ -243,6 +250,24 @@ const groupsReducer = (state = initialState, action) => {
             editState.groups = action.group;
         }
         return editState;
+
+    case REFRESH_GROUP:
+        //console.log("At refreshgroup");
+
+        let refreshState = {...initialState};
+        // let refreshState = {...state};
+        // try {
+        //     console.log("also here", refreshState.groups)
+        //     console.log("has groups.group", refreshState.groups.group)
+        //     if (refreshState.groups) {
+        //         console.log("refreshState group before", refreshState.groups)
+        //         let refreshGroups = refreshState.groups;
+        //         //delete refreshGroups.group;
+        //         refreshGroups.group = null;
+        //         console.log("refreshState group after", refreshState.groups)
+        //     }
+        // } catch {};
+        return refreshState;
     default:
       return state;
   }

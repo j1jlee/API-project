@@ -6,6 +6,8 @@ import { fetchCreateEvent } from '../../store/events';
 import { useHistory, useParams } from 'react-router-dom';
 import { fetchGroupByGroupId } from '../../store/groups';
 
+import { refreshEvent } from '../../store/events';
+import { refreshGroup } from '../../store/groups';
 
 /* /groups/:groupId/events/new */
 const CreateEvent = () => {
@@ -15,6 +17,10 @@ const CreateEvent = () => {
 
     useEffect(() => {
         dispatch(fetchGroupByGroupId(groupId));
+
+
+        dispatch(refreshEvent());
+        dispatch(refreshGroup());
     }, [])
 
     const thisGroup = useSelector((state) => state.groups.group);

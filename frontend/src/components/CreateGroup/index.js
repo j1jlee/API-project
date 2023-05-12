@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { fetchCreateGroup } from '../../store/groups';
 import { useHistory } from 'react-router-dom';
+import { refreshGroup } from '../../store/groups';
 
 
 const NewGroup = () => {
@@ -24,9 +25,10 @@ const NewGroup = () => {
 
     //console.log("errors?", errors)
 
-    // useEffect(() => {
-    //     document.title = "Start a New Group"
-    // }, [])
+    useEffect(() => {
+
+        dispatch(refreshGroup());
+    }, [])
 
     const createNewGroupButton = async (e) => {
         e.preventDefault();
