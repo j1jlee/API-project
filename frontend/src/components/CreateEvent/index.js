@@ -95,6 +95,7 @@ const CreateEvent = () => {
 
         return (
             <>
+            <div className="create-event-wrapper">
             <h1>Create an event for {thisGroupName}</h1>
 
             {/* <p>BECOME AN ORGANIZER</p>
@@ -192,8 +193,10 @@ What is the name of your event?
 
 <br></br>
 <br></br>
-                <button type="submit">Create Group</button>
+                <button type="submit" className="universal-button-red universal-button-wide">Create Group</button>
             </form>
+
+            </div>
         </>
     )
 }

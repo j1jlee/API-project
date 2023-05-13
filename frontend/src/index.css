@@ -12,6 +12,11 @@
     color: beige;
 }
 
+.universal-button-wide {
+    height: 3em;
+    width: 20em;
+}
+
 
 button {
     background-color: darkgray;

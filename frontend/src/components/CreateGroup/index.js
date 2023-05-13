@@ -96,6 +96,7 @@ const NewGroup = () => {
 
         return (
             <>
+            <div className="create-group-wrapper">
             {/* <h1>NEW GROUP FORM</h1> */}
             <h1>START A NEW GROUP</h1>
             {/* <button onClick={createNewGroupButton}>CLick me to create a new group!</button> */}
@@ -209,8 +210,10 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
 
 <br></br>
 <br></br>
-                <button type="submit">Create Group</button>
+                <button type="submit" className="universal-button-red universal-button-wide">Create Group</button>
             </form>
+
+            </div>
         </>
     )
 }
