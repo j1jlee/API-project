@@ -8,6 +8,11 @@
 .party-down-logo {
     width: 15em;
 }
+
+.nav-button-light-gray {
+    background-color: lightgray;
+}
+
 .nav-wrapper {
     border-bottom: 5px solid black;
 }

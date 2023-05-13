@@ -31,12 +31,77 @@
     grid-area: group-event-details;
 }
 
-.ed-top-right-event-group {
+.ed-top-right-grid {
+    margin: .5em;
+}
+
+.ed-top-right-minigrid-time {
+    display: grid;
+    grid-template-columns: repeat(3, fit-content(100%));
+    column-gap: 1em;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "m-clock m-start-label m-start-time"
+      "m-clock m-end-label m-end-time";
+
+    /* width: 50%; */
+}
+
+.ed-top-right-minigrid-clock-icon {
+    grid-area: m-clock;
+    width: 2em;
+}
+.ed-top-right-minigrid-start-label {
+    grid-area: m-start-label;
+}
+.ed-top-right-minigrid-start-time {
+    grid-area: m-start-time;
+}
+.ed-top-right-minigrid-end-label {
+    grid-area: m-end-label;
+}
+.ed-top-right-minigrid-start-time {
+    grid-area: m-end-time;
+}
+
+
+.ed-top-right-price-grid {
+    display: grid;
+    grid-template-columns: repeat(2, fit-content(100%));
+    column-gap: 1em;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "p-icon p-value"
+      "p-icon p-value";
+}
+.ed-top-right-price-icon {
+    grid-area: p-icon;
+    width: 2em;
+
+    display: flex;
+    justify-content: center;
+}
+.ed-top-right-price-value {
+    grid-area: p-value;
+
+    display: flex;
+    align-items: center;
+}
+/*
+ed-top-right-minigrid-clock-icon
+ed-top-right-minigrid-start-label
+ed-top-right-minigrid-start-time
+
+ed-top-right-minigrid-end-label
+ed-top-right-minigrid-end-time
+
+*/
+/* .ed-top-right-event-group {
 
 }
 .ed-top-right-event-details {
 
-}
+} */
 
 .event-details-main {
     background-color: lightgray;

@@ -10,6 +10,8 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroupModal";
 
+import { formattedDateString } from "../aaComponentMiddleware";
+
 //import { refreshGroup } from "../../store/groups";
 
 const GroupDetails = () => {
