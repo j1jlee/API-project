@@ -128,7 +128,7 @@ const EventDetails = () => {
                         <div className="ed-top-right-event-details">
                             <div>{startDate}</div>
                             <div>{endDate}</div>
-                            <div>{price}</div>
+                            <div><i class="fa-solid fa-dollar-sign"></i> {price}</div>
                             <div>{type}</div>
                             {/* in person or online */}
 

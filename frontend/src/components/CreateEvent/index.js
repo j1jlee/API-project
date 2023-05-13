@@ -146,7 +146,7 @@ What is the name of your event?
             {/* startDate */}
             <p>When does your event start?</p>
             <input className="create-event-start-date"
-                type='date'
+                type='datetime-local'
                 onChange={(e) => setStartDate(e.target.value)}
                 value={startDate}
                 placeholder="MM/DD/YYYY HH:mm AM"
@@ -157,7 +157,7 @@ What is the name of your event?
             {/* endDate */}
             <p>When does your event end?</p>
             <input className="create-event-end-date"
-                type='date'
+                type='datetime-local'
                 onChange={(e) => setEndDate(e.target.value)}
                 value={endDate}
                 placeholder="MM/DD/YYYY HH:mm AM"
