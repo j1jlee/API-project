@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
     <>
 
       <NavLink to="/groups/new">Start a new Group</NavLink>
-
+      <span>&emsp;</span>
       <button onClick={openMenu}>
         <i className="fas fa-user-circle" />
       </button>
@@ -55,6 +55,9 @@ function ProfileButton({ user }) {
         <li>Hello, {user.firstName}</li>
         <li>
           <NavLink to="/groups">View groups</NavLink>
+        </li>
+        <li>
+          <NavLink to="/events">View events</NavLink>
         </li>
         {/* <li>{user.username}</li>
         <li>{user.firstName} {user.lastName}</li> */}

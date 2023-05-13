@@ -133,7 +133,8 @@ const EventDetails = () => {
                             {/* in person or online */}
 
                         {/*  */}
-                        <div className="buttons-gray">
+                        <div>
+                        {/* <div className="buttons-gray"> */}
                     <OpenModalButton
                         buttonText="Delete"
                         modalComponent={<DeleteEventModal eventId={eventId} groupId={thisGroup.id}/>}

@@ -39,9 +39,10 @@ export const LoginFormModal = () => {
   return (
     <>
       <h1>Log In</h1>
+
       <form onSubmit={handleSubmit}>
         <label>
-          Username or Email:
+          Username or Email:<br></br>
           <input
             type="text"
             value={credential}
@@ -49,8 +50,9 @@ export const LoginFormModal = () => {
             required
           />
         </label>
+        <br></br>
         <label>
-          Password:
+          Password:<br></br>
           <input
             type="password"
             value={password}
@@ -58,8 +60,12 @@ export const LoginFormModal = () => {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        {/* {errors.credential && <p>{errors.credential}</p>}
+        <br></br>
+        <br></br> */}
+        {errors.credential ? <p className="login-error-message">{errors.credential}</p> : <><br></br><br></br></>}
+
+        <button type="submit" className="universal-button-red">Log In</button>
       </form>
 
       <button onClick={loginDemoUser}>Log in as Demo User</button>

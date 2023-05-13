@@ -14,6 +14,9 @@
 .gd-event-node-a {
     color: inherit;
     text-decoration: none; /* no underline, link */
+    display: flex;
+    border-top: solid lightgray;
+    /* border-bottom: solid lightgray */
 }
 
 
@@ -25,7 +28,7 @@
     grid-template-areas:
       "event-image event-text event-text";
     width: 25em;
-    border-top: solid lightgray;
+    /* border-top: solid lightgray; */
 
 }
 

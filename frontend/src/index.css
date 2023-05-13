@@ -3,4 +3,20 @@
 
 * {
     font-family: 'Roboto', sans-serif;
+
+
+}
+
+.universal-button-red {
+    background-color: crimson;
+    color: beige;
+}
+
+
+button {
+    background-color: darkgray;
+    height: 2em;
+    border-radius: 5px;
+    box-shadow: 3px 3px black;
+    margin: 5px 2px;
 }
