@@ -64,3 +64,10 @@
     flex-direction: column;
     align-items: center;
 }
+
+.prev-event-label {
+    /* background-color: violet; */
+    padding-top: 1em;
+    width: 100%;
+    font-size: x-large;
+}

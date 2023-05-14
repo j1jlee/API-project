@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllEvents } from "../../store/events";
 import "./EventsList.css";
 
-import { formattedDateString } from "../aaComponentMiddleware";
+import { formattedDateString, eventSort, firstUpcomingEventIndex } from "../aaComponentMiddleware";
 
 import { refreshEvent } from "../../store/events";
 import { refreshGroup } from "../../store/groups"
@@ -25,15 +25,36 @@ const EventsList = () => {
     const allEvents = useSelector(state => state.events.events)
     const { url } = useRouteMatch();
 
-const eventNodes = () => {
+
+    let events;
+    let previousEvents = [];
+    let upcomingEvents = [];
+
+    try {
+        events = allEvents.Events;
+
+        const eventsSorted = eventSort(events);
+        const upcomingEventIndex = firstUpcomingEventIndex(eventsSorted);
+
+        if (upcomingEventIndex === -1) {
+                    previousEvents = [...eventsSorted];
+                } else {
+                    previousEvents = [...eventsSorted.slice(0, upcomingEventIndex)];
+                    upcomingEvents = [...eventsSorted.slice(upcomingEventIndex)]
+                }
+    } catch {}
+
+
+
+    const eventNodes = (events) => {
     try {
 ///////////////////////
-if (allEvents) {
-    console.log("all events exists, what is it", allEvents);
+if (events) {
+// if (allEvents) {
+    // console.log("all events exists, what is it", allEvents);
 
-    const events = allEvents.Events;
+    // const events = allEvents.Events;
 
-    // console.log("does this work?", events)
 
     return (events.map((event) => {
 
@@ -153,7 +174,9 @@ if (allEvents) {
 
         <div className="events-groups-header-wrapper">
         <ul className="group-wrapper">
-            {eventNodes()}
+            {eventNodes(upcomingEvents)}
+        <li className="prev-event-label">Previous Events:</li>
+            {eventNodes(previousEvents)}
         </ul>
         </div>
         </>

@@ -6,6 +6,8 @@ import { fetchCreateGroup } from '../../store/groups';
 import { useHistory } from 'react-router-dom';
 import { refreshGroup } from '../../store/groups';
 
+import { lineBreakOrErrors } from '../aaComponentMiddleware';
+
 
 const NewGroup = () => {
 
@@ -103,20 +105,22 @@ const NewGroup = () => {
 
             <p>BECOME AN ORGANIZER</p>
 <h2>We'll walk you through a few steps to build your local community</h2>
-
+<br></br>
             <form onSubmit={createNewGroupButton}>
 
+            <div className="create-section-node">
             <h2>Set your group's location</h2>
             {/* <h2>First, set your group's location.</h2> */}
             <p>
             Meetup groups meet locally, in person, and online. We'll connect you with people in your area.
             </p>
+            <br></br>
             {/* <p>
             Meetup groups meet locally, in person and online. We'll connect you with people
             in your area, and more can join you online.
             </p> */}
 
-            City:
+            {/* City: */}
             <input className="create-group-city-input"
                 type='text'
                 onChange={(e) => setCity(e.target.value)}
@@ -124,25 +128,29 @@ const NewGroup = () => {
                 placeholder="City"
                 name="City"
             />
-            {errors.city && <p className="errors-p">{errors.city}</p>}
+            {/* {errors.city && <p className="errors-p">{errors.city}</p>} */}
 
-            State:
+            {/* State: */}
             <input className="create-group-state-input"
                 type='text'
                 onChange={(e) => setState(e.target.value)}
                 value={state}
                 placeholder="STATE"
                 name="state"
-            />
-            {errors.state && <p className="errors-p">{errors.state}</p>}
+                />
+            {lineBreakOrErrors(errors, 'city')}
+            {lineBreakOrErrors(errors, 'state')}
+            {/* {errors.state && <p className="errors-p">{errors.state}</p>} */}
+            </div>
 
+            <div className="create-section-node">
             <h2>What will your group's name be?</h2>
 <p>Choose a name that will give people a clear idea of what the group is about.
 Feel free to get creative! You can edit this later if you change your mind.</p>
+<br></br>
 
 
-
-                Name:
+                {/* Name: */}
                 <input
                     type='text'
                     onChange={(e) => setName(e.target.value)}
@@ -150,35 +158,47 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     placeholder="What is your group name?"
                     name="name"
                 />
-                {errors.name && <p className="errors-p">{errors.name}</p>}
-
+                {lineBreakOrErrors(errors, 'name')}
+                {/* {errors.name && <p className="errors-p">{errors.name}</p>} */}
+</div>
+<div className="create-section-node">
                 <h2>Describe the purpose of your group.</h2>
                 {/* <h2>Now describe what your group will be about</h2> */}
-<p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
-<ol>
-<li>1. What's the purpose of the group?</li>
-<li>2. Who should join?</li>
-<li>3. What will you do at your events?</li>
+                <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
+                <ol>
+                <li>1. What's the purpose of the group?</li>
+                <li>2. Who should join?</li>
+                <li>3. What will you do at your events?</li>
     </ol>
+    <br></br>
 {/* 1. What's the purpose of the group?<br></br>
 2. Who should join?<br></br>
 3. What will you do at your events? */}
 
 
-                About:
-                <input className="create-group-about-input"
+                {/* About: */}
+                {/* <input className="create-group-about-input"
                     type='textarea'
                     onChange={(e) => setAbout(e.target.value)}
                     value={about}
                     placeholder="Please write at least 30 characters"
                     name="about"
-                />
-                {errors.about && <p className="errors-p">{errors.about}</p>}
+                /> */}
 
+                <textarea
+                className="create-group-textarea"
+                onChange={(e) => setAbout(e.target.value)}
+                value={about}
+                placeholder="Please write at least 30 characters">
+                </textarea>
+
+                {lineBreakOrErrors(errors, 'about')}
+                {/* {errors.about && <p className="errors-p">{errors.about}</p>} */}
+        </div>
+        <div className="create-section-node">
                 <h2>Final steps...</h2>
-<p>Is this an in-person or online group?</p>
-
-
+                <br></br>
+                <p>Is this an in-person or online group?</p>
 
                 Type:
                 <select name="type"
@@ -186,7 +206,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     <option value="In person">In Person</option>
                     <option value="Online">Online</option>
                 </select>
-                {errors.type && <p className="errors-p">{errors.type}</p>}
+                {lineBreakOrErrors(errors, 'type')}
+                {/* {errors.type && <p className="errors-p">{errors.type}</p>} */}
 
                 <p>Is this group private or public?</p>
 
@@ -196,7 +217,8 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     <option value={true}>Private</option>
                     <option value={false}>Public</option>
                 </select>
-                {errors.private && <p className="errors-p">{errors.private}</p>}
+                {lineBreakOrErrors(errors, 'private')}
+                {/* {errors.private && <p className="errors-p">{errors.private}</p>} */}
 
                 <p>TODO: IMAGEURL IMPLEMENTATION"""""" Please add an image url for your group below:</p>
                 <input className="create-group-image-url"
@@ -207,7 +229,7 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     name="imageUrl"
                 />
                 {/* {errors.imageUrl && <p className="errors-p">{errors.imageUrl}</p>} */}
-
+            </div>
 <br></br>
 <br></br>
                 <button type="submit" className="universal-button-red universal-button-wide">Create Group</button>
