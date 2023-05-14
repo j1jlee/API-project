@@ -93,7 +93,7 @@
     padding: 0 5em; */
 
     display: flex;
-    position: absolute;
+    /* position: absolute; */
     /* width: 100%; */
 
     flex-direction: column;

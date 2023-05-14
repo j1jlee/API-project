@@ -10,7 +10,7 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroupModal";
 
-import { formattedDateString, eventSort } from "../aaComponentMiddleware";
+import { formattedDateString, eventSort, firstUpcomingEventIndex } from "../aaComponentMiddleware";
 
 //import { refreshGroup } from "../../store/groups";
 
@@ -202,33 +202,71 @@ const GroupDetails = () => {
         }
     }
 
-    const renderEventDetails = () => {
-        try {
+
+    // please work lol
+    let previousEvents = [];
+    let upcomingEvents = [];
+
+    try {
             if (thisGroupEvents) {
                 const currentEvents = thisGroupEvents.events;
 
-               let currentEventsSorted;
+            //    let currentEventsSorted;
+               const currentEventsSorted = eventSort(currentEvents);
 
-               currentEventsSorted = eventSort(currentEvents);
-                // try {
-                //     console.log("currentEventsSorted", currentEventsSorted);
-                // } catch {
-                //     console.log("sort failed?");
-                //     currentEventsSorted = [...currentEvents];
-                // };
-                // //console.log("currentEvents", currentEvents)
-                // //numberOfEvents = currentEvents.length;
+                const upcomingEventIndex = firstUpcomingEventIndex(currentEventsSorted);
+                console.log("upcoming event index?", upcomingEventIndex);
 
+
+                if (upcomingEventIndex === -1) {
+                    previousEvents = [...currentEventsSorted];
+                } else {
+                    previousEvents = [...currentEventsSorted.slice(0, upcomingEventIndex)];
+                    upcomingEvents = [...currentEventsSorted.slice(upcomingEventIndex)]
+                }
+
+                console.log('previous events', previousEvents);
+                console.log('upcoming events', upcomingEvents);
+            }
+     }
+        catch {}
+
+
+
+
+
+    /* previous or upcoming */
+    const renderEventDetails = (events) => {
+        try {
+            if (events) {
+            // if (thisGroupEvents) {
+            //     const currentEvents = thisGroupEvents.events;
+
+            // //    let currentEventsSorted;
+            //    const currentEventsSorted = eventSort(currentEvents);
+
+            //     const upcomingEventIndex = firstUpcomingEventIndex(currentEventsSorted);
+            //     console.log("upcoming event index?", upcomingEventIndex);
+
+            //     let previousEvents = [];
+            //     let upcomingEvents = [];
+
+            //     if (upcomingEventIndex === -1) {
+            //         previousEvents = [...currentEventsSorted];
+            //     } else {
+            //         previousEvents = [...currentEventsSorted.slice(0, upcomingEventIndex)];
+            //         upcomingEvents = [...currentEventsSorted.slice(upcomingEventIndex)]
+            //     }
+
+            //     console.log('previous events', previousEvents);
+            //     console.log('upcoming events', upcomingEvents);
             return (
-                currentEventsSorted.map((event) => {
+                events.map((event) => {
+                // currentEventsSorted.map((event) => {
                 // currentEvents.map((event) => {
 
                 let previewEventImageUrl = "N/A";
 
-                // if (typeof previewEventImage === 'undefined') {
-                //     previewEventImageUrl = "N/A";
-                // } else {
-                //     previewEventImageUrl = previewEventImage.url;
                 try {
                     if (event.previewImage) {
                         previewEventImageUrl = event.previewImage;
@@ -275,9 +313,20 @@ const GroupDetails = () => {
             {renderGroupDetails()}
 
             <div className="group-details-event-wrapper">
-            <div className="group-details-event-num">Events {`(${outerEventNum || 0})`}</div>
-            {renderEventDetails()}
-            </div>
+            <div className="group-details-event-num">Upcoming Events {`(${upcomingEvents.length || 0})`}</div>
+            {/* <div className="group-details-event-num">Upcoming Events {`(${outerEventNum || 0})`}</div> */}
+            {renderEventDetails(upcomingEvents)}
+
+            <div className="group-details-event-num">Previous Events {`(${previousEvents.length || 0})`}</div>
+            {/* <div className="group-details-event-num">Upcoming Events {`(${outerEventNum || 0})`}</div> */}
+            {renderEventDetails(previousEvents)}
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+
+            </div> {/* group details event wrapper */}
         </div>
         </>
 
