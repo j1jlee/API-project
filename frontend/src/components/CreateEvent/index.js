@@ -9,6 +9,9 @@ import { fetchGroupByGroupId } from '../../store/groups';
 import { refreshEvent } from '../../store/events';
 import { refreshGroup } from '../../store/groups';
 
+import { lineBreakOrErrors } from '../aaComponentMiddleware';
+import { formattedDateForm } from '../aaComponentMiddleware';
+
 /* /groups/:groupId/events/new */
 const CreateEvent = () => {
 
@@ -36,8 +39,8 @@ const CreateEvent = () => {
     const [ capacity, setCapacity ] = useState('0');
     const [ price, setPrice ] = useState(0);
     const [ description, setDescription ] = useState('');
-    const [ startDate, setStartDate ] = useState(new Date);
-    const [ endDate, setEndDate ] = useState(new Date);
+    const [ startDate, setStartDate ] = useState(formattedDateForm());
+    const [ endDate, setEndDate ] = useState(formattedDateForm());
     const [ imageUrl, setImageUrl ] = useState("");
 
 
@@ -75,6 +78,7 @@ const CreateEvent = () => {
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
+            console.log("new errors yay", errors);
         }
         )
     }
@@ -102,9 +106,12 @@ const CreateEvent = () => {
 <h2>We'll walk you through a few steps to build your local community</h2> */}
 
             <form onSubmit={createNewEventButton}>
-<p>
-What is the name of your event?
-</p>
+
+
+
+            <p>
+            What is the name of your event?
+            </p>
                 <input
                     type='text'
                     onChange={(e) => setName(e.target.value)}
@@ -112,15 +119,21 @@ What is the name of your event?
                     placeholder="Event Name"
                     name="name"
                 />
-                {errors.name && <p className="errors-p">{errors.name}</p>}
-<p>Is this an in-person or online event?</p>
+                {lineBreakOrErrors(errors, 'name')}
+                {/* {errors.name && <p className="errors-p">{errors.name}</p>} */}
+
+
+            <div className="create-section-node">
+            <p>Is this an in-person or online event?</p>
 
                <select name="type"
                 onChange={(e) => setType(e.target.value)}>
                     <option value="In person">In Person</option>
                     <option value="Online">Online</option>
                 </select>
-                {errors.type && <p className="errors-p">{errors.type}</p>}
+                {lineBreakOrErrors(errors, 'type')}
+            </div>
+                {/* {errors.type && <p className="errors-p">{errors.type}</p>} */}
 
                 {/* <p>Is this event private or public?</p>
                         NO PRIVATE/PUBLIC IN BACKEND FOR EVENTS
@@ -133,6 +146,7 @@ What is the name of your event?
                 {errors.private && <p className="errors-p">{errors.private}</p>} */}
 
             {/* Price */}
+            <div className="create-section-node">
         <p>What is the price for your event? </p>
             <input className="create-event-price"
                 type='number'
@@ -142,9 +156,12 @@ What is the name of your event?
                 placeholder="0"
                 name="Price"
             />
-            {errors.price && <p className="errors-p">{errors.price}</p>}
+            {lineBreakOrErrors(errors, 'price')}
+        </div>
+            {/* {errors.price && <p className="errors-p">{errors.price}</p>} */}
 
             {/* startDate */}
+            <div className="create-section-node">
             <p>When does your event start?</p>
             <input className="create-event-start-date"
                 type='datetime-local'
@@ -153,7 +170,8 @@ What is the name of your event?
                 placeholder="MM/DD/YYYY HH:mm AM"
                 name="startDate"
                 />
-            {errors.startDate && <p className="errors-p">{errors.startDate}</p>}
+            {lineBreakOrErrors(errors, 'startDate')}
+            {/* {errors.startDate && <p className="errors-p">{errors.startDate}</p>} */}
 
             {/* endDate */}
             <p>When does your event end?</p>
@@ -164,9 +182,11 @@ What is the name of your event?
                 placeholder="MM/DD/YYYY HH:mm AM"
                 name="endDate"
             />
-            {errors.endDate && <p className="errors-p">{errors.endDate}</p>}
-
+            {lineBreakOrErrors(errors, 'endDate')}
+            {/* {errors.endDate && <p className="errors-p">{errors.endDate}</p>} */}
+            </div>
 {/*  */}
+            <div className="create-section-node">
             <p>TODO: IMAGEURL IMPLEMENTATION"""""" Please add an image url for your group below:</p>
                 <input className="create-group-image-url"
                     type='text'
@@ -175,25 +195,33 @@ What is the name of your event?
                     placeholder="Image Url"
                     name="imageUrl"
                 />
+                {lineBreakOrErrors(errors, 'imageUrl')}
                 {/* {errors.imageUrl && <p className="errors-p">{errors.imageUrl}</p>} */}
+            </div>
 
-
+        <div className="create-section-node">
           <p>Please describe your event</p>
-                <input className="create-group-about-input"
+                <textarea
+                value={description}
+                className="create-group-about-input"
+                placeholder="Please write at least 30 characters"
+                onChange={(e) => setDescription(e.target.value)}></textarea>
+
+
+                {/* <input className="create-group-about-input"
                     type='textarea'
                     onChange={(e) => setDescription(e.target.value)}
                     value={description}
                     placeholder="Please write at least 30 characters"
                     name="description"
-                />
-                {errors.description && <p className="errors-p">{errors.description}</p>}
+                /> */}
+            {lineBreakOrErrors(errors, 'description')}
+            {/* {errors.description && <p className="errors-p">{errors.description}</p>} */}
+            </div>
 
-
-
-
-<br></br>
-<br></br>
-                <button type="submit" className="universal-button-red universal-button-wide">Create Group</button>
+                <button type="submit" className="universal-button-red universal-button-wide">Create Event</button>
+                <br></br>
+                <br></br>
             </form>
 
             </div>

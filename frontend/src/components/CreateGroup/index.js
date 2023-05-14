@@ -106,15 +106,15 @@ const NewGroup = () => {
 
             <form onSubmit={createNewGroupButton}>
 
-<h2>Set your group's location</h2>
-{/* <h2>First, set your group's location.</h2> */}
-<p>
-Meetup groups meet locally, in person, and online. We'll connect you with people in your area.
-</p>
-{/* <p>
-Meetup groups meet locally, in person and online. We'll connect you with people
-in your area, and more can join you online.
-</p> */}
+            <h2>Set your group's location</h2>
+            {/* <h2>First, set your group's location.</h2> */}
+            <p>
+            Meetup groups meet locally, in person, and online. We'll connect you with people in your area.
+            </p>
+            {/* <p>
+            Meetup groups meet locally, in person and online. We'll connect you with people
+            in your area, and more can join you online.
+            </p> */}
 
             City:
             <input className="create-group-city-input"
