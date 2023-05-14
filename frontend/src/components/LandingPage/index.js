@@ -96,7 +96,9 @@ const LandingPage = () => {
           modalComponent={<SignupFormModal />}
         />
         </div>
+        <img src="%PUBLIC_URL%/images/jedi/jedi-01.png"></img>
         </div>
+
        </>
     );
 }
