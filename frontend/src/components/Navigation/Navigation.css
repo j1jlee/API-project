@@ -8,6 +8,11 @@
 .party-down-logo {
     width: 15em;
 }
+
+.nav-button-light-gray {
+    background-color: lightgray;
+}
+
 .nav-wrapper {
     border-bottom: 5px solid black;
 }
@@ -38,15 +43,24 @@ li {
 }
 
 .nav-grid-right {
-    background-color: lightblue;
+    /* background-color: lightblue; */
     grid-area: right;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
 }
 .nav-grid-right-logged-in {
-    background-color: lightskyblue;
+    /* background-color: lightskyblue; */
     grid-area: right;
     display: flex;
     justify-content: center;
+    align-items: center;
     position: sticky;
+}
+
+.nav-grid-right-logged-in a {
+    white-space: nowrap;
+}
+
+.start-group-navlink {
+    text-decoration: none;
 }

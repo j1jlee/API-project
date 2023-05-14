@@ -6,13 +6,23 @@ import { NavLink } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
 import "./GroupsList.css";
 
+
+
+import { refreshGroup } from "../../store/groups";
+
+
 const GroupsList = () => {
 
     const dispatch = useDispatch();
 
     useEffect(()=> {
          dispatch(fetchAllGroups());
+
+         dispatch(refreshGroup());
         }, [])
+
+
+
 
     const allGroups = useSelector(state => state.groups.groups)
     // const history = useHistory();
@@ -46,10 +56,10 @@ const GroupsList = () => {
                             <div className="group-node-image">{previewImage}</div>
                             {/* TODO: get number of events */}
                             <div className="group-node-text">
-                            <div>{name}</div>
-                            <div>{city}, {state}</div>
-                            <div>{about}</div>
-                            <div>{numEvents} events · {privateOrPublic}</div>
+                            <div className="group-node-text-name">{name}</div>
+                            <div className="group-node-text-place">{city}, {state}</div>
+                            <div className="group-node-text-about">{about}</div>
+                            <div className="group-node-text-events-private">{numEvents} events · {privateOrPublic}</div>
                             </div>
                         </li>
                         </NavLink>
@@ -66,7 +76,7 @@ const GroupsList = () => {
     return (
         <>
         <EventsGroupsHeader eventsOrGroups="Groups"/>
-        <div className="event-group-header"></div>
+        <div className="events-groups-header-wrapper">
         <ul className="group-wrapper">
 
             {/* {allGroups.Groups.map(({name, location, about, previewImage}) => (
@@ -80,6 +90,8 @@ const GroupsList = () => {
             ))} */}
             {groupNodes()}
         </ul>
+
+        </div>
         </>
     )
 }

@@ -102,7 +102,7 @@ const validateEvent = [
         .isInt()
         .withMessage('Capacity must be an integer'),
     check('price')
-        .exists({ checkFalsy: true})
+        //.exists({ checkFalsy: true}) //took out 05-12-23, value 0 will return "invalid", instead of 'free'
         //.isDecimal()
         .isFloat({min: 0})
         .withMessage('Price is invalid'),

@@ -11,6 +11,8 @@ const GET_EVENTS_BY_GROUP_ID = "groups/groupId/getAllEvents"
 const GET_EVENT_BY_EVENT_ID = "events/getEvent"
 const EDIT_EVENT = "events/editEvent"
 
+const REFRESH_EVENT = "events/refreshEvent"
+
 
 //action collectors
 const getAllEvents = (events) => {
@@ -52,6 +54,12 @@ const editEvent = (event) => {
     return {
         type: EDIT_EVENT,
         event
+    }
+}
+
+export const refreshEvent = () => {
+    return {
+        type: REFRESH_EVENT
     }
 }
 
@@ -151,6 +159,10 @@ const eventsReducer = (state = initialState, action) => {
         return {...state, events: action.events};
     case GET_EVENT_BY_EVENT_ID:
         return {...state, events: action.event}
+
+    case REFRESH_EVENT:
+        let refreshEvent = {...initialState};
+        return refreshEvent;
     default:
       return state;
   }

@@ -60,7 +60,10 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email ? <p className="signup-error-message">{errors.email}</p> : <><br></br><br></br></>}
+        {/* {errors.email && <p>{errors.email}</p>} */}
+        {/* <><br></br><br></br></> */}
+
         <label>
           Username
           <input
@@ -70,7 +73,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username ? <p className="signup-error-message">{errors.username}</p> : <><br></br><br></br></>}
+        {/* {errors.username && <p>{errors.username}</p>} */}
+        {/* <br></br>
+        <br></br> */}
+
         <label>
           First Name
           <input
@@ -80,7 +87,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName ? <p className="signup-error-message">{errors.firstName}</p> : <><br></br><br></br></>}
+        {/* {errors.firstName && <p>{errors.firstName}</p>} */}
+        {/* <br></br>
+        <br></br> */}
+
         <label>
           Last Name
           <input
@@ -90,7 +101,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName ? <p className="signup-error-message">{errors.lastName}</p> : <><br></br><br></br></>}
+        {/* {errors.lastName && <p>{errors.lastName}</p>} */}
+        {/* <br></br>
+        <br></br> */}
+
         <label>
           Password
           <input
@@ -100,7 +115,9 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password ? <p className="signup-error-message">{errors.password}</p> : <><br></br><br></br></>}
+        {/* {errors.password && <p>{errors.password}</p>} */}
+
         <label>
           Confirm Password
           <input
@@ -110,8 +127,9 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        {errors.confirmPassword ? <p className="signup-error-message">{errors.confirmPassword}</p> : <><br></br><br></br></>}
+        {/* {errors.confirmPassword && <p>{errors.confirmPassword}</p>} */}
+        <button type="submit" className="universal-button-red">Sign Up</button>
       </form>
     </>
   );
