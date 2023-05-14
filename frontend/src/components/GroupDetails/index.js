@@ -227,8 +227,8 @@ const GroupDetails = () => {
                         <li key={event.id} className="gd-event-node">
                         <div className="gd-event-node-image">{previewEventImageUrl}</div>
                         <div className="gd-event-node-text">
-                        <div>{startDate}</div>
-                        <div>{endDate}</div>
+                        <div>{formattedDateString(startDate)}</div>
+                        <div>{formattedDateString(endDate)}</div>
                         <div>{name}</div>
                         </div>
                         <div>

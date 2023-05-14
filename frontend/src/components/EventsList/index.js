@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllEvents } from "../../store/events";
 import "./EventsList.css";
 
+import { formattedDateString } from "../aaComponentMiddleware";
+
 import { refreshEvent } from "../../store/events";
 import { refreshGroup } from "../../store/groups"
 
@@ -48,6 +50,19 @@ if (allEvents) {
             previewEventImageUrl = previewEventImage.url;
         }
 
+        let eventCity, eventState;
+
+        try {
+            eventCity = event.Venue.city;
+        } catch {
+            eventCity = "unknown City";
+        }
+        try {
+            eventState = event.Venue.state;
+        } catch {
+            eventCity = "unknown State";
+        }
+
 
         console.log('current event:', event, "previewEventImage", previewEventImageUrl);
 
@@ -59,11 +74,16 @@ if (allEvents) {
             <li key={event.id} className="event-node">
                 <div className="event-node-image">{previewEventImageUrl}</div>
                 <div className="event-node-text">
-                <div>{startDate}</div>
-                <div>{endDate}</div>
-                <div>{name}</div>
+                    <div>{formattedDateString(startDate)}</div>
+                    {/* <div>{formattedDateString(endDate)}</div> */}
+                    <div>{name}</div>
+                    <div>{eventCity}, {eventState}</div>
+                </div>
+
+                <div className="event-node-description">
                 <div>{description}</div>
                 </div>
+
             </li>
             </NavLink>
         )

@@ -31,7 +31,10 @@ const EventDetails = () => {
         } catch {}
     }, [thisEvent]);
 
-
+    const updateAlert = (e) => {
+        e.preventDefault();
+        alert("Feature to be added!");
+    }
 
     const currentUser = useSelector((state) => state.session.user);
     const thisGroup = useSelector((state) => state.groups.group)
@@ -41,6 +44,8 @@ const EventDetails = () => {
             if (currentUser.id === thisGroup.Organizer.id) {
                 return (
                     <div>
+                    <button onClick={updateAlert}>Update</button>
+
                     <OpenModalButton
                         buttonText="Delete"
                         modalComponent={<DeleteEventModal eventId={eventId} groupId={thisGroup.id}/>}
@@ -144,13 +149,15 @@ const EventDetails = () => {
             <>
                     <div className="event-details-wrapper">
 
-                    <div className="event header">
-                    <div>{"< "}
+                    <div className="event-header">
+                    <div className="event-header-child">{"< "}
                       <NavLink to="/events">Events</NavLink>
                     </div>
                     <h1>{name}</h1>
-                    <p>Hosted by {firstName} {lastName}</p>
+                    <p className="event-header-child">Hosted by {firstName} {lastName}</p>
                     </div>
+
+                    <div className="rest-of-page-wrapper">
 
                     <div className="event-details-top">
                         <div className="ed-top-link-img">
@@ -160,14 +167,19 @@ const EventDetails = () => {
                             </div>
 
                         <div className="ed-top-right">
-                            <div className="ed-top-right-group">
-                            <div>{groupImageUrl}</div>
-                            <div>{groupName}</div>
-                            <div>{publicOrPrivate}</div>
-                            <div>Organized by {firstName} {lastName}</div>
-                            </div>
 
-                        <div className="ed-top-right-event-details">
+                            <NavLink className="ed-top-right-group-navlink" to={`/groups/${groupId}`}>
+                            <div className="ed-top-right-grids ed-top-right-group">
+                            <div className="ed-top-right-group-image">{groupImageUrl}</div>
+                            <div className="ed-top-right-group-info">
+                                <div>{groupName}</div>
+                                <div>{publicOrPrivate}</div>
+                                {/* <div>Organized by {firstName} {lastName}</div> */}
+                            </div>
+                            </div>
+                            </NavLink>
+
+                        <div className="ed-top-right-event-details ed-top-right-grids">
 
                             <div className="ed-top-right-minigrid-time ed-top-right-grid">
                                 <div className="ed-top-right-minigrid-clock-icon">
@@ -225,6 +237,8 @@ const EventDetails = () => {
                     </div>
 
                     </div>
+
+                    </div> {/* rest of page? */}
                 </>
             )
 //////////////////////////////////

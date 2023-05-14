@@ -6,11 +6,20 @@
 }
 
 .event-header {
- /* background-color: transparent; */
+ /* background-color: hotpink; */
+ padding: 1em 2.5em;
+}
+
+.event-header-child {
+    padding: .5em 0;
+}
+
+.event-details-main h2 {
+    padding: .5em 0;
 }
 
 .event-details-top {
-    background-color: lightgray;
+    /* background-color: lightblue; */
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -31,11 +40,56 @@
     grid-area: group-event-details;
 }
 
-.ed-top-right-grid {
-    margin: .5em;
+.ed-top-right-grid { /* mini-grids time, price, type */
+    margin: .5em 0;
 }
 
+
+
+.ed-top-right-grids {
+    margin: 1em;
+    padding: 1em 2em;
+    border-radius: 10px;
+
+    background-color: white;
+}
+
+
+.ed-top-right-group {
+    /* background-color: blueviolet; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "group-image group-info";
+
+    column-gap: 1em;
+}
+
+.ed-top-right-group-image {
+    grid-area: group-image;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ed-top-right-group-info {
+    grid-area: group-info;
+}
+
+
+
+.ed-top-right-group-navlink {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+
+
 .ed-top-right-minigrid-time {
+
     display: grid;
     grid-template-columns: repeat(3, fit-content(100%));
     column-gap: 1em;
@@ -104,5 +158,20 @@ ed-top-right-minigrid-end-time
 } */
 
 .event-details-main {
+    /* background-color: lightblue; */
+}
+
+.rest-of-page-wrapper {
+    display: flex;
+    position: absolute;
+    width: 100%;
+
+    flex-direction: column;
     background-color: lightgray;
+
+    width: 100%;
+    height: 100%;
+    padding: 0 3em;
+
+    box-sizing: border-box;
 }

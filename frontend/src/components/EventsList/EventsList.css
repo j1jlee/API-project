@@ -2,20 +2,35 @@
 .event-node-a {
     color: inherit;
     text-decoration: none; /* no underline, link */
+
+    margin: 0;
+    border-top: solid lightgray;
 }
 
 
 .event-node {
     /* background-color: blueviolet; */
+    width: 30em;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
-      "event-image event-text event-text";
-    width: 25em;
-    border-top: solid lightgray;
+      "event-image event-text event-text"
+      "event-description event-description event-description";
+
+
+
 
 }
+
+.event-node-description {
+    grid-area: event-description;
+    padding: 1em 0;
+
+    width: 100%;
+}
+
 
 .event-node-image {
     grid-area: event-image;
@@ -23,18 +38,25 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    /* width: 8em; */
 }
 
 .event-node-text {
     grid-area: event-text;
     display: flex;
     flex-direction: column;
-    /* width: 25em; */
-    align-items: center;
+
+    width: 100%;
+
+    margin: 0;
     padding: 1em;
     /*  */
-    text-align: center;
+    text-align: start;
+}
 
+.event-node-text * {
+    margin: 0;
 }
 
 .event-wrapper {

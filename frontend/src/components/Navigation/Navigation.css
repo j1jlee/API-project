@@ -60,3 +60,7 @@ li {
 .nav-grid-right-logged-in a {
     white-space: nowrap;
 }
+
+.start-group-navlink {
+    text-decoration: none;
+}
