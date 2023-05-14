@@ -23,6 +23,8 @@
 
     background-color: white;
     border-radius: 10px;
+
+    /* justify-items: start; */
 }
 
 
@@ -37,6 +39,7 @@
 
     margin: 0;
     /* border-top: solid lightgray; */
+    /* text-align: left; */
 
 }
 
@@ -60,6 +63,7 @@
 
 .gd-event-node-text * {
     margin: 0;
+    /* width: 100%; */
 }
 
 .gd-event-node-description {
@@ -78,6 +82,9 @@
     padding: 0.5em 0;
 }
 
+.gd-node-margin-remove {
+    margin: 0;
+}
 
 .group-details-event-num {
     font-size: x-large;

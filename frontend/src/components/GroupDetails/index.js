@@ -280,7 +280,7 @@ const GroupDetails = () => {
 
                 return (
                     <NavLink className='gd-event-node-a' to={`/events/${event.id}`}>
-                    <div>
+                    <div gd-node-margin-remove>
                         <li key={event.id} className="gd-event-node">
                         <div className="gd-event-node-image">{previewEventImageUrl}</div>
                         <div className="gd-event-node-text">
@@ -316,6 +316,7 @@ const GroupDetails = () => {
             <div className="group-details-event-num">Upcoming Events {`(${upcomingEvents.length || 0})`}</div>
             {/* <div className="group-details-event-num">Upcoming Events {`(${outerEventNum || 0})`}</div> */}
             {renderEventDetails(upcomingEvents)}
+
 
             <div className="group-details-event-num">Previous Events {`(${previousEvents.length || 0})`}</div>
             {/* <div className="group-details-event-num">Upcoming Events {`(${outerEventNum || 0})`}</div> */}
