@@ -9,7 +9,7 @@ import "./EventDetails.css";
 import OpenModalButton from "../OpenModalButton";
 import DeleteEventModal from "../DeleteEventModal";
 
-import { formattedDateString } from "../aaComponentMiddleware";
+import { formattedDateString, urlToImage } from "../aaComponentMiddleware";
 
 //import { refreshEvent } from "../../store/events";
 
@@ -112,7 +112,14 @@ const EventDetails = () => {
             /////
             let eventImageUrl = "N/A";
 
+
+            //console.log("EVENT CHECK, THIS EVENT", thisEvent);
+
+
             if (thisEvent.EventImages.length > 0) {
+
+                //console.log("EVENTIMAGES LENGHT MORE THAN ZERO")
+
                 const previewImage = thisEvent.EventImages.find((image) => image.preview === true)
 
                 try {
@@ -162,7 +169,8 @@ const EventDetails = () => {
                     <div className="event-details-top">
                         <div className="ed-top-link-img">
                             <div>
-                                {eventImageUrl}
+                                {urlToImage(eventImageUrl, 3)}
+                                {/* {eventImageUrl} */}
                             </div>
                             </div>
 
@@ -170,10 +178,11 @@ const EventDetails = () => {
 
                             <NavLink className="ed-top-right-group-navlink" to={`/groups/${groupId}`}>
                             <div className="ed-top-right-grids ed-top-right-group">
-                            <div className="ed-top-right-group-image">{groupImageUrl}</div>
+                            <div className="ed-top-right-group-image">{urlToImage(groupImageUrl, 0)}</div>
+                            {/* <div className="ed-top-right-group-image">{groupImageUrl}</div> */}
                             <div className="ed-top-right-group-info">
-                                <div>{groupName}</div>
-                                <div>{publicOrPrivate}</div>
+                                <div className="ed-top-right-group-name">{groupName}</div>
+                                <div className="ed-top-right-group-pub-priv">{publicOrPrivate}</div>
                                 {/* <div>Organized by {firstName} {lastName}</div> */}
                             </div>
                             </div>
@@ -196,7 +205,7 @@ const EventDetails = () => {
 
                             <div className="ed-top-right-price-grid ed-top-right-grid">
                                 <div className="ed-top-right-price-icon">
-                                <i class="fa-solid fa-dollar-sign fa-2x"></i>
+                                <i className="fa-solid fa-dollar-sign fa-2x"></i>
                                 </div>
                                 <span className="ed-top-right-price-value">{price}</span>
 
@@ -204,7 +213,7 @@ const EventDetails = () => {
 
                             <div className="ed-top-right-price-grid ed-top-right-grid">
                                 <div className="ed-top-right-price-icon">
-                                <i class="fa-solid fa-map-pin fa-2x"></i>
+                                <i className="fa-solid fa-map-pin fa-2x"></i>
                                 </div>
                                 <span className="ed-top-right-price-value">{type}</span>
 

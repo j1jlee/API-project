@@ -518,7 +518,8 @@ router.get('/:groupId/events', async (req, res) => {
         {include: [
             {model: Group.scope('groupIncluded')},
             {model: Venue.scope('venueIncluded')},
-            // {model: EventImage,
+            {model: EventImage.scope('eventScope')}
+            //eventimage added back in 05-14-23
             // attributes: []}
             // // attributes: ['url']}
         ],

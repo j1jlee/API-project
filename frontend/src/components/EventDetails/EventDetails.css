@@ -76,6 +76,22 @@
 
 .ed-top-right-group-info {
     grid-area: group-info;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.ed-top-right-group-info div {
+    margin: 0;
+}
+
+.ed-top-right-group-name {
+    font-size: larger;
+}
+
+.ed-top-right-group-pub-priv {
+    /* font-size: 0.9em; */
+    color: darkgray;
 }
 
 
@@ -160,7 +176,7 @@ ed-top-right-minigrid-end-time
 .event-details-main {
     /* background-color: lightblue; */
     /* width: 100%; */
-    
+
     margin: 0;
 }
 

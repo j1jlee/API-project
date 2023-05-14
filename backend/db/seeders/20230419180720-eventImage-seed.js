@@ -33,7 +33,7 @@ module.exports = {
       {
         eventId: '3',
         url: 'https://github.com/j1jlee/API-project/blob/main/images/jedi/jedi-02.png?raw=true',
-        preview: 'false',
+        preview: 'true',
       },
       // {
       //   eventId: '3',
