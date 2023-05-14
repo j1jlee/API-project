@@ -96,7 +96,7 @@ const LandingPage = () => {
           modalComponent={<SignupFormModal />}
         />
         </div>
-        <img src="%PUBLIC_URL%/images/jedi/jedi-01.png"></img>
+        {/* <img src="https://github.com/j1jlee/API-project/blob/main/images/jedi/jedi-01.png?raw=true"></img> */}
         </div>
 
        </>
