@@ -40,9 +40,37 @@ const lineBreakOrErrors = (errors, subject) => {
 }
 // const formattedDateMilliseconds = (date) => {
 
+const eventSort = (events) => {
+    try {
+        let tempEvents = [...events];
+
+        tempEvents.sort((a, b) => {
+            console.log("a", (new Date(a.startDate)).getTime());
+            console.log("b", b);
+
+            return (new Date(a.startDate)).getTime() - (new Date(b.startDate)).getTime();
+        });
+        return tempEvents;
+    } catch (e) {
+        console.log("somewhere failed", e);
+        return events;
+    }
+}
+
+const firstUpcomingEventIndex = (events) => {
+    const currentDateMilli = (new Date()).getTime();
+
+    return events.findIndex((event) => {
+        return (new Date(event.startDate)).getTime() > currentDateMilli;
+    });
+}
 // }
 
 export { formattedDateString };
 export { formattedDateForm };
 
 export { lineBreakOrErrors };
+
+export { eventSort };
+
+export { firstUpcomingEventIndex };

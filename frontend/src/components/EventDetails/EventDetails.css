@@ -159,12 +159,15 @@ ed-top-right-minigrid-end-time
 
 .event-details-main {
     /* background-color: lightblue; */
+    /* width: 100%; */
+    
+    margin: 0;
 }
 
 .rest-of-page-wrapper {
     display: flex;
     position: absolute;
-    width: 100%;
+    /* width: 100%; */
 
     flex-direction: column;
     background-color: lightgray;

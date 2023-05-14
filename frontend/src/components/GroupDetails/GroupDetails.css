@@ -15,8 +15,14 @@
     color: inherit;
     text-decoration: none; /* no underline, link */
     display: flex;
-    border-top: solid lightgray;
+    /* border-top: solid lightgray; */
     /* border-bottom: solid lightgray */
+    margin: 0.3em 0;
+    padding: 1em;
+    width: 30em;
+
+    background-color: white;
+    border-radius: 10px;
 }
 
 
@@ -27,7 +33,9 @@
     grid-template-rows: auto;
     grid-template-areas:
       "event-image event-text event-text";
-    width: 25em;
+    width: 100%;
+
+    margin: 0;
     /* border-top: solid lightgray; */
 
 }
@@ -44,12 +52,14 @@
     grid-area: event-text;
     display: flex;
     flex-direction: column;
-    /* width: 25em; */
-    align-items: center;
+
+    width: 100%;
     padding: 1em;
     /*  */
-    text-align: center;
+}
 
+.gd-event-node-text * {
+    margin: 0;
 }
 
 .gd-event-node-description {
@@ -58,17 +68,51 @@
 /*  */
 
 
-.group-details-and-events-wrapper {
-    padding: 0 5em;
+.gd-middle-organizer {
+    font-size: x-large;
+    padding: 0.5em 0;
 }
-/* .group-details-wrapper {
-    /* width: 50em; */
-    /* padding: 0 5em; */
-/*} */
+
+.gd-middle-about {
+    font-size: x-large;
+    padding: 0.5em 0;
+}
+
 
 .group-details-event-num {
-    font-size: larger;
+    font-size: x-large;
     padding: 1em 0;
+
+    margin: 0;
+
+}
+
+.group-details-event-wrapper {
+    /* width: 100%;
+    background-color: lightgray;
+    padding: 0 5em; */
+
+    display: flex;
+    position: absolute;
+    /* width: 100%; */
+
+    flex-direction: column;
+    background-color: lightgray;
+
+    width: 100%;
+    height: 100%;
+    padding: 0 5em;
+
+    align-items: start;
+
+    box-sizing: border-box;
+}
+
+.group-details-middle {
+    background-color: lightgray;
+    padding: 1em 5em;
+
+    box-sizing: border-box;
 }
 
 .group-details-top {
@@ -77,10 +121,15 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
+      "group-link-img group-description"
       "group-link-img group-description";
     /* width: 50em; */
     /* border-top: solid lightgray; */
+    padding: 1em;
+}
 
+.group-details-wrapper {
+    padding: 1em;
 }
 
 .gd-top-link-img {
@@ -95,13 +144,15 @@
     grid-area: group-description;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: start; */
+
+    width: 100%;
 }
 
-.group-details-middle, .group-details-bottom {
+/* .group-details-middle, .group-details-bottom {
     background-color: lightgray;
-}
+} */
 
 /* <>
             <div className="group-details-top">

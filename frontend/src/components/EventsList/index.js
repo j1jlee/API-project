@@ -146,10 +146,16 @@ if (allEvents) {
     return (
         <>
         <EventsGroupsHeader eventsOrGroups="Events"/>
-        <div className="event-group-header"></div>
+        {/* <div className="event-group-header"></div>
+        <ul className="group-wrapper">
+            {eventNodes()}
+        </ul> */}
+
+        <div className="events-groups-header-wrapper">
         <ul className="group-wrapper">
             {eventNodes()}
         </ul>
+        </div>
         </>
     )
 }

@@ -11,7 +11,8 @@
     grid-template-rows: auto;
     grid-template-areas:
       "group-image group-text group-text";
-    width: 25em;
+    width: 30em;
+    /* width: 30em; */
     border-top: solid lightgray;
 
 }
@@ -27,11 +28,23 @@
     grid-area: group-text;
     display: flex;
     flex-direction: column;
-    /* width: 25em; */
-    align-items: center;
     padding: 1em;
 
+    width: 100%;
 }
+
+.group-node-text * {
+    width: 100%;
+    text-align: start;
+}
+
+/*
+"group-node-text">
+"group-node-text-name">{name}</
+"group-node-text-place">{city},
+"group-node-text-about">{about}
+"group-node-text-events-private */
+
 
 .group-wrapper {
     display: flex;

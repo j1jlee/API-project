@@ -10,7 +10,7 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroupModal";
 
-import { formattedDateString } from "../aaComponentMiddleware";
+import { formattedDateString, eventSort } from "../aaComponentMiddleware";
 
 //import { refreshGroup } from "../../store/groups";
 
@@ -172,15 +172,24 @@ const GroupDetails = () => {
                             </div>
                         </div>
                     </div>
+                    {/*  */}
+
+                    </div>
+
+                    {/*  */}
+
+
                    {/* ///////////////////////////            */}
                     <div className="group-details-middle">
-                        <div>Organizer</div>
+                        <div className="gd-middle-organizer">Organizer</div>
                         <div>{firstName} {lastName}</div>
                         <br></br>
-                        <div>What we're about</div>
+                        <div className="gd-middle-about">What we're about</div>
                         <div>{about}</div>
                     </div>
-                    </div>
+                    {/*  */}
+
+                    {/*  */}
                 </>
                 );
                 }
@@ -198,11 +207,21 @@ const GroupDetails = () => {
             if (thisGroupEvents) {
                 const currentEvents = thisGroupEvents.events;
 
-                //console.log("currentEvents", currentEvents)
-                //numberOfEvents = currentEvents.length;
+               let currentEventsSorted;
+
+               currentEventsSorted = eventSort(currentEvents);
+                // try {
+                //     console.log("currentEventsSorted", currentEventsSorted);
+                // } catch {
+                //     console.log("sort failed?");
+                //     currentEventsSorted = [...currentEvents];
+                // };
+                // //console.log("currentEvents", currentEvents)
+                // //numberOfEvents = currentEvents.length;
 
             return (
-                currentEvents.map((event) => {
+                currentEventsSorted.map((event) => {
+                // currentEvents.map((event) => {
 
                 let previewEventImageUrl = "N/A";
 
@@ -254,8 +273,11 @@ const GroupDetails = () => {
         <>
         <div className="group-details-and-events-wrapper">
             {renderGroupDetails()}
+
+            <div className="group-details-event-wrapper">
             <div className="group-details-event-num">Events {`(${outerEventNum || 0})`}</div>
             {renderEventDetails()}
+            </div>
         </div>
         </>
 
