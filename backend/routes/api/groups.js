@@ -67,10 +67,15 @@ async function addPreviewAndMembers (searchRes) {
                 groupMembersNum = groupMembers.length;
             }
 
+            const allGroupImages = await GroupImage.findAll();
+            console.log("\n\n\nall group images?", allGroupImages);
+            console.log("\n\n\ngroup images groupid?")
+
             const previewImage = await GroupImage.findOne({
                 where: {
                     groupId: group.id,
-                    preview: true
+                    preview: "true"
+                    //why didn't i notice this before? only works if preview is in QUOTES, true
                 }
             });
 
@@ -513,7 +518,8 @@ router.get('/:groupId/events', async (req, res) => {
         {include: [
             {model: Group.scope('groupIncluded')},
             {model: Venue.scope('venueIncluded')},
-            // {model: EventImage,
+            {model: EventImage.scope('eventScope')}
+            //eventimage added back in 05-14-23
             // attributes: []}
             // // attributes: ['url']}
         ],

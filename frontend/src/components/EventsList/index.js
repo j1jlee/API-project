@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllEvents } from "../../store/events";
 import "./EventsList.css";
 
-import { formattedDateString, eventSort, firstUpcomingEventIndex } from "../aaComponentMiddleware";
+import { formattedDateString, eventSort, firstUpcomingEventIndex, urlToImage } from "../aaComponentMiddleware";
 
 import { refreshEvent } from "../../store/events";
 import { refreshGroup } from "../../store/groups"
@@ -93,7 +93,8 @@ if (events) {
         return (
             <NavLink className='event-node-a' to={`${url}/${event.id}`}>
             <li key={event.id} className="event-node">
-                <div className="event-node-image">{previewEventImageUrl}</div>
+                <div className="event-node-image">{urlToImage(previewEventImageUrl, 1)}</div>
+                {/* <div className="event-node-image">{previewEventImageUrl}</div> */}
                 <div className="event-node-text">
                     <div>{formattedDateString(startDate)}</div>
                     {/* <div>{formattedDateString(endDate)}</div> */}

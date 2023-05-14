@@ -11,6 +11,16 @@
     color: beige;
 }
 
+.gd-event-date {
+    /* font-size: 1em; */
+    color: lightgray;
+}
+
+.gd-event-name {
+    font-size: larger;
+}
+
+
 .gd-event-node-a {
     color: inherit;
     text-decoration: none; /* no underline, link */

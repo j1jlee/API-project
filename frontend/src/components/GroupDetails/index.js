@@ -10,7 +10,7 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroupModal";
 
-import { formattedDateString, eventSort, firstUpcomingEventIndex } from "../aaComponentMiddleware";
+import { formattedDateString, eventSort, firstUpcomingEventIndex, urlToImage } from "../aaComponentMiddleware";
 
 //import { refreshGroup } from "../../store/groups";
 
@@ -38,12 +38,12 @@ const GroupDetails = () => {
    // let numberOfEvents;
     const currentUser = useSelector((state) => state.session.user);
 
-   let outerEventNum = 0;
-    try {
-        if (thisGroupEvents) {
-            outerEventNum = thisGroupEvents.events.length;
-        }
-    } catch {}
+//    let outerEventNum = 0;
+//     try {
+//         if (thisGroupEvents) {
+//             outerEventNum = thisGroupEvents.events.length;
+//         }
+//     } catch {}
 
     // let currentUserId = 0;
     // try {
@@ -157,7 +157,8 @@ const GroupDetails = () => {
                     <div className="group-details-top">
                         <div className="gd-top-link-img">
                             <div>
-                                {groupImageUrl}
+                                {urlToImage(groupImageUrl, 3)}
+                                {/* {groupImageUrl} */}
                             </div>
                             </div>
 
@@ -268,9 +269,13 @@ const GroupDetails = () => {
                 let previewEventImageUrl = "N/A";
 
                 try {
-                    if (event.previewImage) {
-                        previewEventImageUrl = event.previewImage;
+                    if (event.EventImages) {
+                        let eventImage = event.EventImages.find((image) => image.preview === true)
+                        previewEventImageUrl = eventImage.url;
                     }
+                    // if (event.previewImage) {
+                    //     previewEventImageUrl = event.previewImage;
+                    // }
                 } catch {
                     previewEventImageUrl = "still N/A"
                 }
@@ -280,13 +285,14 @@ const GroupDetails = () => {
 
                 return (
                     <NavLink className='gd-event-node-a' to={`/events/${event.id}`}>
-                    <div gd-node-margin-remove>
+                    <div className="gd-node-margin-remove">
                         <li key={event.id} className="gd-event-node">
-                        <div className="gd-event-node-image">{previewEventImageUrl}</div>
+                        <div className="gd-event-node-image">{urlToImage(previewEventImageUrl, 1)}</div>
+                        {/* <div className="gd-event-node-image">{previewEventImageUrl}</div> */}
                         <div className="gd-event-node-text">
-                        <div>{formattedDateString(startDate)}</div>
-                        <div>{formattedDateString(endDate)}</div>
-                        <div>{name}</div>
+                        <div className="gd-event-date">{formattedDateString(startDate)}</div>
+                        {/* <div>{formattedDateString(endDate)}</div> */}
+                        <div className="gd-event-name">{name}</div>
                         </div>
                         <div>
                         </div>

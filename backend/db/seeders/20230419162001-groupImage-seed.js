@@ -10,19 +10,34 @@ module.exports = {
   async up (queryInterface, Sequelize) {
       options.tableName = 'GroupImages';
       return queryInterface.bulkInsert(options, [
+        // {
+        //   groupId: '1',
+        //   url: 'pokemonGroupImg.png',
+        //   preview: 'true',
+        // },
+        // {
+        //   groupId: '2',
+        //   url: 'secretJediNoPreview.png',
+        //   preview: 'false',
+        // },
+        // {
+        //   groupId: '3',
+        //   url: 'thickSolidProgress.png',
+        //   preview: 'true',
+        // }
         {
           groupId: '1',
-          url: 'pokemonGroupImg.png',
+          url: 'https://github.com/j1jlee/API-project/blob/main/images/pokemon/pokemon-03.png?raw=true',
           preview: 'true',
         },
         {
           groupId: '2',
-          url: 'secretJediNoPreview.png',
-          preview: 'false',
+          url: 'https://github.com/j1jlee/API-project/blob/main/images/jedi/jedi-01.png?raw=true',
+          preview: 'true',
         },
         {
           groupId: '3',
-          url: 'thickSolidProgress.png',
+          url: 'https://github.com/j1jlee/API-project/blob/main/images/muscle/muscle-01.png?raw=true',
           preview: 'true',
         }
       ], {});

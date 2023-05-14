@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
 import "./GroupsList.css";
 
-
+import { urlToImage } from "../aaComponentMiddleware";
 
 import { refreshGroup } from "../../store/groups";
 
@@ -53,7 +53,8 @@ const GroupsList = () => {
                         {/* <NavLink key={group.id} className="group-node-a" onClick={redirect(group.id)}> */}
                         {/* <a key={group.id} className="group-node-a" href={`/groups/${group.id}`}> */}
                         <li className="group-node">
-                            <div className="group-node-image">{previewImage}</div>
+                            <div className="group-node-image">{urlToImage(previewImage, 1)}</div>
+                            {/* <div className="group-node-image">{previewImage}</div> */}
                             {/* TODO: get number of events */}
                             <div className="group-node-text">
                             <div className="group-node-text-name">{name}</div>
