@@ -12,34 +12,64 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         eventId: '1',
-        url: 'event1image-battle.png',
+        url: 'https://github.com/j1jlee/API-project/blob/main/images/pokemon/pokemon-02.png?raw=true',
         preview: 'true',
       },
+      // {
+      //   eventId: '1',
+      //   url: 'event1image-battle.png',
+      //   preview: 'true',
+      // },
       {
         eventId: '2',
-        url: 'event2image-park.png',
+        url: 'https://github.com/j1jlee/API-project/blob/main/images/pokemon/pokemon-01.png?raw=true',
         preview: 'true',
       },
+      // {
+      //   eventId: '2',
+      //   url: 'event2image-park.png',
+      //   preview: 'true',
+      // },
       {
         eventId: '3',
-        url: 'event3image-meditation.png',
+        url: 'https://github.com/j1jlee/API-project/blob/main/images/jedi/jedi-02.png?raw=true',
         preview: 'false',
       },
+      // {
+      //   eventId: '3',
+      //   url: 'event3image-meditation.png',
+      //   preview: 'false',
+      // },
       {
         eventId: '4',
-        url: 'event4image-glory-in-battle.png',
+        url: 'https://github.com/j1jlee/API-project/blob/main/images/jedi/jedi-04.png?raw=true',
         preview: 'true',
       },
+      // {
+      //   eventId: '4',
+      //   url: 'event4image-glory-in-battle.png',
+      //   preview: 'true',
+      // },
       {
         eventId: '5',
-        url: 'event5image-chill.png',
+        url: 'https://github.com/j1jlee/API-project/blob/main/images/muscle/muscle-03.png?raw=true',
         preview: 'true',
       },
+      // {
+      //   eventId: '5',
+      //   url: 'event5image-chill.png',
+      //   preview: 'true',
+      // },
       {
         eventId: '6',
-        url: 'event6image-getit.png',
+        url: 'https://github.com/j1jlee/API-project/blob/main/images/muscle/muscle-02.png?raw=true',
         preview: 'true',
       },
+      // {
+      //   eventId: '6',
+      //   url: 'event6image-getit.png',
+      //   preview: 'true',
+      // },
     ], {});
   },
 
