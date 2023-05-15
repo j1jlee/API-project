@@ -73,7 +73,7 @@ const NewGroup = () => {
         return dispatch(fetchCreateGroup(newGroup))
         // .then(resetEntries)
         .then((res) => dispatch(fetchAddImageToGroup(newImage, res.id)))
-        .then((res) => history.push(`/groups/${res.id - 1}`))
+        .then((res) => history.push(`/groups/${res.id}`))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
