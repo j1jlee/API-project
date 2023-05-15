@@ -15,6 +15,7 @@ const GET_VENUES_FOR_GROUP = "groups/getVenuesForGroup";
 const DELETE_GROUP_BY_ID = "groups/deleteGroup";
 
 const REFRESH_GROUP = "groups/refresh";
+const ADD_IMAGE_TO_GROUP = "groups/addImage"
 /*
 TODO: create group / edit group?
     add image to group
@@ -73,6 +74,12 @@ const deleteGroup = (groupId) => {
     }
 }
 
+const addImageToGroup = () => {
+    return {
+        type: ADD_IMAGE_TO_GROUP
+        // group
+    }
+}
 // const createVenueForGroup = (venue) => {
 //     return {
 //         type: CREATE_VENUE_FOR_GROUP,
@@ -200,11 +207,25 @@ export const fetchGroupByGroupId = (groupId) => async (dispatch) => {
     }
 }
 
+export const fetchAddImageToGroup = (image, groupId) => async (dispatch) => {
+    //const { url, preview } = image;
+
+    const response = await csrfFetch(`/api/groups/${groupId}/images`, {
+        "method": "POST",
+        "headers": {"Content-Type": "application/json"},
+        "body": JSON.stringify(image)
+    });
+
+    const newGroupImage = await response.json();
+    return newGroupImage;
+}
 
 
 /*
 root reducer, SEND to index
 */
+
+///////////////////////
 
 
 const initialState = { groups: null };

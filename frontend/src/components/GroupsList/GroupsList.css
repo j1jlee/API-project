@@ -38,12 +38,19 @@
     text-align: start;
 }
 
-/*
-"group-node-text">
-"group-node-text-name">{name}</
-"group-node-text-place">{city},
-"group-node-text-about">{about}
-"group-node-text-events-private */
+
+
+.group-node-text-name {
+    font-size: larger;
+}
+.group-node-text-place {
+    font-size: smaller;
+    color: lightgray;
+}
+.group-node-text-about {}
+.group-node-text-events-private {
+    color: darkgray;
+}
 
 
 .group-wrapper {

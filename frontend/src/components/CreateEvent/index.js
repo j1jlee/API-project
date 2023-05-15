@@ -12,6 +12,8 @@ import { refreshGroup } from '../../store/groups';
 import { lineBreakOrErrors } from '../aaComponentMiddleware';
 import { formattedDateForm } from '../aaComponentMiddleware';
 
+import { fetchAddImageToEvent } from '../../store/events';
+
 /* /groups/:groupId/events/new */
 const CreateEvent = () => {
 
@@ -33,7 +35,7 @@ const CreateEvent = () => {
         thisGroupName = thisGroup.name;
     } catch {}
 
-    const [ venueId, setVenueId ] = useState('');
+    //const [ venueId, setVenueId ] = useState('');
     const [ name, setName ] = useState('');
     const [ type, setType ] = useState('In person');
     const [ capacity, setCapacity ] = useState('0');
@@ -59,6 +61,11 @@ const CreateEvent = () => {
     const createNewEventButton = async (e) => {
         e.preventDefault();
 
+        const newEventImage = {
+            url: imageUrl,
+            preview: true
+        };
+
         const newEvent = {
             "venueId": 1, //hopefully hardcoding this will work
             name,
@@ -74,6 +81,7 @@ const CreateEvent = () => {
 
         return dispatch(fetchCreateEvent(newEvent, groupId))
         // .then(resetEntries)
+        .then((res) => dispatch(fetchAddImageToEvent(newEventImage, res.id)))
         .then((res) => history.push(`/events/${res.id}`))
         .catch(async (res) => {
             const data = await res.json();
@@ -187,7 +195,7 @@ const CreateEvent = () => {
             </div>
 {/*  */}
             <div className="create-section-node">
-            <p>TODO: IMAGEURL IMPLEMENTATION"""""" Please add an image url for your group below:</p>
+            <p>Please add an image url for your group below:</p>
                 <input className="create-group-image-url"
                     type='text'
                     onChange={(e) => setImageUrl(e.target.value)}

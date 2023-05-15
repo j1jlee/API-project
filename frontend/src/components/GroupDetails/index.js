@@ -25,7 +25,6 @@ const GroupDetails = () => {
 
     useEffect(() => {
         dispatch(fetchGroupByGroupId(groupId));
-
         dispatch(fetchEventsByGroupId(groupId));
 
 
@@ -240,27 +239,6 @@ const GroupDetails = () => {
     const renderEventDetails = (events) => {
         try {
             if (events) {
-            // if (thisGroupEvents) {
-            //     const currentEvents = thisGroupEvents.events;
-
-            // //    let currentEventsSorted;
-            //    const currentEventsSorted = eventSort(currentEvents);
-
-            //     const upcomingEventIndex = firstUpcomingEventIndex(currentEventsSorted);
-            //     console.log("upcoming event index?", upcomingEventIndex);
-
-            //     let previousEvents = [];
-            //     let upcomingEvents = [];
-
-            //     if (upcomingEventIndex === -1) {
-            //         previousEvents = [...currentEventsSorted];
-            //     } else {
-            //         previousEvents = [...currentEventsSorted.slice(0, upcomingEventIndex)];
-            //         upcomingEvents = [...currentEventsSorted.slice(upcomingEventIndex)]
-            //     }
-
-            //     console.log('previous events', previousEvents);
-            //     console.log('upcoming events', upcomingEvents);
             return (
                 events.map((event) => {
                 // currentEventsSorted.map((event) => {
@@ -312,7 +290,6 @@ const GroupDetails = () => {
 
     //renderEventDetails();
 
-
     return (
         <>
         <div className="group-details-and-events-wrapper">
@@ -336,9 +313,7 @@ const GroupDetails = () => {
             </div> {/* group details event wrapper */}
         </div>
         </>
-
-
-    )
+        )
 }
 
 export default GroupDetails;

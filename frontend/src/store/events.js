@@ -135,6 +135,17 @@ export const fetchDeleteEvent = (eventId) => async (dispatch) => {
 }
 
 
+export const fetchAddImageToEvent = (image, eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/images`, {
+        "method": "POST",
+        "headers": {"Content-Type": "application/json"},
+        "body": JSON.stringify(image)
+    });
+
+    const newEventImage = await response.json();
+    return newEventImage;
+}
+
 /*
 root reducer, SEND to index
 */
