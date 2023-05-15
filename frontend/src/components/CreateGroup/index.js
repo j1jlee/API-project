@@ -2,7 +2,7 @@
 import './CreateGroup.css';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { fetchCreateGroup } from '../../store/groups';
+import { fetchAddImageToGroup, fetchCreateGroup } from '../../store/groups';
 import { useHistory } from 'react-router-dom';
 import { refreshGroup } from '../../store/groups';
 
@@ -44,7 +44,10 @@ const NewGroup = () => {
             state
         }
 
-
+        const newImage = {
+            "url": imageUrl,
+            "preview": true
+        }
 
         // try {
         //     await dispatch(fetchCreateGroup(newGroup));
@@ -57,9 +60,20 @@ const NewGroup = () => {
         // }
         setErrors({});
 
+        // let imageErrors = {};
+        // let imageErr = {};
+
+        // dispatch(fetchAddImageToGroup(newImage, groupId))
+        // .catch(async (res) => {
+        //     imageErr = await res.json();
+        //     if (imageErr && imageErr.errors) imageErrors.errors = imageErr.errors;
+        // })
+
+
         return dispatch(fetchCreateGroup(newGroup))
         // .then(resetEntries)
-        .then((res) => history.push(`/groups/${res.id}`))
+        .then((res) => dispatch(fetchAddImageToGroup(newImage, res.id)))
+        .then((res) => history.push(`/groups/${res.id - 1}`))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
@@ -220,7 +234,7 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                 {lineBreakOrErrors(errors, 'private')}
                 {/* {errors.private && <p className="errors-p">{errors.private}</p>} */}
 
-                <p>TODO: IMAGEURL IMPLEMENTATION"""""" Please add an image url for your group below:</p>
+                <p>Please add an image url for your group below:</p>
                 <input className="create-group-image-url"
                     type='text'
                     onChange={(e) => setImageUrl(e.target.value)}

@@ -74,7 +74,7 @@ async function addPreviewAndMembers (searchRes) {
             const previewImage = await GroupImage.findOne({
                 where: {
                     groupId: group.id,
-                    preview: "true"
+                    //preview: "true" //annoying, inconsistent
                     //why didn't i notice this before? only works if preview is in QUOTES, true
                 }
             });
