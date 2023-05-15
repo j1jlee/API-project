@@ -4,7 +4,9 @@ import { NavLink } from 'react-router-dom';
 import OpenModalButton from "../OpenModalButton";
 import SignupFormModal from '../SignupFormModal';
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+// import { useEffect } from "react";
+
+import { urlToImg } from "../aaComponentMiddleware";
 
 
 const LandingPage = () => {
@@ -70,18 +72,28 @@ const LandingPage = () => {
 
         <div className="landing-page-bottom">
             <div className="lp-bottom-left">
+                <div>
+                    {urlToImg("https://github.com/j1jlee/API-project/blob/main/images/landing/landing-1.png?raw=true")}
+                </div>
+
                 <NavLink to="/groups">See all groups</NavLink>
                 <div>
                     Do what you love, meet others who love it, find your community. The rest is history!
                 </div>
             </div>
             <div className="lp-bottom-middle">
+                <div>
+                    {urlToImg("https://github.com/j1jlee/API-project/blob/main/images/landing/landing-3.png?raw=true")}
+                </div>
                 <NavLink to="/events">Find an event</NavLink>
                 <div>
                 Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.
                 </div>
             </div>
             <div className="lp-bottom-right">
+                <div>
+                    {urlToImg("https://github.com/j1jlee/API-project/blob/main/images/landing/landing-2.png?raw=true")}
+                </div>
                 <NavLink to="/groups/new" className={createDisabledOrNo()}>Start a new group</NavLink>
                 <div>
                 You don’t have to be an expert to gather people together and explore shared interests.
@@ -96,6 +108,8 @@ const LandingPage = () => {
           modalComponent={<SignupFormModal />}
         />
         </div>
+        <br></br>
+        <br></br>
         {/* <img src="https://github.com/j1jlee/API-project/blob/main/images/jedi/jedi-01.png?raw=true"></img> */}
         </div>
 

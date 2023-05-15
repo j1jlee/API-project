@@ -64,6 +64,16 @@
     margin: 0 auto;
 }
 
+.landing-page-wrapper p {
+    font-size: smaller;
+    /* background-color: blue; */
+}
+
+.lp-bottom-left div, .lp-bottom-middle div, .lp-bottom-right div {
+    font-size: smaller;
+    padding-bottom: .5em;
+}
+/*  */
 .lp-top-left {
     grid-area: left;
     display: flex;
@@ -89,9 +99,11 @@
     flex-direction: column;
     justify-items: center;
     align-items: center;
-    padding: 1em;
+    padding: 0 1em;
 }
 
+
+
 .lp-picture {
-    width: 100%
+    width: 90%
 }
