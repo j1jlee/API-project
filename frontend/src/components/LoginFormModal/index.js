@@ -1,5 +1,5 @@
 // frontend/src/components/LoginFormPage/index.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 // import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,21 @@ export const LoginFormModal = () => {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const [ buttonDisabled, setButtonDisabled ] = useState("signup-button-disabled");
+
   // if (sessionUser) return <Redirect to="/" />;
+
+
+  useEffect(() => {
+    if (
+      credential.length < 4 ||
+      password.length < 6
+    ) {
+      setButtonDisabled("signup-button-disabled");
+    } else {
+      setButtonDisabled("universal-button-red")
+    }
+  }, [credential, password])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,10 +79,11 @@ export const LoginFormModal = () => {
         <br></br> */}
         {errors.credential ? <p className="login-error-message">{errors.credential}</p> : <><br></br><br></br></>}
 
-        <button type="submit" className="universal-button-red">Log In</button>
+        <button type="submit" className={buttonDisabled}>Log In</button>
+        {/* <button type="submit" className="universal-button-red">Log In</button> */}
       </form>
 
-      <button onClick={loginDemoUser}>Log in as Demo User</button>
+      <button className="universal-button-red" onClick={loginDemoUser}>Log in as Demo User</button>
     </>
   );
 }
