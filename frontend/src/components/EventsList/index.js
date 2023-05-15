@@ -83,9 +83,8 @@ if (events) {
         } catch {
             eventCity = "unknown State";
         }
-
-
-        console.log('current event:', event, "previewEventImage", previewEventImageUrl);
+        
+        // console.log('current event:', event, "previewEventImage", previewEventImageUrl);
 
         const { startDate, endDate, name, description } = event;
 

@@ -30,7 +30,7 @@ const GroupsList = () => {
     // const history = useHistory();
     const { url } = useRouteMatch();
 
-    console.log("url", url)
+    // console.log("url", url)
 
     // if (allGroups) {
     //     console.log("allgroups:", allGroups.Groups);

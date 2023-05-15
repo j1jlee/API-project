@@ -25,10 +25,7 @@ const EditGroup = () => {
         }
     }, [])
 
-
-
-
-    console.log("currentuserId", currentUser, "organizerId", currentGroup)
+    // console.log("currentuserId", currentUser, "organizerId", currentGroup)
 
     try { //will only execute once currentUser exists, AND currentGroup exists
     //if (currentUser.id === currentGroup.organizerId) console.log("matching")
@@ -99,7 +96,7 @@ const EditGroup = () => {
         .then((res) => history.push(`/groups/${res.id}`))
         .catch(async (res) => {
 
-            console.log("res?", res)
+            // console.log("res?", res)
 
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);

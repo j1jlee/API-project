@@ -53,7 +53,7 @@ const GroupDetails = () => {
 
     //console.log("currentuserid", currentUserId);
 
-    console.log("thisgroupevents", thisGroupEvents);
+    // console.log("thisgroupevents", thisGroupEvents);
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -195,7 +195,7 @@ const GroupDetails = () => {
                 }
 
         } catch {
-            console.log("break");
+            // console.log("break");
             return (
                 "loading:"
             )
@@ -215,7 +215,7 @@ const GroupDetails = () => {
                const currentEventsSorted = eventSort(currentEvents);
 
                 const upcomingEventIndex = firstUpcomingEventIndex(currentEventsSorted);
-                console.log("upcoming event index?", upcomingEventIndex);
+                // console.log("upcoming event index?", upcomingEventIndex);
 
 
                 if (upcomingEventIndex === -1) {
@@ -225,8 +225,8 @@ const GroupDetails = () => {
                     upcomingEvents = [...currentEventsSorted.slice(upcomingEventIndex)]
                 }
 
-                console.log('previous events', previousEvents);
-                console.log('upcoming events', upcomingEvents);
+                // console.log('previous events', previousEvents);
+                // console.log('upcoming events', upcomingEvents);
             }
      }
         catch {}
@@ -262,7 +262,7 @@ const GroupDetails = () => {
 
 
                 return (
-                    <NavLink className='gd-event-node-a' to={`/events/${event.id}`}>
+                    <NavLink key={event.id} className='gd-event-node-a' to={`/events/${event.id}`}>
                     <div className="gd-node-margin-remove">
                         <li key={event.id} className="gd-event-node">
                         <div className="gd-event-node-image">{urlToImage(previewEventImageUrl, 1)}</div>
