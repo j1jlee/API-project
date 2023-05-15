@@ -99,6 +99,18 @@ const urlToImage = (imageUrl, sizeOption) => {
 }
 
 
+const urlToImg = (imageUrl) => {
+
+    /* style="width: 300px; height: 337px; object-fit: cover;" */
+    let width = "200px"
+    let height = "170px"
+
+    return (
+        <img src={imageUrl} alt={imageUrl} style={{width, height, borderRadius:"10px"}} />
+            // {width: {`${width}`}; height: ${height}; object-fit:cover;}}/>
+    )
+}
+
 
 // }
 
@@ -114,4 +126,4 @@ const urlToImage = (imageUrl, sizeOption) => {
 
 // export { firstUpcomingEventIndex };
 
-export { formattedDateString, formattedDateForm, lineBreakOrErrors, eventSort, firstUpcomingEventIndex, urlToImage}
+export { formattedDateString, formattedDateForm, lineBreakOrErrors, eventSort, firstUpcomingEventIndex, urlToImage, urlToImg}
