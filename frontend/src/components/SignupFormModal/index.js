@@ -1,5 +1,5 @@
 // frontend/src/components/SignupFormPage/index.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 // import { useDispatch, useSelector } from "react-redux";
 // import { Redirect } from "react-router-dom";
@@ -19,7 +19,26 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const [ buttonDisabled, setButtonDisabled ] = useState("signup-button-disabled");
   // if (sessionUser) return <Redirect to="/" />;
+
+
+  useEffect(() => {
+    if (
+      !email ||
+      !username ||
+      !firstName ||
+      !lastName ||
+      !password ||
+      !confirmPassword ||
+      username.length < 4 ||
+      password.length < 6
+    ) {
+      setButtonDisabled("signup-button-disabled");
+    } else {
+      setButtonDisabled("universal-button-red")
+    }
+  }, [email, username, firstName, lastName, password, confirmPassword])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -129,7 +148,8 @@ function SignupFormModal() {
         </label>
         {errors.confirmPassword ? <p className="signup-error-message">{errors.confirmPassword}</p> : <><br></br><br></br></>}
         {/* {errors.confirmPassword && <p>{errors.confirmPassword}</p>} */}
-        <button type="submit" className="universal-button-red">Sign Up</button>
+        <button type="submit" className={buttonDisabled}>Sign Up</button>
+        {/* <button type="submit" className="universal-button-red">Sign Up</button> */}
       </form>
     </>
   );
