@@ -12,7 +12,7 @@ import { urlToImg } from "../aaComponentMiddleware";
 const LandingPage = () => {
 
     const currentUser = useSelector((state) => state.session.user);
-    console.log(currentUser);
+    // console.log(currentUser);
 
     const createDisabledOrNo = () => {
             try {
@@ -31,7 +31,7 @@ const LandingPage = () => {
     const joinMeetupDisabled = () => {
         try {
             if (currentUser) {
-                console.log("join meetup9 currentuser")
+                // console.log("join meetup9 currentuser")
                 return "join-meetup-disabled";
             } else {
                 return "join-meetup-enabled"

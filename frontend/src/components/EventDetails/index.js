@@ -252,8 +252,8 @@ const EventDetails = () => {
             )
 //////////////////////////////////
 
-        } catch (e) {
-            console.log("error", e)
+        } catch {
+            // console.log("error", e)
             return (
                 <p>Loading</p>
             )
