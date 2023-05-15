@@ -96,10 +96,10 @@ if (events) {
                 <div className="event-node-image">{urlToImage(previewEventImageUrl, 1)}</div>
                 {/* <div className="event-node-image">{previewEventImageUrl}</div> */}
                 <div className="event-node-text">
-                    <div>{formattedDateString(startDate)}</div>
+                    <div className="en-start-date">{formattedDateString(startDate)}</div>
                     {/* <div>{formattedDateString(endDate)}</div> */}
-                    <div>{name}</div>
-                    <div>{eventCity}, {eventState}</div>
+                    <div className="en-name">{name}</div>
+                    <div className="en-place">{eventCity}, {eventState}</div>
                 </div>
 
                 <div className="event-node-description">
@@ -113,7 +113,7 @@ if (events) {
 }
 /////////////////////////////////
     } catch {
-        return (<p> testing </p>)
+        return (<p> Loading </p>)
     }
 }
 

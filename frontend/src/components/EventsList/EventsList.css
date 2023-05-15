@@ -1,4 +1,16 @@
 
+.en-start-date {
+    color: lightgray;
+}
+
+.en-name {
+    font-size: larger;
+}
+
+.en-place {
+    font-size: smaller;
+}
+
 .event-node-a {
     color: inherit;
     text-decoration: none; /* no underline, link */

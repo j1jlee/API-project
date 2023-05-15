@@ -9,6 +9,7 @@ import "./GroupsList.css";
 import { urlToImage } from "../aaComponentMiddleware";
 
 import { refreshGroup } from "../../store/groups";
+import { refreshEvent } from "../../store/events";
 
 
 const GroupsList = () => {
@@ -19,6 +20,7 @@ const GroupsList = () => {
          dispatch(fetchAllGroups());
 
          dispatch(refreshGroup());
+         dispatch(refreshEvent());
         }, [])
 
 
