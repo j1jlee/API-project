@@ -33,7 +33,7 @@ const CreateEvent = () => {
         thisGroupName = thisGroup.name;
     } catch {}
 
-    const [ venueId, setVenueId ] = useState('');
+    //const [ venueId, setVenueId ] = useState('');
     const [ name, setName ] = useState('');
     const [ type, setType ] = useState('In person');
     const [ capacity, setCapacity ] = useState('0');
