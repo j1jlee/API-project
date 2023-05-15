@@ -19,8 +19,8 @@ const GroupsList = () => {
     useEffect(()=> {
          dispatch(fetchAllGroups());
 
-         dispatch(refreshGroup());
-         dispatch(refreshEvent());
+        dispatch(refreshGroup());
+        //  dispatch(refreshEvent());
         }, [])
 
 

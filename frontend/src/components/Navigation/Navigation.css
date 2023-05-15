@@ -4,6 +4,25 @@
         padding:0;
         margin:0;
 } */
+.dropdown-wrap {
+    position: relative;
+    display: inline-block;
+
+    right: 130px;
+    top: 20px;
+
+    width: 10em;
+
+
+
+}
+
+
+.profile-dropdown {
+    background-color: aliceblue;
+    position: absolute;
+    padding: 0 1em;
+}
 
 .party-down-logo {
     width: 15em;
