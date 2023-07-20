@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { urlToImg } from "../aaComponentMiddleware";
 
+import { useHistory } from "react-router-dom";
 
 const LandingPage = () => {
 
@@ -41,6 +42,7 @@ const LandingPage = () => {
         }
     }
 
+    const history = useHistory();
 
     return (
        <>
@@ -72,7 +74,7 @@ const LandingPage = () => {
 
         <div className="landing-page-bottom">
             <div className="lp-bottom-left">
-                <div>
+                <div className="landing-page-pointer" onClick={() => history.push("/groups")}>
                     {urlToImg("https://github.com/j1jlee/API-project/blob/main/images/landing/landing-1.png?raw=true")}
                 </div>
 
@@ -81,8 +83,9 @@ const LandingPage = () => {
                     Do what you love, meet others who love it, find your community. The rest is history!
                 </div>
             </div>
+
             <div className="lp-bottom-middle">
-                <div>
+                 <div className="landing-page-pointer" onClick={() => history.push("/events")}>
                     {urlToImg("https://github.com/j1jlee/API-project/blob/main/images/landing/landing-3.png?raw=true")}
                 </div>
                 <NavLink to="/events">Find an event</NavLink>
@@ -91,7 +94,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="lp-bottom-right">
-                <div>
+                <div className="landing-page-pointer" onClick={() => history.push("/groups/new")}>
                     {urlToImg("https://github.com/j1jlee/API-project/blob/main/images/landing/landing-2.png?raw=true")}
                 </div>
                 <NavLink to="/groups/new" className={createDisabledOrNo()}>Start a new group</NavLink>

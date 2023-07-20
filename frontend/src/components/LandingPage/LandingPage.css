@@ -7,9 +7,9 @@
     visibility: hidden;
 }
 
-.join-meetup-enabled {
+/* .join-meetup-enabled {
 
-}
+} */
 
 
 
@@ -19,11 +19,14 @@
     cursor: default;
     pointer-events: none;
 }
-
+/*
 .landing-not-disabled {
 
-}
+} */
 
+.landing-page-pointer:hover {
+   cursor: pointer;
+}
 
 
 .landing-page-wrapper {

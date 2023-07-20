@@ -208,7 +208,7 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
 
                 {lineBreakOrErrors(errors, 'about')}
                 {/* {errors.about && <p className="errors-p">{errors.about}</p>} */}
-        </div>
+</div>
         <div className="create-section-node">
                 <h2>Final steps...</h2>
                 <br></br>
