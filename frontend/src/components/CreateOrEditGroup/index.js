@@ -1,41 +1,83 @@
 
-import './CreateGroup.css';
-import { useDispatch } from 'react-redux';
+import './CreateOrEditGroup.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { fetchAddImageToGroup, fetchCreateGroup } from '../../store/groups';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { refreshGroup } from '../../store/groups';
+
+import { fetchEditGroup } from '../../store/groups';
+
+//07-21
+// import { useParams } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
 
 import { lineBreakOrErrors } from '../aaComponentMiddleware';
 
 
-const NewGroup = () => {
+const CreateOrEditGroup = ({newOrEdit}) => {
+
+    //newOrEdit will be "new", or "edit"
+    console.log("in create or edit group! new or edit?", newOrEdit)
+
+    //if edit
+    const { groupId } = useParams(); //undefined if new group
+    const currentUser = useSelector((state) => state.session.user);
+    const currentGroup = useSelector((state) => state.groups.group); //undefined if new group
+
+    let cgName, cgAbout, cgCity, cgState; //, cgImageUrl
+    let cgType = 'In person';
+    let cgGroupPrivate = true;
+    //
+    if (currentGroup && newOrEdit == "edit") {
+        cgName = currentGroup.name;
+        cgAbout = currentGroup.about;
+        cgType = currentGroup.type;
+        cgGroupPrivate = currentGroup.private;
+        cgCity = currentGroup.city;
+        cgState = currentGroup.state;
+        // cgImageUrl = currentGroup.imageUrl; need to pull from groupImages, not here
+    }
+
+
 
     const dispatch = useDispatch();
 
-    const [ name, setName ] = useState('');
-    const [ about, setAbout ] = useState('');
-    const [ type, setType ] = useState('In person');
-    const [ groupPrivate, setGroupPrivate ] = useState(true);
-    const [ city, setCity ] = useState('');
-    const [ state, setState ] = useState('');
-    const [ imageUrl, setImageUrl ] = useState('');
+    const [ name, setName ] = useState(cgName);
+    const [ about, setAbout ] = useState(cgAbout);
+    const [ type, setType ] = useState(cgType);
+    const [ groupPrivate, setGroupPrivate ] = useState(cgGroupPrivate);
+    const [ city, setCity ] = useState(cgCity);
+    const [ state, setState ] = useState(cgState);
+    const [ imageUrl, setImageUrl ] = useState(''); //cgImageUrl
+
+    // const [ name, setName ] = useState('');
+    // const [ about, setAbout ] = useState('');
+    // const [ type, setType ] = useState('In person');
+    // const [ groupPrivate, setGroupPrivate ] = useState(true);
+    // const [ city, setCity ] = useState('');
+    // const [ state, setState ] = useState('');
+    // const [ imageUrl, setImageUrl ] = useState('');
 
     const [ errors, setErrors ] = useState({});
 
     const history = useHistory();
 
+
     //console.log("errors?", errors)
 
-    useEffect(() => {
 
-        dispatch(refreshGroup());
-    }, [])
+    //07-20 refreshGroup in newGroup, is this necessary?
+    //I need currentGroup info if editing
 
-    const createNewGroupButton = async (e) => {
+    // useEffect(() => {
+    //     dispatch(refreshGroup());
+    // }, [])
+
+    const postGroupButton = async (e) => {
         e.preventDefault();
 
-        const newGroup = {
+        const submitGroup = {
             name,
             about,
             type,
@@ -44,7 +86,7 @@ const NewGroup = () => {
             state
         }
 
-        const newImage = {
+        const submitImage = {
             "url": imageUrl,
             "preview": true
         }
@@ -69,23 +111,32 @@ const NewGroup = () => {
         //     if (imageErr && imageErr.errors) imageErrors.errors = imageErr.errors;
         // })
 
-        //07-20 image error test
-        //if imageError exists, then dataErrors.imageUrl = "whatever image error"
-
-
-        return dispatch(fetchCreateGroup(newGroup))
-        // .then(resetEntries)
-        .then((res) => dispatch(fetchAddImageToGroup(newImage, res.id)))
-        .then((res) => history.push(`/groups/${res.id}`))
-        .catch(async (res) => {
-            const data = await res.json();
-
-
-            if (data && data.errors) setErrors(data.errors);
+        if (newOrEdit === "new") {
+            return dispatch(fetchCreateGroup(submitGroup))
+            // .then(resetEntries)
+            .then((res) => dispatch(fetchAddImageToGroup(submitImage, res.id)))
+            .then((res) => history.push(`/groups/${res.id}`))
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) setErrors(data.errors);
+            }
+            )
+        } else if (newOrEdit === 'edit') {
+            return dispatch(fetchEditGroup(submitGroup, groupId))// should create new reducer
+            // .then(resetEntries)
+            .then((res) => history.push(`/groups/${res.id}`))
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) setErrors(data.errors);
+            }
+            )
         }
-        )
+
+
     }
 
+
+    //console.log("error formatting?", errors)
     // setErrors({});
     // return dispatch(sessionActions.login({ credential, password }))
     // .then(closeModal)
@@ -115,8 +166,6 @@ const NewGroup = () => {
         // ))
 
 
-    console.log("07-20 error formatting?", errors);
-
         return (
             <>
             <div className="create-group-wrapper">
@@ -127,7 +176,7 @@ const NewGroup = () => {
             <p>BECOME AN ORGANIZER</p>
 <h2>We'll walk you through a few steps to build your local community</h2>
 <br></br>
-            <form onSubmit={createNewGroupButton}>
+            <form onSubmit={postGroupButton}>
 
             <div className="create-section-node">
             <h2>Set your group's location</h2>
@@ -262,4 +311,4 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
 }
 
 
-export default NewGroup;
+export default CreateOrEditGroup;

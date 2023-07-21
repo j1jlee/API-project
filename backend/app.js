@@ -18,7 +18,11 @@ const app = express(); //initialize express application
 
 app.use(morgan('dev')); //logs and prints info about request to terminal
 app.use(cookieParser()); //csrt tokens, jwts
-app.use(express.json()); //
+
+// app.use(express.json()); //07-21 changed for AWS implementation
+app.use(express.urlencoded({ extended: false})); //
+app.use(express.json());
+
 
 //security middleware
 if (!isProduction) {

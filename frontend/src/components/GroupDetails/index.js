@@ -238,7 +238,7 @@ const GroupDetails = () => {
     /* previous or upcoming */
     const renderEventDetails = (events) => {
         try {
-            if (events) {
+            if (events.length) {
             return (
                 events.map((event) => {
                 // currentEventsSorted.map((event) => {
@@ -282,6 +282,9 @@ const GroupDetails = () => {
             }))
             ////////////
             //console.log("currentEvents", currentEvents)
+            }
+            else {
+                return ( <p className="gd-no-margin">No corresponding events!</p>)
             }
         } catch {
             return ( <p>No corresponding events!</p>)

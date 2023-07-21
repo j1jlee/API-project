@@ -149,6 +149,10 @@
     padding: 1em;
 }
 
+.gd-no-margin {
+    margin: 0;
+}
+
 .gd-top-link-img {
     grid-area: group-link-img;
     display: flex;
