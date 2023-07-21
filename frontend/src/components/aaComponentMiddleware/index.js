@@ -99,7 +99,7 @@ const urlToImage = (imageUrl, sizeOption) => {
 }
 
 
-const urlToImg = (imageUrl) => {
+const urlToImg = (imageUrl, linkUrl) => {
 
     /* style="width: 300px; height: 337px; object-fit: cover;" */
     let width = "200px"
@@ -111,6 +111,10 @@ const urlToImg = (imageUrl) => {
     )
 }
 
+
+const trimString = (input) =>  {
+    return input.trim();
+}
 
 // }
 
@@ -126,4 +130,4 @@ const urlToImg = (imageUrl) => {
 
 // export { firstUpcomingEventIndex };
 
-export { formattedDateString, formattedDateForm, lineBreakOrErrors, eventSort, firstUpcomingEventIndex, urlToImage, urlToImg}
+export { formattedDateString, formattedDateForm, lineBreakOrErrors, eventSort, firstUpcomingEventIndex, urlToImage, urlToImg, trimString}

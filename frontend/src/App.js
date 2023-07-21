@@ -15,6 +15,9 @@ import EventDetails from "./components/EventDetails";
 import EditGroup from "./components/EditGroup";
 import CreateEvent from "./components/CreateEvent";
 
+//07-21
+import CreateOrEditGroup from "./components/CreateOrEditGroup"
+
 //window.store.dispatch(window.sessionActions.restoreUser());
 
 function App() {
@@ -30,7 +33,8 @@ function App() {
     {isLoaded && (
     <Switch>
       <Route exact path="/groups/new">
-        <CreateGroup />
+        <CreateOrEditGroup newOrEdit="new"/>
+        {/* <CreateGroup /> */}
       </Route>
 
 
@@ -39,7 +43,8 @@ function App() {
       </Route>
 
       <Route exact path="/groups/:groupId/edit">
-        <EditGroup />
+        <CreateOrEditGroup newOrEdit="edit"/>
+        {/* <EditGroup /> */}
 
       </Route>
       <Route path="/groups/:groupId">

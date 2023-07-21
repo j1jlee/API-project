@@ -137,24 +137,30 @@ const EditGroup = () => {
 
         return (
             <>
+            <div className="create-group-wrapper">
+
+
+
             {/* <h1>NEW GROUP FORM</h1> */}
             <h1>UPDATE YOUR GROUPS INFORMATION</h1>
             {/* <button onClick={createNewGroupButton}>CLick me to create a new group!</button> */}
 
             <p>BECOME AN ORGANIZER</p>
 <h2>We'll walk you through a few steps to build your local community</h2>
-
+<br></br>
             <form onSubmit={createNewGroupButton}>
 
-<h2>Set your group's location</h2>
-{/* <h2>First, set your group's location.</h2> */}
-<p>
-Meetup groups meet locally, in person, and online. We'll connect you with people in your area.
-</p>
-{/* <p>
-Meetup groups meet locally, in person and online. We'll connect you with people
-in your area, and more can join you online.
-</p> */}
+            <div className="create-section-node">
+
+            <h2>Set your group's location</h2>
+            {/* <h2>First, set your group's location.</h2> */}
+            <p>
+            Meetup groups meet locally, in person, and online. We'll connect you with people in your area.
+            </p>
+            {/* <p>
+            Meetup groups meet locally, in person and online. We'll connect you with people
+            in your area, and more can join you online.
+            </p> */}
 
             City:
             <input className="create-group-city-input"
@@ -175,7 +181,10 @@ in your area, and more can join you online.
                 name="state"
             />
             {errors.state && <p className="errors-p">{errors.state}</p>}
+            </div> {/* end of create-section node */}
 
+
+            <div className="create-section-node">
             <h2>What will your group's name be?</h2>
 <p>Choose a name that will give people a clear idea of what the group is about.
 Feel free to get creative! You can edit this later if you change your mind.</p>
@@ -191,18 +200,21 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     name="name"
                 />
                 {errors.name && <p className="errors-p">{errors.name}</p>}
+            </div>
 
+
+            <div className="create-section-node">
                 <h2>Describe the purpose of your group.</h2>
                 {/* <h2>Now describe what your group will be about</h2> */}
-<p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
-<ol>
-<li>1. What's the purpose of the group?</li>
-<li>2. Who should join?</li>
-<li>3. What will you do at your events?</li>
-    </ol>
-{/* 1. What's the purpose of the group?<br></br>
-2. Who should join?<br></br>
-3. What will you do at your events? */}
+                <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
+                <ol>
+                <li>1. What's the purpose of the group?</li>
+                <li>2. Who should join?</li>
+                <li>3. What will you do at your events?</li>
+                    </ol>
+                {/* 1. What's the purpose of the group?<br></br>
+                2. Who should join?<br></br>
+                3. What will you do at your events? */}
 
 
                 About:
@@ -214,9 +226,11 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     name="about"
                 />
                 {errors.about && <p className="errors-p">{errors.about}</p>}
+            </div>
 
+            <div className="create-section-node">
                 <h2>Final steps...</h2>
-<p>Is this an in-person or online group?</p>
+                <p>Is this an in-person or online group?</p>
 
 
 
@@ -249,11 +263,14 @@ Feel free to get creative! You can edit this later if you change your mind.</p>
                     name="imageUrl"
                 />
                 {/* {errors.imageUrl && <p className="errors-p">{errors.imageUrl}</p>} */}
-
+            </div>
 <br></br>
 <br></br>
                 <button type="submit">Update Group</button>
             </form>
+
+
+            </div>
         </>
     )
 }
