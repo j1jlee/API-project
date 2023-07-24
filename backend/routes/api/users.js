@@ -8,6 +8,7 @@ const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation.js')
 
+const { singlePublicFileUpload, singleMulterUpload } = require('../../utils/awsS3.js');
 
 const router = express.Router();
 
@@ -40,13 +41,45 @@ const validateSignup = [
 // Sign up
 router.post(
     '/',
+    singleMulterUpload("image"),
     validateSignup,
     async (req, res) => {
 
       // const { email, password, username } = req.body;
+
+      console.log("\n\n\n\nat signup post")
+      const reqBody = req.body;
+
+      console.log("\n\n\n\nreqBody???", reqBody)
+
+      console.log("\n\n\nreqFile???", req.file)
+
       const { email, password, username, firstName, lastName } = req.body;
+      // const { email, password, username, firstName, lastName, image } = req.body;
+
+      let image = '';
+      if (req.file) {
+        image = req.file;
+      }
+      let imageUrl = '';
+      // console.log("\n\n\n\nwe here, req signup post", req.file)
+      if (image) {
+        // console.log("at req file", req.file)
+        console.log("\n\n\n\nimage exists\n\n\n")
+        imageUrl = await singlePublicFileUpload(image)
+      } else {
+        console.log("\n\n\nimage doesn't exist\n\n\n");
+      }
+
+      // if (req.file) {
+
+      //   // console.log("at req file", req.file)
+
+      //   imageUrl = await singlePublicFileUpload({ file: req.file })
+      // }
+
       const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ email, username, hashedPassword, firstName, lastName });
+      const user = await User.create({ email, username, hashedPassword, firstName, lastName, imageUrl });
 
       const safeUser = {
         id: user.id,
@@ -56,6 +89,8 @@ router.post(
         //
         email: user.email,
         username: user.username,
+        //
+        imageUrl: user.imageUrl,
       };
 
       await setTokenCookie(res, safeUser);

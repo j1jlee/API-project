@@ -4,6 +4,10 @@
 // frontend/src/store/session.js
 import { csrfFetch } from "./csrf";
 
+//get singleMulterUpload, singleFileUpload
+// import { singleMulterUpload, singlePublicFileUpload } from "../../../backend/utils/awsS3";
+
+
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
 
@@ -44,21 +48,72 @@ export const restoreUser = () => async (dispatch) => {
 //////////
 //phase 2, signup action
 export const signup = (user) => async (dispatch) => {
-  const { username, firstName, lastName, email, password } = user;
+  const { image, username, firstName, lastName, email, password } = user;
+
+  //remove
+  const imageUrl = '';
+
+  console.log("at store for session/signup, image?", image)
+
+  //formdata instead of JSON.stringify, for image upload/incorporation
+  const formData = new FormData();
+
+  formData.append('username', username)
+  formData.append('firstName', firstName)
+  formData.append('lastName', lastName)
+  formData.append('email', email)
+  formData.append('password', password)
+  if (image) {
+    formData.append('image', image)
+   }
+  //  else {
+  //    formData.append('image', null)
+  //  }
+
+
+  // const { username, firstName, lastName, email, password } = user;
   const response = await csrfFetch("/api/users", {
     method: "POST",
-    body: JSON.stringify({
-      username,
-      firstName,
-      lastName,
-      email,
-      password
-    }),
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    body: formData,
   });
+  // const response = await csrfFetch("/api/users", {
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     username,
+  //     firstName,
+  //     lastName,
+  //     email,
+  //     password,
+  //     imageUrl
+  //   }),
+  // });
+
+  // console.log('what is response', response)
+
   const data = await response.json();
   dispatch(setUser(data.user));
   return response;
+  //return data??
 };
+// export const signup = (user) => async (dispatch) => {
+//   const { username, firstName, lastName, email, password } = user;
+//   const response = await csrfFetch("/api/users", {
+//     method: "POST",
+//     body: JSON.stringify({
+//       username,
+//       firstName,
+//       lastName,
+//       email,
+//       password
+//     }),
+//   });
+//   const data = await response.json();
+//   dispatch(setUser(data.user));
+//   return response;
+// };
 
 //phase 3, logout
 export const logout = () => async (dispatch) => {

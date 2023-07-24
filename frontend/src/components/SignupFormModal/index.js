@@ -7,6 +7,9 @@ import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
+//send back image, then handle in backend
+// import { singlePublicFileUpload } from "../../../../backend/utils/awsS3";
+
 function SignupFormModal() {
   const dispatch = useDispatch();
   // const sessionUser = useSelector((state) => state.session.user);
@@ -16,6 +19,10 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [image, setImage] = useState(null);
+
+
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
@@ -40,10 +47,26 @@ function SignupFormModal() {
     }
   }, [email, username, firstName, lastName, password, confirmPassword])
 
+  // useEffect(() => {
+
+  //   //re-render on select file change?
+  // }, [setImage])
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
+
+      // let newUserImageUrl = '';
+      // if (image) {
+      //   newUserImageUrl = singlePublicFileUpload(image);
+      //   console.log("this worked???", newUserImageUrl)
+      // }
+
+      console.log("\n\n\npre-send user")
+      console.log("\n\n\nfrontend pre-send for user, image?", image)
+
       return dispatch(
         sessionActions.signup({
           email,
@@ -51,10 +74,15 @@ function SignupFormModal() {
           firstName,
           lastName,
           password,
+          // imageUrl: newUserImageUrl
+          image
+          //if image exists, send to backend, process
         })
       )
       .then(closeModal)
       .catch(async (res) => {
+        //console.log("res", res)
+
         const data = await res.json();
         if (data && data.errors) {
           setErrors(data.errors);
@@ -65,6 +93,21 @@ function SignupFormModal() {
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
   };
+
+  const updateFile = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      console.log("file?", file)
+      setImage(file)
+    } else {
+      console.log("file cancelled?")
+      setImage(null)
+    };
+
+    //console.log("current image?", image)
+  };
+
+  //console.log("current image?", image)
 
   return (
     <>
@@ -148,6 +191,14 @@ function SignupFormModal() {
         </label>
         {errors.confirmPassword ? <p className="signup-error-message">{errors.confirmPassword}</p> : <><br></br><br></br></>}
         {/* {errors.confirmPassword && <p>{errors.confirmPassword}</p>} */}
+
+        <label>
+          Profile Picture
+          <input type="file" onChange={updateFile} />
+        </label>
+        <br></br><br></br>
+
+
         <button type="submit" className={buttonDisabled}>Sign Up</button>
         {/* <button type="submit" className="universal-button-red">Sign Up</button> */}
       </form>

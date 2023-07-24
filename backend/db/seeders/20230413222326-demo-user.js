@@ -19,42 +19,48 @@ module.exports = {
         lastName: 'lastname1',
         email: 'demo@user.io',
         username: 'Demo-lition',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        imageUrl: 'https://aa-j1-project-bucket.s3.amazonaws.com/profile1.png'
       },
       {
-        firstName: 'firstname2',
-        lastName: 'lastname2',
+        firstName: 'Brian',
+        lastName: 'Twoman',
         email: 'user1@user.io',
         username: 'FakeUser1',
-        hashedPassword: bcrypt.hashSync('password2')
+        hashedPassword: bcrypt.hashSync('password2'),
+        imageUrl: 'https://aa-j1-project-bucket.s3.amazonaws.com/profile2.png'
       },
       {
-        firstName: 'firstname3',
-        lastName: 'lastname3',
+        firstName: 'Sarah',
+        lastName: 'Threemer',
         email: 'user2@user.io',
         username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
+        hashedPassword: bcrypt.hashSync('password3'),
+        imageUrl: 'https://aa-j1-project-bucket.s3.amazonaws.com/profile3.png'
       },
       {
-        firstName: 'firstname4',
-        lastName: 'lastname4',
+        firstName: 'Amanda',
+        lastName: 'Fournery',
         email: 'user3@user.io',
         username: 'FakeUser3',
-        hashedPassword: bcrypt.hashSync('password4')
+        hashedPassword: bcrypt.hashSync('password4'),
+        imageUrl: 'https://aa-j1-project-bucket.s3.amazonaws.com/profile4.png'
       },
       {
-        firstName: 'firstname5',
-        lastName: 'lastname5',
+        firstName: 'Sam',
+        lastName: 'Fiveson',
         email: 'user4@user.io',
         username: 'FakeUser4',
-        hashedPassword: bcrypt.hashSync('password5')
+        hashedPassword: bcrypt.hashSync('password5'),
+        imageUrl: 'https://aa-j1-project-bucket.s3.amazonaws.com/profile5.png'
       },
       {
         firstName: 'megaman',
         lastName: 'jones',
         email: 'megaman4@megaman.com',
         username: 'megaman',
-        hashedPassword: bcrypt.hashSync('megaman')
+        hashedPassword: bcrypt.hashSync('megaman'),
+        imageUrl: 'https://aa-j1-project-bucket.s3.amazonaws.com/profile2.png'
       }
     ], {});
   },

@@ -101,6 +101,19 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [60, 60]
       }
+    },
+
+    //hopefully adding to models works, 07-21
+    imageUrl: {
+      type:DataTypes.STRING,
+      // notNull: true,
+      // validate: {
+      //   isNotWhiteSpace(value) {
+      //     if (value.trim().length === 0) {
+      //       throw new Error("Cannot be blankspace")
+      //     }
+      //   }
+      // }
     }
   }, {
     sequelize,
